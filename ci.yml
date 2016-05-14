@@ -1,0 +1,34 @@
+version: '{build}'
+
+skip_tags: true
+
+environment:
+  assembly_version: '0.8.*'
+  release_version: '0.8'
+  
+install:
+  - cinst nuget.commandline
+  - nuget install NUnit.Runners -Version 3.0.1 -OutputDirectory packages
+
+configuration: Release
+
+nuget:
+  account_feed: true
+  project_feed: true
+
+before_build:
+  - cmd: powershell.exe -ExecutionPolicy UnRestricted -File .\patch-assemblyinfo.ps1 %assembly_version%
+
+build:
+  parallel: true
+  verbosity: minimal
+
+after_build:
+  - cmd: 7z a v%release_version%.zip %APPVEYOR_BUILD_FOLDER%\SoundCloud.Api\bin\%CONFIGURATION%\*.dll %APPVEYOR_BUILD_FOLDER%\SoundCloud.Api\bin\%CONFIGURATION%\*.xml
+
+test_script:
+  - cmd: packages\NUnit.Console.3.0.1\tools\nunit3-console.exe /config:%CONFIGURATION% /framework:net-4.5 SoundCloud.Api.Test\bin\%CONFIGURATION%\SoundCloud.Api.Test.dll
+  
+artifacts:
+  - path: v$(release_version).zip
+    name: v$(release_version)

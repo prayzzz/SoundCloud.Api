@@ -1,0 +1,9 @@
+﻿namespace SoundCloud.Api
+{
+    internal class Settings
+    {
+        internal const string SoundCloudDateTimePattern = "yyyy/MM/dd HH:mm:ss";
+        internal const string SoundCloudDateTimeQueryPattern = "yyyy-MM-dd HH:mm:ss";
+        internal const string SoundCloudDateTimeWithTimezonePattern = "yyyy/MM/dd HH:mm:ss zzz";
+    }
+}
