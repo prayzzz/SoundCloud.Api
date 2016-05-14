@@ -3,8 +3,8 @@ version: '{build}'
 skip_non_tags: true
 
 environment:
-  assembly_version: '0.8.*'
-  release_version: '0.8'
+  assembly_version: '1.0.*'
+  release_version: '1.0'
 
 install:
   - cinst nuget.commandline
