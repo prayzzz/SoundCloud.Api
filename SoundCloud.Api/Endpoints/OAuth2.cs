@@ -14,6 +14,16 @@ namespace SoundCloud.Api.Endpoints
         {
         }
 
+        public IWebResult<Credentials> ClientCredentials(Credentials credentials)
+        {
+            Validate(credentials.ValidateClientCredentials);
+
+            var builder = new OAuthQueryBuilder();
+            builder.Path = TokenPath;
+
+            return Create<Credentials>(builder.BuildUri(), credentials.ToParameters(GrantType.ClientCredentials));
+        }
+
         public IWebResult<Credentials> ExchangeToken(Credentials credentials)
         {
             Validate(credentials.ValidateAuthorizationCode);
@@ -21,17 +31,17 @@ namespace SoundCloud.Api.Endpoints
             var builder = new OAuthQueryBuilder();
             builder.Path = TokenPath;
 
-            return Create<Credentials>(builder.BuildUri(), credentials.ToExchangeTokenParameters(GrantType.AuthorizationCode));
+            return Create<Credentials>(builder.BuildUri(), credentials.ToParameters(GrantType.AuthorizationCode));
         }
 
         public IWebResult<Credentials> Login(Credentials credentials)
         {
-            Validate(credentials.ValidateClientCredentials);
+            Validate(credentials.ValidatePassword);
 
             var builder = new OAuthQueryBuilder();
             builder.Path = TokenPath;
 
-            return Create<Credentials>(builder.BuildUri(), credentials.ToClientCredentialsParameters(GrantType.ClientCredentials));
+            return Create<Credentials>(builder.BuildUri(), credentials.ToParameters(GrantType.Password));
         }
 
         public IWebResult<Credentials> RefreshToken(Credentials credentials)
@@ -41,7 +51,7 @@ namespace SoundCloud.Api.Endpoints
             var builder = new OAuthQueryBuilder();
             builder.Path = TokenPath;
 
-            return Create<Credentials>(builder.BuildUri(), credentials.ToRefreshTokenParameters(GrantType.RefreshToken));
+            return Create<Credentials>(builder.BuildUri(), credentials.ToParameters(GrantType.RefreshToken));
         }
     }
 }

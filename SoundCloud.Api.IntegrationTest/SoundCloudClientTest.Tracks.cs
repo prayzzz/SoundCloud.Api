@@ -118,7 +118,7 @@ namespace SoundCloud.Api.IntegrationTest
             updateResult = client.Tracks.Update(postedTrack);
 
             Assert.That(updateResult.Data.description, Is.EqualTo(postedTrack.description));
-            Assert.That(updateResult.Data.download_url, Does.Contain("https://api.soundcloud.com/tracks/" + postedTrack.id + "/download"));
+            Assert.That(updateResult.Data.download_url.ToString(), Does.Contain("https://api.soundcloud.com/tracks/" + postedTrack.id + "/download"));
             Assert.That(updateResult.Data.downloadable, Is.EqualTo(postedTrack.downloadable));
             Assert.That(updateResult.Data.genre, Is.EqualTo(postedTrack.genre));
             Assert.That(updateResult.Data.label_name, Is.EqualTo(postedTrack.label_name));

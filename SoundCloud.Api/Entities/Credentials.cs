@@ -106,6 +106,23 @@ namespace SoundCloud.Api.Entities
                 return false;
             }
 
+            return true;
+        }
+
+        public bool ValidatePassword(ValidationMessages messages)
+        {
+            if (string.IsNullOrEmpty(client_id))
+            {
+                messages.Add("ClientId missing. Use the client_id property to set the ClientId.");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(client_secret))
+            {
+                messages.Add("ClientSecret missing. Use the client_secret property to set the ClientSecret.");
+                return false;
+            }
+
             if (string.IsNullOrEmpty(username))
             {
                 messages.Add("Username missing. Use the username property to set the Username.");
@@ -148,36 +165,36 @@ namespace SoundCloud.Api.Entities
         {
         }
 
-        internal IDictionary<string, object> ToClientCredentialsParameters(GrantType type)
+        internal IDictionary<string, object> ToParameters(GrantType type)
         {
             var parameters = new Dictionary<string, object>();
-            parameters.Add("client_id", client_id);
-            parameters.Add("client_secret", client_secret);
             parameters.Add("grant_type", type.GetAttributeOfType<EnumMemberAttribute>().Value);
-            parameters.Add("username", username);
-            parameters.Add("password", password);
 
-            return parameters;
-        }
-
-        internal IDictionary<string, object> ToExchangeTokenParameters(GrantType type)
-        {
-            var parameters = new Dictionary<string, object>();
-            parameters.Add("client_id", client_id);
-            parameters.Add("client_secret", client_secret);
-            parameters.Add("grant_type", type.GetAttributeOfType<EnumMemberAttribute>().Value);
-            parameters.Add("code", code);
-
-            return parameters;
-        }
-
-        internal IDictionary<string, object> ToRefreshTokenParameters(GrantType type)
-        {
-            var parameters = new Dictionary<string, object>();
-            parameters.Add("client_id", client_id);
-            parameters.Add("client_secret", client_secret);
-            parameters.Add("grant_type", type.GetAttributeOfType<EnumMemberAttribute>().Value);
-            parameters.Add("refresh_token", refresh_token);
+            switch (type)
+            {
+                case GrantType.RefreshToken:
+                    parameters.Add("client_id", client_id);
+                    parameters.Add("client_secret", client_secret);
+                    parameters.Add("refresh_token", refresh_token);
+                    break;
+                case GrantType.Password:
+                    parameters.Add("client_id", client_id);
+                    parameters.Add("client_secret", client_secret);
+                    parameters.Add("username", username);
+                    parameters.Add("password", password);
+                    break;
+                case GrantType.ClientCredentials:
+                    parameters.Add("client_id", client_id);
+                    parameters.Add("client_secret", client_secret);
+                    break;
+                case GrantType.AuthorizationCode:
+                    parameters.Add("client_id", client_id);
+                    parameters.Add("client_secret", client_secret);
+                    parameters.Add("code", code);
+                    break;
+                default:
+                    return parameters;
+            }
 
             return parameters;
         }

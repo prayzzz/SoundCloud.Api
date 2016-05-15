@@ -71,12 +71,43 @@ namespace SoundCloud.Api.Test.Endpoints
                     Assert.That(p["client_secret"], Is.EqualTo("my client secret"));
                     Assert.That(p["username"], Is.EqualTo("my username"));
                     Assert.That(p["password"], Is.EqualTo("my password"));
-                    Assert.That(p["grant_type"], Is.EqualTo("client_credentials"));
+                    Assert.That(p["grant_type"], Is.EqualTo("password"));
                 });
 
             var oauth2Endpoint = new OAuth2(gatewayMock.Object);
 
             var result = oauth2Endpoint.Login(accessRequest);
+
+            Assert.That(result, Is.InstanceOf<SuccessWebResult<Credentials>>());
+            Assert.That(result.IsSuccess, Is.True);
+            Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));
+        }
+
+        [Test]
+        public void Test_OAuth2_ClientCredentials()
+        {
+            const string expectedUri = @"https://api.soundcloud.com/oauth2/token?";
+
+            var accessRequest = new Credentials();
+            accessRequest.client_id = "my client id";
+            accessRequest.client_secret = "my client secret";
+
+            var response = new ApiResponse<Credentials>(HttpStatusCode.OK, "OK");
+            response.Data = accessRequest;
+
+            var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
+            gatewayMock.Setup(x => x.InvokeCreateRequest<Credentials>(It.Is<Uri>(y => y.ToString() == expectedUri), It.IsAny<IDictionary<string, object>>()))
+                .Returns(response)
+                .Callback((Uri u, IDictionary<string, object> p) =>
+                {
+                    Assert.That(p["client_id"], Is.EqualTo("my client id"));
+                    Assert.That(p["client_secret"], Is.EqualTo("my client secret"));
+                    Assert.That(p["grant_type"], Is.EqualTo("client_credentials"));
+                });
+
+            var oauth2Endpoint = new OAuth2(gatewayMock.Object);
+
+            var result = oauth2Endpoint.ClientCredentials(accessRequest);
 
             Assert.That(result, Is.InstanceOf<SuccessWebResult<Credentials>>());
             Assert.That(result.IsSuccess, Is.True);

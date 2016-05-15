@@ -30,8 +30,11 @@ namespace SoundCloud.Api.IntegrationTest
             playlist.tracks.Add(new Track {id = TrackId});
             playlist.tag_list = new List<string> {"Sampletag", "Sampletag2"};
             playlist.genre = "Sample";
+            playlist.playlist_type = PlaylistType.Compilation;
 
             var postResult = client.Playlists.Post(playlist);
+            Assert.IsTrue(postResult.IsSuccess);
+
             var requestPlaylist = client.Playlists.Get(postResult.Data.id);
             client.Playlists.Delete(postResult.Data);
 
@@ -67,8 +70,11 @@ namespace SoundCloud.Api.IntegrationTest
             playlist.tracks.Add(new Track {id = TrackId});
             playlist.tag_list = new List<string> {"Sampletag", "Sampletag2"};
             playlist.genre = "Sample";
+            playlist.playlist_type = PlaylistType.Compilation;
 
             var postResult = client.Playlists.Post(playlist);
+            Assert.IsTrue(postResult.IsSuccess);
+
             var token = client.Playlists.GetSecretToken(postResult.Data);
             client.Playlists.Delete(postResult.Data);
 
@@ -86,6 +92,7 @@ namespace SoundCloud.Api.IntegrationTest
             playlist.tracks.Add(new Track {id = TrackId});
             playlist.tag_list = new List<string> {"Sampletag", "Sampletag2"};
             playlist.genre = "Sample";
+            playlist.playlist_type = PlaylistType.Compilation;
 
             var postResult = client.Playlists.Post(playlist);
 

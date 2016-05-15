@@ -7,6 +7,22 @@ namespace SoundCloud.Api.IntegrationTest
     public partial class SoundCloudClientTest
     {
         [Test]
+        public void Test_OAuth2_ClientCredentials()
+        {
+            var credentials = new Credentials();
+            credentials.client_id = _settings.ClientId;
+            credentials.client_secret = _settings.ClientSecret;
+
+            var client = SoundCloudClient.Create();
+            var postedCredentials = client.OAuth2.ClientCredentials(credentials);
+
+            Assert.That(postedCredentials.IsSuccess, Is.True);
+            Assert.That(string.IsNullOrEmpty(postedCredentials.Data.access_token), Is.False);
+            Assert.That(string.IsNullOrEmpty(postedCredentials.Data.refresh_token), Is.False);
+            Assert.That(postedCredentials.Data.expires_in, Is.Not.Null);
+        }
+
+        [Test]
         public void Test_OAuth2_Login()
         {
             var credentials = new Credentials();

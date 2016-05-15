@@ -286,6 +286,12 @@ namespace SoundCloud.Api.Entities
                 return false;
             }
 
+            if (playlist_type == PlaylistType.Other)
+            {
+                messages.Add("Playlist type must not be 'other'.");
+                return false;
+            }
+
             return true;
         }
 

@@ -125,6 +125,7 @@ namespace SoundCloud.Api.Test.Endpoints
             var playlist = new Playlist();
             playlist.id = PlaylistId;
             playlist.title = "title";
+            playlist.playlist_type = PlaylistType.Compilation;
 
             var postedPlaylist = new Playlist();
             postedPlaylist.id = playlist.id;

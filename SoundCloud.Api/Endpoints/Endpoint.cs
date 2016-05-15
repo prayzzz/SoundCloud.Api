@@ -111,7 +111,7 @@ namespace SoundCloud.Api.Endpoints
         {
             if (string.IsNullOrEmpty(Credentials.ClientId) && string.IsNullOrEmpty(Credentials.AccessToken))
             {
-                throw new SoundCloudInsufficientAccessRightsException("Atleast the ClientId is needed for this operation.");
+                throw new SoundCloudInsufficientAccessRightsException("ClientId or OAuth_Token is needed for this operation.");
             }
         }
 
@@ -120,7 +120,7 @@ namespace SoundCloud.Api.Endpoints
         {
             if (string.IsNullOrEmpty(Credentials.AccessToken))
             {
-                throw new SoundCloudInsufficientAccessRightsException("The OAuth_Token is needed for this operation.");
+                throw new SoundCloudInsufficientAccessRightsException("OAuth_Token is needed for this operation.");
             }
         }
 
