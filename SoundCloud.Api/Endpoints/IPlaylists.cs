@@ -14,7 +14,7 @@ namespace SoundCloud.Api.Endpoints
         /// Deletes the playlist
         /// </summary>
         /// <param name="playlist"></param>
-        /// <exception cref="HttpException">Thrown if the WebRequest failed. Contains HttpStatusCode and StatusDescription</exception>
+        /// <exception cref="System.Web.HttpException">Thrown if the WebRequest failed. Contains HttpStatusCode and StatusDescription</exception>
         /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no OAuth token is set.</exception>
         IWebResult Delete(Playlist playlist);
 

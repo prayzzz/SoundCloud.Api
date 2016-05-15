@@ -16,7 +16,7 @@ namespace SoundCloud.Api.Endpoints
         /// Deletes the given comment
         /// </summary>
         /// <param name="comment"></param>
-        /// <exception cref="HttpException">Thrown if the WebRequest failed. Contains HttpStatusCode and StatusDescription</exception>
+        /// <exception cref="System.Web.HttpException">Thrown if the WebRequest failed. Contains HttpStatusCode and StatusDescription</exception>
         /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no OAuth token is set.</exception>
         IWebResult Delete(Comment comment);
 
@@ -39,7 +39,7 @@ namespace SoundCloud.Api.Endpoints
         /// Posts the given comment
         /// </summary>
         /// <param name="comment"></param>
-        /// <exception cref="HttpException">Thrown if the WebRequest failed. Contains HttpStatusCode and StatusDescription</exception>
+        /// <exception cref="System.Web.HttpException">Thrown if the WebRequest failed. Contains HttpStatusCode and StatusDescription</exception>
         /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no OAuth token is set.</exception>
         /// <exception cref="SoundCloudValidationException">Thrown if validation of <paramref name="comment"/> failed.</exception>
         IWebResult<Comment> Post(Comment comment);

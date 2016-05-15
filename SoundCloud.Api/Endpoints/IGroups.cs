@@ -18,7 +18,7 @@ namespace SoundCloud.Api.Endpoints
         /// </summary>
         /// <param name="group"></param>
         /// <returns></returns>
-        /// <exception cref="HttpException">Thrown if the WebRequest failed.</exception>
+        /// <exception cref="System.Web.HttpException">Thrown if the WebRequest failed.</exception>
         IWebResult Delete(Group group);
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace SoundCloud.Api.Endpoints
         /// </summary>
         /// <param name="group"></param>
         /// <param name="track"></param>
-        /// <exception cref="HttpException">Thrown if the WebRequest failed.</exception>
+        /// <exception cref="System.Web.HttpException">Thrown if the WebRequest failed.</exception>
         IWebResult DeleteContribution(Group group, Track track);
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace SoundCloud.Api.Endpoints
         /// </summary>
         /// <param name="group"></param>
         /// <param name="track"></param>
-        /// <exception cref="HttpException">Thrown if the WebRequest failed.</exception>
+        /// <exception cref="System.Web.HttpException">Thrown if the WebRequest failed.</exception>
         IWebResult DeletePendingTrack(Group group, Track track);
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace SoundCloud.Api.Endpoints
         /// </summary>
         /// <param name="group"></param>
         /// <returns></returns>
-        /// <exception cref="HttpException">Thrown if the WebRequest failed.</exception>
+        /// <exception cref="System.Web.HttpException">Thrown if the WebRequest failed.</exception>
         /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no OAuth token is set.</exception>
         IWebResult<Group> Post(Group group);
 
@@ -137,7 +137,7 @@ namespace SoundCloud.Api.Endpoints
         /// </summary>
         /// <param name="group"></param>
         /// <returns></returns>
-        /// <exception cref="HttpException">Thrown if the WebRequest failed.</exception>
+        /// <exception cref="System.Web.HttpException">Thrown if the WebRequest failed.</exception>
         /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no OAuth token is set.</exception>
         IWebResult<Group> Update(Group group);
 
@@ -147,7 +147,7 @@ namespace SoundCloud.Api.Endpoints
         /// <param name="group"></param>
         /// <param name="file"></param>
         /// <returns></returns>
-        /// <exception cref="HttpException">Thrown if the WebRequest failed.</exception>
+        /// <exception cref="System.Web.HttpException">Thrown if the WebRequest failed.</exception>
         /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no OAuth token is set.</exception>
         IWebResult<Group> UploadArtwork(Group group, Stream file);
     }
