@@ -4,7 +4,7 @@ Full C# API wrapper for SoundCloud
  Config        | Status
 ---------------|---
 CI             | [![Build status](https://ci.appveyor.com/api/projects/status/32lb7fq7dstdelt9?svg=true)](https://ci.appveyor.com/project/prayzzz/soundcloud-api)
-Release (v1.0) | [![Build status](https://ci.appveyor.com/api/projects/status/8u3670f0fg38i4nw?svg=true)](https://ci.appveyor.com/project/prayzzz/soundcloud-api-sow3r)
+Release (v1.1) | [![Build status](https://ci.appveyor.com/api/projects/status/8u3670f0fg38i4nw?svg=true)](https://ci.appveyor.com/project/prayzzz/soundcloud-api-sow3r)
 
 ## Installation
 
