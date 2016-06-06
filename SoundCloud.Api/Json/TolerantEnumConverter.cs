@@ -92,9 +92,6 @@ namespace SoundCloud.Api.Json
             writer.WriteValue(enumMemberAttribute.Value);
         }
 
-        private bool IsNullableType(Type t)
-        {
-            return (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>));
-        }
+        private bool IsNullableType(Type t) => (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>));
     }
 }

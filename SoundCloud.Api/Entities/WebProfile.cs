@@ -81,10 +81,7 @@ namespace SoundCloud.Api.Entities
         {
         }
 
-        internal override BoxedEntity ToBoxedEntity()
-        {
-            return new WebProfileBox(this);
-        }
+        internal override BoxedEntity ToBoxedEntity => new WebProfileBox(this);
 
         private sealed class WebProfileBox : BoxedEntity
         {

@@ -70,10 +70,7 @@ namespace SoundCloud.Api.Endpoints
             return GetById<Group>(builder.BuildUri());
         }
 
-        public IEnumerable<Group> Get()
-        {
-            return Get(new GroupQueryBuilder());
-        }
+        public IEnumerable<Group> Get() => Get(new GroupQueryBuilder());
 
         public IEnumerable<Group> Get(GroupQueryBuilder queryBuilder)
         {

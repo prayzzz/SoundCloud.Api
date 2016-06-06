@@ -13,10 +13,7 @@ namespace SoundCloud.Api.Utils
             _messages = new List<string>();
         }
 
-        public bool HasErrors
-        {
-            get { return _messages.Any(); }
-        }
+        public bool HasErrors => _messages.Any();
 
         public override string ToString()
         {

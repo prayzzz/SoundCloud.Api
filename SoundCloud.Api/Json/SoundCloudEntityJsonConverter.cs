@@ -12,10 +12,7 @@ namespace SoundCloud.Api.Json
 {
     internal class SoundCloudEntityJsonConverter : JsonConverter
     {
-        public override bool CanConvert(Type objectType)
-        {
-            return typeof(Entity).IsAssignableFrom(objectType);
-        }
+        public override bool CanConvert(Type objectType) => typeof(Entity).IsAssignableFrom(objectType);
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {

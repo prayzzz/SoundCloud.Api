@@ -10,29 +10,14 @@ namespace SoundCloud.Api.Test.Data
         private const string SoundPath = "SoundCloud.Api.Test.Data.artwork.jpeg";
         private const string UserPath = "SoundCloud.Api.Test.Data.user.json";
 
-        public static Stream GetArtwork()
-        {
-            return GetEmbeddedFile(ArtworkPath);
-        }
+        public static Stream GetArtwork() => GetEmbeddedFile(ArtworkPath);
 
-        public static string GetFollowings()
-        {
-            return new StreamReader(GetEmbeddedFile(FollowingsPath)).ReadToEnd();
-        }
+        public static string GetFollowings() => new StreamReader(GetEmbeddedFile(FollowingsPath)).ReadToEnd();
 
-        public static Stream GetSound()
-        {
-            return GetEmbeddedFile(SoundPath);
-        }
+        public static Stream GetSound() => GetEmbeddedFile(SoundPath);
 
-        public static string GetUser()
-        {
-            return new StreamReader(GetEmbeddedFile(UserPath)).ReadToEnd();
-        }
+        public static string GetUser() => new StreamReader(GetEmbeddedFile(UserPath)).ReadToEnd();
 
-        private static Stream GetEmbeddedFile(string path)
-        {
-            return Assembly.GetExecutingAssembly().GetManifestResourceStream(path);
-        }
+        private static Stream GetEmbeddedFile(string path) => Assembly.GetExecutingAssembly().GetManifestResourceStream(path);
     }
 }

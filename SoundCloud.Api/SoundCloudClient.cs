@@ -67,66 +67,30 @@ namespace SoundCloud.Api
             }
         }
 
-        public IApps Apps
-        {
-            get { return _apps; }
-        }
+        public IApps Apps => _apps;
 
-        public IComments Comments
-        {
-            get { return _comments; }
-        }
+        public IComments Comments => _comments;
 
-        public IGroups Groups
-        {
-            get { return _groups; }
-        }
+        public IGroups Groups => _groups;
 
         public bool IsAuthorized => !string.IsNullOrEmpty(Token);
 
-        public IMe Me
-        {
-            get { return _me; }
-        }
+        public IMe Me => _me;
 
-        public IOAuth2 OAuth2
-        {
-            get { return _oAuth2; }
-        }
+        public IOAuth2 OAuth2 => _oAuth2;
 
-        public IPlaylists Playlists
-        {
-            get { return _playlists; }
-        }
+        public IPlaylists Playlists => _playlists;
 
-        public IResolve Resolve
-        {
-            get { return _resolve; }
-        }
+        public IResolve Resolve => _resolve;
 
-        public ITracks Tracks
-        {
-            get { return _tracks; }
-        }
+        public ITracks Tracks => _tracks;
 
-        public IUsers Users
-        {
-            get { return _users; }
-        }
+        public IUsers Users => _users;
 
-        public static ISoundCloudClient CreateAuthorized(string token)
-        {
-            return new SoundCloudClient {Token = token};
-        }
+        public static ISoundCloudClient CreateAuthorized(string token) => new SoundCloudClient { Token = token };
 
-        public static ISoundCloudClient CreateUnauthorized(string clientId)
-        {
-            return new SoundCloudClient {ClientId = clientId};
-        }
+        public static ISoundCloudClient CreateUnauthorized(string clientId) => new SoundCloudClient { ClientId = clientId };
 
-        internal static SoundCloudClient Create()
-        {
-            return new SoundCloudClient();
-        }
+        internal static SoundCloudClient Create() => new SoundCloudClient();
     }
 }

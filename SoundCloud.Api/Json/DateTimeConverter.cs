@@ -23,10 +23,7 @@ namespace SoundCloud.Api.Json
         /// Determines whether this instance can convert the specified object type. 
         /// </summary>
         /// <param name="objectType">Type of the object.</param>
-        public override bool CanConvert(Type objectType)
-        {
-            return objectType == typeof(string);
-        }
+        public override bool CanConvert(Type objectType) => objectType == typeof(string);
 
         /// <summary>
         /// Reads the JSON representation of the object. 

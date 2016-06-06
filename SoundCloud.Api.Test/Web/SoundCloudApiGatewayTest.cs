@@ -345,10 +345,7 @@ namespace SoundCloud.Api.Test.Web
             {
             }
 
-            internal override BoxedEntity ToBoxedEntity()
-            {
-                return new TestEntityBox(this);
-            }
+            internal override BoxedEntity ToBoxedEntity => new TestEntityBox(this);
 
             private class TestEntityBox : BoxedEntity
             {

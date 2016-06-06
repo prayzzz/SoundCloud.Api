@@ -332,10 +332,7 @@ namespace SoundCloud.Api.Entities
             uri = uri.AppendCredentials(credentials);
         }
 
-        internal override BoxedEntity ToBoxedEntity()
-        {
-            return new PlaylistBox(this);
-        }
+        internal override BoxedEntity ToBoxedEntity => new PlaylistBox(this);
 
         private sealed class PlaylistBox : BoxedEntity
         {

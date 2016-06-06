@@ -72,10 +72,7 @@ namespace SoundCloud.Api.Entities
             uri = uri.AppendCredentials(credentials);
         }
 
-        internal override BoxedEntity ToBoxedEntity()
-        {
-            return new CommentsBox(this);
-        }
+        internal override BoxedEntity ToBoxedEntity => new CommentsBox(this);
 
         internal bool ValidatePost(ValidationMessages messages)
         {
