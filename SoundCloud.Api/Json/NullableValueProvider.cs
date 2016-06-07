@@ -16,10 +16,7 @@ namespace SoundCloud.Api.Json
             _defaultValue = Activator.CreateInstance(underlyingType);
         }
 
-        public object GetValue(object target)
-        {
-            return _underlyingValueProvider.GetValue(target) ?? _defaultValue;
-        }
+        public object GetValue(object target) => _underlyingValueProvider.GetValue(target) ?? _defaultValue;
 
         public void SetValue(object target, object value)
         {

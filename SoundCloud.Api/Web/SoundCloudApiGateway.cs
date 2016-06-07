@@ -36,10 +36,7 @@ namespace SoundCloud.Api.Web
             };
         }
 
-        public ApiResponse<TResult> InvokeCreateRequest<TResult>(Uri uri, Entity data)
-        {
-            return SendEntity<TResult>(uri, data, CreateMethod);
-        }
+        public ApiResponse<TResult> InvokeCreateRequest<TResult>(Uri uri, Entity data) => SendEntity<TResult>(uri, data, CreateMethod);
 
         public ApiResponse<TResult> InvokeCreateRequest<TResult>(Uri uri, IDictionary<string, object> parameters)
         {
@@ -52,20 +49,11 @@ namespace SoundCloud.Api.Web
             return Evaluate<TResult>(ExecuteRequest(request));
         }
 
-        public ApiResponse<TResult> InvokeDeleteRequest<TResult>(Uri uri)
-        {
-            return Evaluate<TResult>(ExecuteRequest(CreateRequest(uri, DeleteMethod)));
-        }
+        public ApiResponse<TResult> InvokeDeleteRequest<TResult>(Uri uri) => Evaluate<TResult>(ExecuteRequest(CreateRequest(uri, DeleteMethod)));
 
-        public ApiResponse<TResult> InvokeGetRequest<TResult>(Uri uri)
-        {
-            return Evaluate<TResult>(ExecuteRequest(CreateRequest(uri, GetMethod)));
-        }
+        public ApiResponse<TResult> InvokeGetRequest<TResult>(Uri uri) => Evaluate<TResult>(ExecuteRequest(CreateRequest(uri, GetMethod)));
 
-        public ApiResponse<TResult> InvokeUpdateRequest<TResult>(Uri uri, Entity data)
-        {
-            return SendEntity<TResult>(uri, data, UpdateMethod);
-        }
+        public ApiResponse<TResult> InvokeUpdateRequest<TResult>(Uri uri, Entity data) => SendEntity<TResult>(uri, data, UpdateMethod);
 
         public ApiResponse<TResult> InvokeUpdateRequest<TResult>(Uri uri, IDictionary<string, object> parameters)
         {
@@ -143,7 +131,7 @@ namespace SoundCloud.Api.Web
 
         private ApiResponse<TResult> SendEntity<TResult>(Uri uri, Entity data, string method)
         {
-            var jsonData = JsonConvert.SerializeObject(data.ToBoxedEntity(), _jsonSerializeSettings);
+            var jsonData = JsonConvert.SerializeObject(data.ToBoxedEntity, _jsonSerializeSettings);
             var request = CreateRequest(uri, method);
 
             using (var writer = new StreamWriter(request.GetRequestStream()))

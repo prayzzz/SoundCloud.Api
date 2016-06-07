@@ -24,9 +24,12 @@ namespace SoundCloud.Api.Entities.Base
 
         internal abstract void AppendCredentialsToProperties(SoundCloudCredentials credentials);
 
-        internal virtual BoxedEntity ToBoxedEntity()
+        internal virtual BoxedEntity ToBoxedEntity
         {
-            throw new NotSupportedException("BoxedEntity not available for entity of type " + GetType());
+            get
+            {
+                throw new NotSupportedException("BoxedEntity not available for entity of type " + GetType());
+            }
         }
     }
 }

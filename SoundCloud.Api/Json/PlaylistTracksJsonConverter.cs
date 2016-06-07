@@ -16,10 +16,7 @@ namespace SoundCloud.Api.Json
         /// <returns>
         /// <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
         /// </returns>
-        public override bool CanConvert(Type objectType)
-        {
-            return objectType == typeof(IEnumerable<Track>);
-        }
+        public override bool CanConvert(Type objectType) => objectType == typeof(IEnumerable<Track>);
 
         /// <summary>
         /// Reads the JSON representation of the object.
@@ -28,10 +25,7 @@ namespace SoundCloud.Api.Json
         /// <returns>
         /// The object value.
         /// </returns>
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            return serializer.Deserialize(reader, objectType);
-        }
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) => serializer.Deserialize(reader, objectType);
 
         /// <summary>
         /// Writes the JSON representation of the object.
@@ -41,7 +35,7 @@ namespace SoundCloud.Api.Json
         {
             if (!(value is IEnumerable<Track>))
             {
-                throw new ArgumentException("Value is no list of tracks", "value");
+                throw new ArgumentException("Value is no list of tracks", nameof(value));
             }
 
             var entity = (IEnumerable<Track>)value;

@@ -10,9 +10,6 @@ namespace SoundCloud.Api.Utils
         /// </summary>
         /// <param name="dateTime">Datetime to format</param>
         /// <returns>Formatted string</returns>
-        internal static string ToSoundCloudString(this DateTime dateTime)
-        {
-            return dateTime.ToString(Settings.SoundCloudDateTimePattern);
-        }
+        internal static string ToSoundCloudString(this DateTime dateTime) => dateTime.ToString(Settings.SoundCloudDateTimePattern);
     }
 }

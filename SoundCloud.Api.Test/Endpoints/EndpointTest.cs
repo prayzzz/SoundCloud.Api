@@ -452,45 +452,21 @@ namespace SoundCloud.Api.Test.Endpoints
             {
             }
 
-            public IWebResult<T> Create<T>(string uri, Entity entity) where T : Entity
-            {
-                return Create<T>(new Uri(uri), entity);
-            }
+            public IWebResult<T> Create<T>(string uri, Entity entity) where T : Entity => Create<T>(new Uri(uri), entity);
 
-            public IWebResult<T> Create<T>(string uri, Dictionary<string, object> parameters) where T : Entity
-            {
-                return Create<T>(new Uri(uri), parameters);
-            }
+            public IWebResult<T> Create<T>(string uri, Dictionary<string, object> parameters) where T : Entity => Create<T>(new Uri(uri), parameters);
 
-            public IWebResult Delete(string uri)
-            {
-                return Delete(new Uri(uri));
-            }
+            public IWebResult Delete(string uri) => Delete(new Uri(uri));
 
-            public T GetById<T>(string uri) where T : Entity
-            {
-                return GetById<T>(new Uri(uri));
-            }
+            public T GetById<T>(string uri) where T : Entity => GetById<T>(new Uri(uri));
 
-            public IEnumerable<T> GetList<T>(string uri) where T : Entity
-            {
-                return GetList<T>(new Uri(uri));
-            }
+            public IEnumerable<T> GetList<T>(string uri) where T : Entity => GetList<T>(new Uri(uri));
 
-            public IWebResult Update(string uri)
-            {
-                return Update(new Uri(uri));
-            }
+            public IWebResult Update(string uri) => Update(new Uri(uri));
 
-            public IWebResult<T> Update<T>(string uri, Entity entity) where T : Entity
-            {
-                return Update<T>(new Uri(uri), entity);
-            }
+            public IWebResult<T> Update<T>(string uri, Entity entity) where T : Entity => Update<T>(new Uri(uri), entity);
 
-            public IWebResult<T> Update<T>(string uri, Dictionary<string, object> parameters) where T : Entity
-            {
-                return Update<T>(new Uri(uri), parameters);
-            }
+            public IWebResult<T> Update<T>(string uri, Dictionary<string, object> parameters) where T : Entity => Update<T>(new Uri(uri), parameters);
         }
 
         private class TestEntity : Entity

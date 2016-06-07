@@ -504,10 +504,7 @@ namespace SoundCloud.Api.Entities
             user_uri = user_uri.AppendCredentials(credentials);
         }
 
-        internal override BoxedEntity ToBoxedEntity()
-        {
-            return new TrackBox(this);
-        }
+        internal override BoxedEntity ToBoxedEntity => new TrackBox(this);
 
         private sealed class TrackBox : BoxedEntity
         {

@@ -13,7 +13,7 @@
     <tags>SoundCloud API Sound Music Cloud</tags>
     <dependencies>
       <group>
-        <dependency id="Newtonsoft.Json" version="7.0.1" />
+        <dependency id="Newtonsoft.Json" version="8.0.3" />
       </group>
     </dependencies>
   </metadata>

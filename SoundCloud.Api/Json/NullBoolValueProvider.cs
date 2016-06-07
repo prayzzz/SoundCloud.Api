@@ -13,10 +13,7 @@ namespace SoundCloud.Api.Json
             _underlyingValueProvider = new DynamicValueProvider(memberInfo);
         }
 
-        public object GetValue(object target)
-        {
-            return _underlyingValueProvider.GetValue(target) ?? false;
-        }
+        public object GetValue(object target) => _underlyingValueProvider.GetValue(target) ?? false;
 
         public void SetValue(object target, object value)
         {

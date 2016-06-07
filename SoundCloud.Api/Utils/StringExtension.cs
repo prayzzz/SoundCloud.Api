@@ -14,9 +14,6 @@ namespace SoundCloud.Api.Utils
             builder.AppendLine(str);
         }
 
-        internal static byte[] GetBytes(this string value)
-        {
-            return Encoding.UTF8.GetBytes(value);
-        }
+        internal static byte[] GetBytes(this string value) => Encoding.UTF8.GetBytes(value);
     }
 }
