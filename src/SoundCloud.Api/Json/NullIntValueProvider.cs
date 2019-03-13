@@ -10,7 +10,7 @@ namespace SoundCloud.Api.Json
 
         public NullIntValueProvider(MemberInfo memberInfo)
         {
-            _underlyingValueProvider = new DynamicValueProvider(memberInfo);
+            _underlyingValueProvider = new ReflectionValueProvider(memberInfo);
         }
 
         public object GetValue(object target)

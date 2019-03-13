@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-
 using Newtonsoft.Json.Serialization;
 
 namespace SoundCloud.Api.Json
@@ -12,7 +11,7 @@ namespace SoundCloud.Api.Json
 
         public NullableValueProvider(MemberInfo memberInfo, Type underlyingType)
         {
-            _underlyingValueProvider = new DynamicValueProvider(memberInfo);
+            _underlyingValueProvider = new ReflectionValueProvider(memberInfo);
             _defaultValue = Activator.CreateInstance(underlyingType);
         }
 

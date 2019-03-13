@@ -1,49 +1,56 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundCloud.Api", "SoundCloud.Api\SoundCloud.Api.csproj", "{095A9212-37BF-4ACB-AB27-EE2B04E3C429}"
+# Visual Studio 15
+VisualStudioVersion = 15.0.26124.0
+MinimumVisualStudioVersion = 15.0.26124.0
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F21FF5EE-982D-4709-A950-D78B100173BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundCloud.Api.Test", "SoundCloud.Api.Test\SoundCloud.Api.Test.csproj", "{92E8762C-6EDC-4E45-A6D5-34F2CCEB7FBF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{05521404-0BED-448D-BC9C-9F12B1D565D6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{57E197B0-08B5-448B-96D8-2EB9CCC059B0}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundCloud.Api", "src\SoundCloud.Api\SoundCloud.Api.csproj", "{BBCC8078-D60C-4D34-8542-E811E79FBCE8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3899D845-C119-4EDC-A784-9E1920DCF20C}"
-	ProjectSection(SolutionItems) = preProject
-		ci.yml = ci.yml
-		LICENSE = LICENSE
-		README.md = README.md
-		tag.yml = tag.yml
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundCloud.Api.IntegrationTest", "SoundCloud.Api.IntegrationTest\SoundCloud.Api.IntegrationTest.csproj", "{6C425D3B-7E63-4E88-8114-1F041D967530}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundCloud.Api.Test", "test\SoundCloud.Api.Test\SoundCloud.Api.Test.csproj", "{00072C1F-56A0-455C-9279-A071CD2EC4B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{095A9212-37BF-4ACB-AB27-EE2B04E3C429}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{095A9212-37BF-4ACB-AB27-EE2B04E3C429}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{095A9212-37BF-4ACB-AB27-EE2B04E3C429}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{095A9212-37BF-4ACB-AB27-EE2B04E3C429}.Release|Any CPU.Build.0 = Release|Any CPU
-		{92E8762C-6EDC-4E45-A6D5-34F2CCEB7FBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{92E8762C-6EDC-4E45-A6D5-34F2CCEB7FBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{92E8762C-6EDC-4E45-A6D5-34F2CCEB7FBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{92E8762C-6EDC-4E45-A6D5-34F2CCEB7FBF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6C425D3B-7E63-4E88-8114-1F041D967530}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6C425D3B-7E63-4E88-8114-1F041D967530}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6C425D3B-7E63-4E88-8114-1F041D967530}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6C425D3B-7E63-4E88-8114-1F041D967530}.Release|Any CPU.Build.0 = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BBCC8078-D60C-4D34-8542-E811E79FBCE8} = {F21FF5EE-982D-4709-A950-D78B100173BB}
+		{00072C1F-56A0-455C-9279-A071CD2EC4B7} = {05521404-0BED-448D-BC9C-9F12B1D565D6}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BBCC8078-D60C-4D34-8542-E811E79FBCE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBCC8078-D60C-4D34-8542-E811E79FBCE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBCC8078-D60C-4D34-8542-E811E79FBCE8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BBCC8078-D60C-4D34-8542-E811E79FBCE8}.Debug|x64.Build.0 = Debug|Any CPU
+		{BBCC8078-D60C-4D34-8542-E811E79FBCE8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BBCC8078-D60C-4D34-8542-E811E79FBCE8}.Debug|x86.Build.0 = Debug|Any CPU
+		{BBCC8078-D60C-4D34-8542-E811E79FBCE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBCC8078-D60C-4D34-8542-E811E79FBCE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBCC8078-D60C-4D34-8542-E811E79FBCE8}.Release|x64.ActiveCfg = Release|Any CPU
+		{BBCC8078-D60C-4D34-8542-E811E79FBCE8}.Release|x64.Build.0 = Release|Any CPU
+		{BBCC8078-D60C-4D34-8542-E811E79FBCE8}.Release|x86.ActiveCfg = Release|Any CPU
+		{BBCC8078-D60C-4D34-8542-E811E79FBCE8}.Release|x86.Build.0 = Release|Any CPU
+		{00072C1F-56A0-455C-9279-A071CD2EC4B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00072C1F-56A0-455C-9279-A071CD2EC4B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00072C1F-56A0-455C-9279-A071CD2EC4B7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{00072C1F-56A0-455C-9279-A071CD2EC4B7}.Debug|x64.Build.0 = Debug|Any CPU
+		{00072C1F-56A0-455C-9279-A071CD2EC4B7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{00072C1F-56A0-455C-9279-A071CD2EC4B7}.Debug|x86.Build.0 = Debug|Any CPU
+		{00072C1F-56A0-455C-9279-A071CD2EC4B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00072C1F-56A0-455C-9279-A071CD2EC4B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00072C1F-56A0-455C-9279-A071CD2EC4B7}.Release|x64.ActiveCfg = Release|Any CPU
+		{00072C1F-56A0-455C-9279-A071CD2EC4B7}.Release|x64.Build.0 = Release|Any CPU
+		{00072C1F-56A0-455C-9279-A071CD2EC4B7}.Release|x86.ActiveCfg = Release|Any CPU
+		{00072C1F-56A0-455C-9279-A071CD2EC4B7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

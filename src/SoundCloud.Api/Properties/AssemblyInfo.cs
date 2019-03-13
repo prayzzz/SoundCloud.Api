@@ -1,14 +1,12 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // Allgemeine Informationen über eine Assembly werden über die folgenden 
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die mit einer Assembly verknüpft sind.
 
-[assembly: AssemblyTitle("SoundCloud.Api")]
 [assembly: AssemblyDescription("Full C# API wrapper for SoundCloud")]
-[assembly: AssemblyCompany("prayzzz")]
-[assembly: AssemblyProduct("SoundCloud.API")]
 [assembly: AssemblyCopyright("Copyright © 2015")]
 
 // Durch Festlegen von ComVisible auf "false" werden die Typen in dieser Assembly unsichtbar 
@@ -19,7 +17,7 @@ using System.Runtime.InteropServices;
 
 // Die folgende GUID bestimmt die ID der Typbibliothek, wenn dieses Projekt für COM verfügbar gemacht wird
 
-[assembly: Guid("d9740fbc-c436-4394-8f20-c8b6e6f5265c")]
+[assembly: Guid("0849f525-5a7e-490d-82e9-e5b08f2d0cbc")]
 
 // Versionsinformationen für eine Assembly bestehen aus den folgenden vier Werten:
 //
@@ -32,4 +30,7 @@ using System.Runtime.InteropServices;
 // übernehmen, indem Sie "*" eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("1.0.0")]
+[assembly: InternalsVisibleTo("InternalsVisible.DynamicProxyGenAssembly2")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
+[assembly: InternalsVisibleTo("SoundCloud.Api.Test")]
+[assembly: InternalsVisibleTo("SoundCloud.Api.IntegrationTest")]
