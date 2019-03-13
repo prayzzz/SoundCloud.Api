@@ -1,10 +1,10 @@
-﻿using System;
+﻿using SoundCloud.Api.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Runtime.Serialization;
-
-using SoundCloud.Api.Utils;
+using System.Threading.Tasks;
 
 namespace SoundCloud.Api.Web
 {
@@ -85,6 +85,16 @@ namespace SoundCloud.Api.Web
             }
         }
 
+        internal async Task ApplyToAsync(WebRequest request)
+        {
+            request.ContentType = "multipart/form-data; boundary=" + _boundary;
+
+            using (var str = BuildContent(_boundary))
+            {
+                await str.CopyToAsync(await request.GetRequestStreamAsync());
+            }
+        }
+
         internal void Remove(string name)
         {
             _contents.Remove(name);
@@ -118,6 +128,42 @@ namespace SoundCloud.Api.Web
                 str.Write(contentType, 0, contentType.Length);
                 str.Write(contentDisposition, 0, contentDisposition.Length);
                 str.Write(data, 0, data.Length);
+            }
+
+            str.Write(boundaryEndBytes, 0, boundaryEndBytes.Length);
+            str.Position = 0;
+
+            return str;
+        }
+
+        private async Task<Stream> BuildContentAsync(string boundary)
+        {
+            var boundaryStart = string.Format(BoundaryStartPattern, boundary);
+            var boundaryStartBytes = boundaryStart.GetBytes();
+
+            var boundaryEnd = string.Format(BoundaryEndPattern, boundary);
+            var boundaryEndBytes = boundaryEnd.GetBytes();
+
+            var linebreak = false;
+            var str = new MemoryStream();
+            foreach (var content in _contents)
+            {
+                // don't write line break on first item
+                if (linebreak)
+                {
+                    str.Write("\r\n".GetBytes(), 0, 2);
+                }
+
+                linebreak = true;
+
+                var contentType = GetContentType(content.Value).GetBytes();
+                var contentDisposition = GetContentDisposition(content.Key, content.Value).GetBytes();
+                var data = GetBytes(content.Value);
+
+                await str.WriteAsync(boundaryStartBytes, 0, boundaryStartBytes.Length);
+                await str.WriteAsync(contentType, 0, contentType.Length);
+                await str.WriteAsync(contentDisposition, 0, contentDisposition.Length);
+                await str.WriteAsync(data, 0, data.Length);
             }
 
             str.Write(boundaryEndBytes, 0, boundaryEndBytes.Length);
