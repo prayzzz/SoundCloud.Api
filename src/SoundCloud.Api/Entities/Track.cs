@@ -435,7 +435,7 @@ namespace SoundCloud.Api.Entities
 
         public bool ValidateDelete(ValidationMessages messages)
         {
-            if (id < 1)
+            if (Id < 1)
             {
                 messages.Add("TrackId missing. Use the id property to set the id of this track.");
                 return false;
@@ -446,7 +446,7 @@ namespace SoundCloud.Api.Entities
 
         public bool ValidateGet(ValidationMessages messages)
         {
-            if (id < 1)
+            if (Id < 1)
             {
                 messages.Add("TrackId missing. Use the id property to set the id of this track.");
                 return false;
@@ -457,7 +457,7 @@ namespace SoundCloud.Api.Entities
 
         public bool ValidateLikeUnlike(ValidationMessages messages)
         {
-            if (id < 1)
+            if (Id < 1)
             {
                 messages.Add("TrackId missing. Use the id property to set the id of this track.");
                 return false;
@@ -468,7 +468,7 @@ namespace SoundCloud.Api.Entities
 
         public bool ValidateUpdate(ValidationMessages messages)
         {
-            if (id < 1)
+            if (Id < 1)
             {
                 messages.Add("TrackId missing. Use the id property to set the id of this track.");
                 return false;
@@ -485,23 +485,13 @@ namespace SoundCloud.Api.Entities
 
         public bool ValidateUploadArtwork(ValidationMessages messages)
         {
-            if (id < 1)
+            if (Id < 1)
             {
                 messages.Add("TrackId missing. Use the id property to set the id of this track.");
                 return false;
             }
 
             return true;
-        }
-
-        internal override void AppendCredentialsToProperties(SoundCloudCredentials credentials)
-        {
-            created_with?.AppendCredentialsToProperties(credentials);
-            label?.AppendCredentialsToProperties(credentials);
-            stream_url = stream_url.AppendCredentials(credentials);
-            uri = uri.AppendCredentials(credentials);
-            user?.AppendCredentialsToProperties(credentials);
-            user_uri = user_uri.AppendCredentials(credentials);
         }
 
         internal override BoxedEntity ToBoxedEntity()

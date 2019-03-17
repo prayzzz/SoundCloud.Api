@@ -161,10 +161,6 @@ namespace SoundCloud.Api.Entities
             return true;
         }
 
-        internal override void AppendCredentialsToProperties(SoundCloudCredentials credentials)
-        {
-        }
-
         internal IDictionary<string, object> ToParameters(GrantType type)
         {
             var parameters = new Dictionary<string, object>();

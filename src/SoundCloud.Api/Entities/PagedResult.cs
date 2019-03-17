@@ -44,11 +44,5 @@ namespace SoundCloud.Api.Entities
         /// Available for GET requests
         /// </summary>
         public Uri next_href { get; set; }
-
-        internal void AppendCredentialsToProperties(SoundCloudCredentials credentials)
-        {
-            future_href = future_href.AppendCredentials(credentials);
-            next_href = next_href.AppendCredentials(credentials);
-        }
     }
 }

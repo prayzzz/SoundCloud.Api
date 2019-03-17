@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
-
+using System.Threading.Tasks;
 using Moq;
-
 using NUnit.Framework;
-
 using SoundCloud.Api.Endpoints;
 using SoundCloud.Api.Entities;
 using SoundCloud.Api.Entities.Enums;
@@ -21,302 +19,247 @@ namespace SoundCloud.Api.Test.Endpoints
     [TestFixture]
     public class TrackTest
     {
-        private const string ClientId = "myClientId";
-        private const string Token = "myTokenId";
         private const int TrackId = 215850263;
 
         [Test]
-        public void Test_Tracks_Delete()
+        public async Task Delete()
         {
-            const string expectedUri = @"https://api.soundcloud.com/tracks/215850263?oauth_token=myTokenId";
+            var expectedUri = new Uri("https://api.soundcloud.com/tracks/215850263?");
 
-            var response = new ApiResponse<StatusResponse>(HttpStatusCode.OK, "OK");
+            var response = new ApiResponse<StatusResponse>(HttpStatusCode.OK);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeDeleteRequest<StatusResponse>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeDeleteRequestAsync<StatusResponse>(expectedUri)).ReturnsAsync(response);
 
-            var trackEndpoint = new Tracks(gatewayMock.Object);
-            trackEndpoint.Credentials.AccessToken = Token;
+            // Act
+            var track = new Track { Id = TrackId };
+            var result = await new Tracks(gatewayMock.Object).DeleteAsync(track);
 
-            var track = new Track();
-            track.id = TrackId;
-
-            var result = trackEndpoint.Delete(track);
-
+            // Assert
             Assert.That(result, Is.InstanceOf<SuccessWebResult<object>>());
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));
         }
 
         [Test]
-        public void Test_Tracks_Get()
+        public async Task Get()
         {
-            const string expectedUri = @"https://api.soundcloud.com/tracks/215850263?client_id=myClientId";
+            var expectedUri = new Uri("https://api.soundcloud.com/tracks/215850263?");
 
             var track = new Track();
-
-            var response = new ApiResponse<Track>(HttpStatusCode.OK, "OK");
-            response.Data = track;
+            var response = new ApiResponse<Track>(HttpStatusCode.OK, track);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeGetRequest<Track>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeGetRequestAsync<Track>(expectedUri)).ReturnsAsync(response);
 
-            var trackEndpoint = new Tracks(gatewayMock.Object);
-            trackEndpoint.Credentials.ClientId = ClientId;
+            // Act
+            var result = await new Tracks(gatewayMock.Object).GetAsync(TrackId);
 
-            var result = trackEndpoint.Get(TrackId);
-
+            // Assert
             Assert.That(result, Is.EqualTo(track));
         }
 
         [Test]
-        public void Test_Tracks_Get_With_Bpm_And_Tag_Query()
+        public async Task Get_With_Bpm_And_Tag_Query()
         {
-            const string expectedUri = @"https://api.soundcloud.com/tracks?limit=200&bpm[from]=100&tags=house&linked_partitioning=1&client_id=myClientId";
+            var expectedUri = new Uri("https://api.soundcloud.com/tracks?limit=200&bpm[from]=100&tags=house&linked_partitioning=1");
 
-            var trackList = new PagedResult<Track>();
-            trackList.collection = new List<Track> {new Track(), new Track()};
-
-            var response = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK, "OK");
-            response.Data = trackList;
+            var trackList = new PagedResult<Track> { collection = { new Track(), new Track() } };
+            var response = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK, trackList);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeGetRequest<PagedResult<Track>>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeGetRequestAsync<PagedResult<Track>>(expectedUri)).ReturnsAsync(response);
 
-            var trackEndpoint = new Tracks(gatewayMock.Object);
-            trackEndpoint.Credentials.ClientId = ClientId;
+            // Act
+            var query = new TrackQueryBuilder { BpmFrom = 100, Tags = { "house" } };
+            var result = (await new Tracks(gatewayMock.Object).GetAsync(query)).ToList();
 
-            var query = new TrackQueryBuilder();
-            query.BpmFrom = 100;
-            query.Tags.Add("house");
-
-            var result = trackEndpoint.Get(query).ToList();
-
+            // Assert
             Assert.That(result, Is.EqualTo(trackList.collection));
         }
 
         [Test]
-        public void Test_Tracks_Get_With_Id_Query()
+        public async Task Get_With_Id_Query()
         {
-            const string expectedUri = @"https://api.soundcloud.com/tracks?limit=200&ids=101%2C202%2C303&linked_partitioning=1&client_id=myClientId";
+            var expectedUri = new Uri("https://api.soundcloud.com/tracks?limit=200&ids=101%2C202%2C303&linked_partitioning=1");
 
-            var trackList = new PagedResult<Track>();
-            trackList.collection = new List<Track> {new Track(), new Track()};
-
-            var response = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK, "OK");
-            response.Data = trackList;
+            var trackList = new PagedResult<Track> { collection = { new Track(), new Track() } };
+            var response = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK, trackList);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeGetRequest<PagedResult<Track>>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeGetRequestAsync<PagedResult<Track>>(expectedUri)).ReturnsAsync(response);
 
-            var trackEndpoint = new Tracks(gatewayMock.Object);
-            trackEndpoint.Credentials.ClientId = ClientId;
+            // Act
+            var query = new TrackQueryBuilder { Ids = { 101, 202, 303 } };
+            var result = (await new Tracks(gatewayMock.Object).GetAsync(query)).ToList();
 
-            var query = new TrackQueryBuilder();
-            query.Ids.Add(101);
-            query.Ids.Add(202);
-            query.Ids.Add(303);
-
-            var result = trackEndpoint.Get(query).ToList();
-
+            // Assert
             Assert.That(result, Is.EqualTo(trackList.collection));
         }
 
         [Test]
-        public void Test_Tracks_Get_With_License_Query()
+        public async Task Get_With_License_Query()
         {
-            const string expectedUri = @"https://api.soundcloud.com/tracks?limit=200&license=cc-by&linked_partitioning=1&client_id=myClientId";
+            var expectedUri = new Uri("https://api.soundcloud.com/tracks?limit=200&license=cc-by&linked_partitioning=1");
 
-            var trackList = new PagedResult<Track>();
-            trackList.collection = new List<Track> {new Track(), new Track()};
-
-            var response = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK, "OK");
-            response.Data = trackList;
+            var trackList = new PagedResult<Track> { collection = { new Track(), new Track() } };
+            var response = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK, trackList);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeGetRequest<PagedResult<Track>>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeGetRequestAsync<PagedResult<Track>>(expectedUri)).ReturnsAsync(response);
 
-            var trackEndpoint = new Tracks(gatewayMock.Object);
-            trackEndpoint.Credentials.ClientId = ClientId;
+            // Act
+            var query = new TrackQueryBuilder { License = License.CcBy };
+            var result = (await new Tracks(gatewayMock.Object).GetAsync(query)).ToList();
 
-            var query = new TrackQueryBuilder();
-            query.License = License.CcBy;
-
-            var result = trackEndpoint.Get(query).ToList();
-
+            // Assert
             Assert.That(result, Is.EqualTo(trackList.collection));
         }
 
         [Test]
-        public void Test_Tracks_Get_With_TrackType_And_Genre_Query()
+        public async Task Get_With_TrackType_And_Genre_Query()
         {
-            const string expectedUri = @"https://api.soundcloud.com/tracks?limit=200&types=original&genres=Rap&linked_partitioning=1&client_id=myClientId";
+            var expectedUri = new Uri("https://api.soundcloud.com/tracks?limit=200&types=original&genres=Rap&linked_partitioning=1");
 
-            var trackList = new PagedResult<Track>();
-            trackList.collection = new List<Track> {new Track(), new Track()};
-
-            var response = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK, "OK");
-            response.Data = trackList;
+            var trackList = new PagedResult<Track> { collection = { new Track(), new Track() } };
+            var response = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK, trackList);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeGetRequest<PagedResult<Track>>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeGetRequestAsync<PagedResult<Track>>(expectedUri)).ReturnsAsync(response);
 
-            var trackEndpoint = new Tracks(gatewayMock.Object);
-            trackEndpoint.Credentials.ClientId = ClientId;
+            // Act
+            var query = new TrackQueryBuilder { TrackTypes = { TrackType.Original }, Genres = { "Rap" } };
+            var result = (await new Tracks(gatewayMock.Object).GetAsync(query)).ToList();
 
-            var query = new TrackQueryBuilder();
-            query.TrackTypes.Add(TrackType.Original);
-            query.Genres.Add("Rap");
-
-            var result = trackEndpoint.Get(query).ToList();
-
+            // Assert
             Assert.That(result, Is.EqualTo(trackList.collection));
         }
 
         [Test]
-        public void Test_Tracks_GetComments()
+        public async Task GetComments()
         {
-            const string expectedUri = @"https://api.soundcloud.com/tracks/215850263/comments?limit=200&linked_partitioning=1&client_id=myClientId";
+            var expectedUri = new Uri("https://api.soundcloud.com/tracks/215850263/comments?limit=200&linked_partitioning=1");
 
-            var commentList = new PagedResult<Comment>();
-            commentList.collection = new List<Comment> {new Comment(), new Comment()};
-
-            var response = new ApiResponse<PagedResult<Comment>>(HttpStatusCode.OK, "OK");
-            response.Data = commentList;
+            var commentList = new PagedResult<Comment> { collection = new List<Comment> { new Comment(), new Comment() } };
+            var response = new ApiResponse<PagedResult<Comment>>(HttpStatusCode.OK, commentList);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeGetRequest<PagedResult<Comment>>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeGetRequestAsync<PagedResult<Comment>>(expectedUri)).ReturnsAsync(response);
 
-            var trackEndpoint = new Tracks(gatewayMock.Object);
-            trackEndpoint.Credentials.ClientId = ClientId;
+            // Act
+            var track = new Track { Id = TrackId };
+            var result = (await new Tracks(gatewayMock.Object).GetCommentsAsync(track)).ToList();
 
-            var track = new Track();
-            track.id = TrackId;
-
-            var result = trackEndpoint.GetComments(track).ToList();
-
+            // Assert
             Assert.That(result, Is.EqualTo(commentList.collection));
         }
 
         [Test]
-        public void Test_Tracks_GetFavoriters()
+        public async Task GetFavoriters()
         {
-            const string expectedUri = @"https://api.soundcloud.com/tracks/215850263/favoriters?limit=200&linked_partitioning=1&client_id=myClientId";
+            var expectedUri = new Uri("https://api.soundcloud.com/tracks/215850263/favoriters?limit=200&linked_partitioning=1");
 
-            var userList = new PagedResult<User>();
-            userList.collection = new List<User> {new User(), new User()};
-
-            var response = new ApiResponse<PagedResult<User>>(HttpStatusCode.OK, "OK");
-            response.Data = userList;
+            var userList = new PagedResult<User> { collection = new List<User> { new User(), new User() } };
+            var response = new ApiResponse<PagedResult<User>>(HttpStatusCode.OK, userList);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeGetRequest<PagedResult<User>>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeGetRequestAsync<PagedResult<User>>(expectedUri)).ReturnsAsync(response);
 
-            var trackEndpoint = new Tracks(gatewayMock.Object);
-            trackEndpoint.Credentials.ClientId = ClientId;
+            // Act
+            var track = new Track { Id = TrackId };
+            var result = (await new Tracks(gatewayMock.Object).GetFavoritersAsync(track)).ToList();
 
-            var track = new Track();
-            track.id = TrackId;
-
-            var result = trackEndpoint.GetFavoriters(track).ToList();
-
+            // Assert
             Assert.That(result, Is.EqualTo(userList.collection));
         }
 
         [Test]
-        public void Test_Tracks_GetList()
+        public async Task GetList()
         {
-            const string expectedUri = @"https://api.soundcloud.com/tracks?limit=200&linked_partitioning=1&client_id=myClientId";
+            var expectedUri = new Uri("https://api.soundcloud.com/tracks?limit=200&linked_partitioning=1");
 
-            var trackList = new PagedResult<Track>();
-            trackList.collection = new List<Track> {new Track(), new Track()};
-
-            var response = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK, "OK");
-            response.Data = trackList;
+            var trackList = new PagedResult<Track> { collection = { new Track(), new Track() } };
+            var response = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK, trackList);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeGetRequest<PagedResult<Track>>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeGetRequestAsync<PagedResult<Track>>(expectedUri)).ReturnsAsync(response);
 
-            var trackEndpoint = new Tracks(gatewayMock.Object);
-            trackEndpoint.Credentials.ClientId = ClientId;
+            // Act
+            var result = (await new Tracks(gatewayMock.Object).GetAsync()).ToList();
 
-            var result = trackEndpoint.Get().ToList();
-
+            // Assert
             Assert.That(result, Is.EqualTo(trackList.collection));
         }
 
         [Test]
-        public void Test_Tracks_GetSecretToken()
+        public async Task GetSecretToken()
         {
-            const string expectedUri = @"https://api.soundcloud.com/tracks/215850263/secret-token?oauth_token=myTokenId";
+            var expectedUri = new Uri("https://api.soundcloud.com/tracks/215850263/secret-token?");
 
-            var track = new Track();
-            track.id = TrackId;
-            track.title = "title";
-
+            var track = new Track { Id = TrackId, title = "title" };
             var token = new SecretToken();
 
-            var response = new ApiResponse<SecretToken>(HttpStatusCode.OK, "OK");
-            response.Data = token;
+            var response = new ApiResponse<SecretToken>(HttpStatusCode.OK, token);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeGetRequest<SecretToken>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeGetRequestAsync<SecretToken>(expectedUri)).ReturnsAsync(response);
 
-            var trackEndpoint = new Tracks(gatewayMock.Object);
-            trackEndpoint.Credentials.AccessToken = Token;
+            // Act
+            var result = await new Tracks(gatewayMock.Object).GetSecretTokenAsync(track);
 
-            var result = trackEndpoint.GetSecretToken(track);
-
+            // Assert
             Assert.That(result, Is.EqualTo(token));
         }
 
         [Test]
         [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
-        public void Test_Tracks_InfiniteScroll()
+        public async Task InfiniteScroll()
         {
-            const string firstPageUri = @"https://api.soundcloud.com/tracks?limit=200&linked_partitioning=1&client_id=myClientId";
-            const string secondPageuri = @"https://api.soundcloud.com/tracks?linked_partitioning=1&limit=200&offset=50&client_id=myClientId";
-            const string thirdPageUri = @"https://api.soundcloud.com/tracks?linked_partitioning=1&limit=200&offset=100&client_id=myClientId";
+            const string firstPageUri = @"https://api.soundcloud.com/tracks?limit=200&linked_partitioning=1";
+            const string secondPageuri = @"https://api.soundcloud.com/tracks?linked_partitioning=1&limit=200&offset=50";
+            const string thirdPageUri = @"https://api.soundcloud.com/tracks?linked_partitioning=1&limit=200&offset=100";
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            var firstPage = new PagedResult<Track> {collection = new List<Track>()};
+            var firstPage = new PagedResult<Track> { collection = new List<Track>() };
             firstPage.next_href = new Uri("https://api.soundcloud.com/tracks?linked_partitioning=1&limit=200&offset=50");
             for (var i = 0; i < 50; i++)
             {
                 firstPage.collection.Add(new Track());
             }
 
-            var secondPage = new PagedResult<Track> {collection = new List<Track>()};
+            var secondPage = new PagedResult<Track> { collection = new List<Track>() };
             secondPage.next_href = new Uri("https://api.soundcloud.com/tracks?linked_partitioning=1&limit=200&offset=100");
             for (var i = 0; i < 50; i++)
             {
                 secondPage.collection.Add(new Track());
             }
 
-            var thirdPage = new PagedResult<Track> {collection = new List<Track>()};
+            var thirdPage = new PagedResult<Track> { collection = new List<Track>() };
             for (var i = 0; i < 50; i++)
             {
                 thirdPage.collection.Add(new Track());
             }
 
-            var firstReponse = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK, "OK");
+            var firstReponse = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK);
             firstReponse.Data = firstPage;
 
-            var secondResponse = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK, "OK");
+            var secondResponse = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK);
             secondResponse.Data = secondPage;
 
-            var thirdResponse = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK, "OK");
+            var thirdResponse = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK);
             thirdResponse.Data = thirdPage;
 
-            gatewayMock.Setup(x => x.InvokeGetRequest<PagedResult<Track>>(It.Is<Uri>(y => y.ToString() == firstPageUri))).Returns(firstReponse);
-            gatewayMock.Setup(x => x.InvokeGetRequest<PagedResult<Track>>(It.Is<Uri>(y => y.ToString() == secondPageuri))).Returns(secondResponse);
-            gatewayMock.Setup(x => x.InvokeGetRequest<PagedResult<Track>>(It.Is<Uri>(y => y.ToString() == thirdPageUri))).Returns(thirdResponse);
+            gatewayMock.Setup(x => x.InvokeGetRequestAsync<PagedResult<Track>>(It.Is<Uri>(y => y.ToString() == firstPageUri)))
+                .ReturnsAsync(firstReponse);
+            gatewayMock.Setup(x => x.InvokeGetRequestAsync<PagedResult<Track>>(It.Is<Uri>(y => y.ToString() == secondPageuri)))
+                .ReturnsAsync(secondResponse);
+            gatewayMock.Setup(x => x.InvokeGetRequestAsync<PagedResult<Track>>(It.Is<Uri>(y => y.ToString() == thirdPageUri)))
+                .ReturnsAsync(thirdResponse);
 
-            var trackEndpoint = new Tracks(gatewayMock.Object);
-            trackEndpoint.Credentials.ClientId = ClientId;
+            // Act
+            var result = await new Tracks(gatewayMock.Object).GetAsync();
 
-            var result = trackEndpoint.Get();
-
+            // Assert
             var res1 = result.Take(50).ToList();
             var res2 = result.Skip(50).Take(50).ToList();
             var res3 = result.Skip(100).Take(50).ToList();
@@ -327,29 +270,22 @@ namespace SoundCloud.Api.Test.Endpoints
         }
 
         [Test]
-        public void Test_Tracks_Update()
+        public async Task Update()
         {
-            const string expectedUri = @"https://api.soundcloud.com/tracks/215850263?oauth_token=myTokenId";
+            var expectedUri = new Uri("https://api.soundcloud.com/tracks/215850263?");
 
-            var track = new Track();
-            track.id = TrackId;
-            track.title = "title";
+            var track = new Track { Id = TrackId, title = "title" };
+            var updatedTrack = new Track { Id = track.Id, title = track.title };
 
-            var updatedTrack = new Track();
-            updatedTrack.id = track.id;
-            updatedTrack.title = track.title;
-
-            var response = new ApiResponse<Track>(HttpStatusCode.OK, "OK");
-            response.Data = updatedTrack;
+            var response = new ApiResponse<Track>(HttpStatusCode.OK, updatedTrack);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeUpdateRequest<Track>(It.Is<Uri>(y => y.ToString() == expectedUri), track)).Returns(response);
+            gatewayMock.Setup(x => x.InvokeUpdateRequestAsync<Track>(expectedUri, track)).ReturnsAsync(response);
 
-            var trackEndpoint = new Tracks(gatewayMock.Object);
-            trackEndpoint.Credentials.AccessToken = Token;
+            // Act
+            var result = await new Tracks(gatewayMock.Object).UpdateAsync(track);
 
-            var result = trackEndpoint.Update(track);
-
+            // Assert
             Assert.That(result, Is.InstanceOf<SuccessWebResult<Track>>());
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));
@@ -358,39 +294,30 @@ namespace SoundCloud.Api.Test.Endpoints
 
         [Test]
         [SuppressMessage("ReSharper", "AccessToDisposedClosure")]
-        public void Test_Tracks_UploadArtwork()
+        public async Task UploadArtwork()
         {
-            const string expectedUri = @"https://api.soundcloud.com/tracks/215850263?oauth_token=myTokenId";
+            var expectedUri = new Uri("https://api.soundcloud.com/tracks/215850263?");
 
-            var track = new Track();
-            track.id = TrackId;
-            track.title = "title";
-
-            var updatedTrack = new Track();
-            updatedTrack.id = track.id;
-            updatedTrack.title = track.title;
-            updatedTrack.artwork_url = new Uri("http://sampleurl.com");
-
+            var track = new Track { Id = TrackId, title = "title" };
+            var updatedTrack = new Track { Id = track.Id, title = track.title, artwork_url = new Uri("http://sampleurl.com") };
             var artwork = TestDataProvider.GetArtwork();
 
-            var response = new ApiResponse<Track>(HttpStatusCode.OK, "OK");
-            response.Data = updatedTrack;
+            var response = new ApiResponse<Track>(HttpStatusCode.OK, updatedTrack);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeUpdateRequest<Track>(It.Is<Uri>(y => y.ToString() == expectedUri), It.IsAny<Dictionary<string, object>>()))
-                .Returns(response)
+            gatewayMock.Setup(x => x.InvokeUpdateRequestAsync<Track>(expectedUri, It.IsAny<Dictionary<string, object>>()))
+                .ReturnsAsync(response)
                 .Callback((Uri u, IDictionary<string, object> p) =>
                 {
                     Assert.That(p.Count, Is.EqualTo(1));
                     Assert.That(p["track[artwork_data]"], Is.EqualTo(artwork));
                 });
 
-            var trackEndpoint = new Tracks(gatewayMock.Object);
-            trackEndpoint.Credentials.AccessToken = Token;
-
-            var result = trackEndpoint.UploadArtwork(track, artwork);
+            // Act
+            var result = await new Tracks(gatewayMock.Object).UploadArtworkAsync(track, artwork);
             artwork.Dispose();
 
+            // Assert
             Assert.That(result, Is.InstanceOf<SuccessWebResult<Track>>());
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));
@@ -398,35 +325,29 @@ namespace SoundCloud.Api.Test.Endpoints
         }
 
         [Test]
-        public void Test_Tracks_UploadTrack()
+        public async Task UploadTrack()
         {
-            const string expectedUri = @"https://api.soundcloud.com/tracks?oauth_token=myTokenId";
+            var expectedUri = new Uri("https://api.soundcloud.com/tracks?");
 
-            var postedTrack = new Track();
-            postedTrack.id = TrackId;
-            postedTrack.title = "title";
-
-            var sound = TestDataProvider.GetSound();
-
-            var response = new ApiResponse<Track>(HttpStatusCode.OK, "OK");
-            response.Data = postedTrack;
+            var postedTrack = new Track { Id = TrackId, title = "title" };
+            var response = new ApiResponse<Track>(HttpStatusCode.OK, postedTrack);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeCreateRequest<Track>(It.Is<Uri>(y => y.ToString() == expectedUri), It.IsAny<Dictionary<string, object>>()))
-                .Returns(response)
+            gatewayMock.Setup(x => x.InvokeCreateRequestAsync<Track>(expectedUri, It.IsAny<Dictionary<string, object>>()))
+                .ReturnsAsync(response)
                 .Callback((Uri u, IDictionary<string, object> p) =>
                 {
                     Assert.That(p.Count, Is.EqualTo(3));
-                    Assert.That(p["oauth_token"], Is.EqualTo(Token));
+                    Assert.That(p["oauth_token"], Is.EqualTo("123"));
                     Assert.That(p["track[title]"], Is.EqualTo("title"));
                 });
 
-            var trackEndpoint = new Tracks(gatewayMock.Object);
-            trackEndpoint.Credentials.AccessToken = Token;
-
-            var result = trackEndpoint.UploadTrack("title", sound);
+            // Act
+            var sound = TestDataProvider.GetSound();
+            var result = await new Tracks(gatewayMock.Object).UploadTrackAsync("title", sound);
             sound.Dispose();
 
+            // Assert
             Assert.That(result, Is.InstanceOf<SuccessWebResult<Track>>());
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));
@@ -434,15 +355,15 @@ namespace SoundCloud.Api.Test.Endpoints
         }
 
         [Test]
-        public void Test_Tracks_UploadTrack_Fail()
+        public void UploadTrack_Fail()
         {
             var sound = TestDataProvider.GetSound();
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            var trackEndpoint = new Tracks(gatewayMock.Object);
-            trackEndpoint.Credentials.AccessToken = Token;
 
-            Assert.Throws<SoundCloudValidationException>(() => trackEndpoint.UploadTrack(string.Empty, sound));
+            // Act
+            var trackEndpoint = new Tracks(gatewayMock.Object);
+            Assert.ThrowsAsync<SoundCloudValidationException>(() => trackEndpoint.UploadTrackAsync(string.Empty, sound));
 
             sound.Dispose();
         }

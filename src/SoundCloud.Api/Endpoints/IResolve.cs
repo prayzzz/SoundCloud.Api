@@ -15,14 +15,6 @@ namespace SoundCloud.Api.Endpoints
         /// <param name="url"></param>
         /// <returns></returns>
         /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no ClientId or OAuth token is set.</exception>
-        Entity GetEntity(string url);
-
-        /// <summary>
-        /// Gets an entity
-        /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
-        /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no ClientId or OAuth token is set.</exception>
         Task<Entity> GetEntityAsync(string url);
     }
 }

@@ -51,7 +51,7 @@ namespace SoundCloud.Api.Json
             {
                 writer.WriteStartObject();
                 writer.WritePropertyName("id");
-                writer.WriteValue(track.id);
+                writer.WriteValue(track.Id);
                 writer.WriteEndObject();
             }
             writer.WriteEndArray();

@@ -22,7 +22,7 @@ namespace SoundCloud.Api.QueryBuilders
 
         protected int CustomMaxLimit
         {
-            get { return _customMaxLimit; }
+            get => _customMaxLimit;
             set
             {
                 if (value > MaxLimit)
@@ -47,7 +47,7 @@ namespace SoundCloud.Api.QueryBuilders
 
         public int Limit
         {
-            get { return _limit; }
+            get => _limit;
             set
             {
                 if (value > _customMaxLimit)

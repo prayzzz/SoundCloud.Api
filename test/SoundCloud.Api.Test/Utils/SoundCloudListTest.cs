@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-
+using System.Threading.Tasks;
 using Moq;
-
 using NUnit.Framework;
-
 using SoundCloud.Api.Entities;
 using SoundCloud.Api.Utils;
 
@@ -25,18 +23,16 @@ namespace SoundCloud.Api.Test.Utils
             var firstPage = new Mock<IPagedResult<int>>();
             firstPage.Setup(x => x.next_href).Returns(secondPageUri);
             firstPage.Setup(x => x.HasNextPage).Returns(true);
-            firstPage.Setup(x => x.collection).Returns(new List<int> {1, 2, 3});
+            firstPage.Setup(x => x.collection).Returns(new List<int> { 1, 2, 3 });
 
             var secondPage = new Mock<IPagedResult<int>>();
-            secondPage.Setup(x => x.next_href).Returns((Uri)null);
+            secondPage.Setup(x => x.next_href).Returns((Uri) null);
             secondPage.Setup(x => x.HasNextPage).Returns(false);
-            secondPage.Setup(x => x.collection).Returns(new List<int> {4, 5, 6});
+            secondPage.Setup(x => x.collection).Returns(new List<int> { 4, 5, 6 });
 
-            var pages = new Dictionary<Uri, IPagedResult<int>>();
-            pages.Add(firstPageUri, firstPage.Object);
-            pages.Add(secondPageUri, secondPage.Object);
+            var pages = new Dictionary<Uri, IPagedResult<int>> { { firstPageUri, firstPage.Object }, { secondPageUri, secondPage.Object } };
 
-            var list = new SoundCloudList<int>(firstPageUri, x => pages[x]);
+            var list = new SoundCloudList<int>(firstPageUri, async x => pages[x]);
 
             var enumerable = list.Get();
 
@@ -61,24 +57,26 @@ namespace SoundCloud.Api.Test.Utils
             var firstPage = new Mock<IPagedResult<int>>();
             firstPage.Setup(x => x.next_href).Returns(secondPageUri);
             firstPage.Setup(x => x.HasNextPage).Returns(true);
-            firstPage.Setup(x => x.collection).Returns(new List<int> {1, 2, 3});
+            firstPage.Setup(x => x.collection).Returns(new List<int> { 1, 2, 3 });
 
             var secondPage = new Mock<IPagedResult<int>>();
             secondPage.Setup(x => x.next_href).Returns(thirdPageUri);
             secondPage.Setup(x => x.HasNextPage).Returns(true);
-            secondPage.Setup(x => x.collection).Returns(new List<int> {4, 5, 6});
+            secondPage.Setup(x => x.collection).Returns(new List<int> { 4, 5, 6 });
 
             var thirdPage = new Mock<IPagedResult<int>>();
-            thirdPage.Setup(x => x.next_href).Returns((Uri)null);
+            thirdPage.Setup(x => x.next_href).Returns((Uri) null);
             thirdPage.Setup(x => x.HasNextPage).Returns(false);
-            thirdPage.Setup(x => x.collection).Returns(new List<int> {7, 8, 9});
+            thirdPage.Setup(x => x.collection).Returns(new List<int> { 7, 8, 9 });
 
-            var pages = new Dictionary<Uri, IPagedResult<int>>();
-            pages.Add(firstPageUri, firstPage.Object);
-            pages.Add(secondPageUri, secondPage.Object);
-            pages.Add(thirdPageUri, thirdPage.Object);
+            var pages = new Dictionary<Uri, IPagedResult<int>>
+            {
+                { firstPageUri, firstPage.Object },
+                { secondPageUri, secondPage.Object },
+                { thirdPageUri, thirdPage.Object }
+            };
 
-            var list = new SoundCloudList<int>(firstPageUri, x => pages[x]);
+            var list = new SoundCloudList<int>(firstPageUri, async x => pages[x]);
 
             var enumerable = list.Get();
 
@@ -113,24 +111,26 @@ namespace SoundCloud.Api.Test.Utils
             var firstPage = new Mock<IPagedResult<int>>();
             firstPage.Setup(x => x.next_href).Returns(secondPageUri);
             firstPage.Setup(x => x.HasNextPage).Returns(true);
-            firstPage.Setup(x => x.collection).Returns(new List<int> {1, 2, 3});
+            firstPage.Setup(x => x.collection).Returns(new List<int> { 1, 2, 3 });
 
             var secondPage = new Mock<IPagedResult<int>>();
             secondPage.Setup(x => x.next_href).Returns(thirdPageUri);
             secondPage.Setup(x => x.HasNextPage).Returns(true);
-            secondPage.Setup(x => x.collection).Returns(new List<int> {4, 5, 6});
+            secondPage.Setup(x => x.collection).Returns(new List<int> { 4, 5, 6 });
 
             var thirdPage = new Mock<IPagedResult<int>>();
-            thirdPage.Setup(x => x.next_href).Returns((Uri)null);
+            thirdPage.Setup(x => x.next_href).Returns((Uri) null);
             thirdPage.Setup(x => x.HasNextPage).Returns(false);
-            thirdPage.Setup(x => x.collection).Returns(new List<int> {7, 8, 9});
+            thirdPage.Setup(x => x.collection).Returns(new List<int> { 7, 8, 9 });
 
-            var pages = new Dictionary<Uri, IPagedResult<int>>();
-            pages.Add(firstPageUri, firstPage.Object);
-            pages.Add(secondPageUri, secondPage.Object);
-            pages.Add(thirdPageUri, thirdPage.Object);
+            var pages = new Dictionary<Uri, IPagedResult<int>>
+            {
+                { firstPageUri, firstPage.Object },
+                { secondPageUri, secondPage.Object },
+                { thirdPageUri, thirdPage.Object }
+            };
 
-            var list = new SoundCloudList<int>(firstPageUri, x => pages[x]);
+            var list = new SoundCloudList<int>(firstPageUri, async x => pages[x]);
 
             var result = list.Get().ToList();
 
@@ -148,18 +148,16 @@ namespace SoundCloud.Api.Test.Utils
             var firstPage = new Mock<IPagedResult<int>>();
             firstPage.Setup(x => x.next_href).Returns(secondPageUri);
             firstPage.Setup(x => x.HasNextPage).Returns(true);
-            firstPage.Setup(x => x.collection).Returns(new List<int> {1, 2, 3});
+            firstPage.Setup(x => x.collection).Returns(new List<int> { 1, 2, 3 });
 
             var secondPage = new Mock<IPagedResult<int>>();
-            secondPage.Setup(x => x.next_href).Returns((Uri)null);
+            secondPage.Setup(x => x.next_href).Returns((Uri) null);
             secondPage.Setup(x => x.HasNextPage).Returns(false);
             secondPage.Setup(x => x.collection).Returns(new List<int>());
 
-            var pages = new Dictionary<Uri, IPagedResult<int>>();
-            pages.Add(firstPageUri, firstPage.Object);
-            pages.Add(secondPageUri, secondPage.Object);
+            var pages = new Dictionary<Uri, IPagedResult<int>> { { firstPageUri, firstPage.Object }, { secondPageUri, secondPage.Object } };
 
-            var list = new SoundCloudList<int>(firstPageUri, x => pages[x]);
+            var list = new SoundCloudList<int>(firstPageUri, async x => pages[x]);
 
             var result = list.Get().ToList();
 

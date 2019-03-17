@@ -51,7 +51,7 @@ namespace SoundCloud.Api.Entities
 
         public bool ValidateDelete(ValidationMessages messages)
         {
-            if (id < 1)
+            if (Id < 1)
             {
                 messages.Add("WebProfile id missing. Use the id property to set the id of this WebProfile.");
                 return false;
@@ -75,10 +75,6 @@ namespace SoundCloud.Api.Entities
             }
 
             return true;
-        }
-
-        internal override void AppendCredentialsToProperties(SoundCloudCredentials credentials)
-        {
         }
 
         internal override BoxedEntity ToBoxedEntity()

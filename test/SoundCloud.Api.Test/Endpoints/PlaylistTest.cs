@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
-
+using System.Threading.Tasks;
 using Moq;
-
 using NUnit.Framework;
-
 using SoundCloud.Api.Endpoints;
 using SoundCloud.Api.Entities;
 using SoundCloud.Api.Entities.Enums;
@@ -20,128 +18,100 @@ namespace SoundCloud.Api.Test.Endpoints
     [TestFixture]
     public class PlaylistTest
     {
-        private const string ClientId = "myClientId";
         private const int PlaylistId = 130208739;
-        private const string Token = "myTokenId";
 
         [Test]
-        public void Test_Playlists_Delete()
+        public async Task Delete()
         {
-            const string expectedUri = @"https://api.soundcloud.com/playlists/130208739?oauth_token=myTokenId";
+            var expectedUri = new Uri("https://api.soundcloud.com/playlists/130208739?");
 
-            var response = new ApiResponse<StatusResponse>(HttpStatusCode.OK, "OK");
+            var response = new ApiResponse<StatusResponse>(HttpStatusCode.OK);
 
             var requestMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            requestMock.Setup(x => x.InvokeDeleteRequest<StatusResponse>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            requestMock.Setup(x => x.InvokeDeleteRequestAsync<StatusResponse>(expectedUri)).ReturnsAsync(response);
 
-            var playlistEndpoint = new Playlists(requestMock.Object);
-            playlistEndpoint.Credentials.AccessToken = Token;
+            // Act
+            var playlist = new Playlist { Id = PlaylistId };
+            var result = await new Playlists(requestMock.Object).DeleteAsync(playlist);
 
-            var playlist = new Playlist();
-            playlist.id = PlaylistId;
-
-            var result = playlistEndpoint.Delete(playlist);
-
+            // Assert
             Assert.That(result, Is.InstanceOf<SuccessWebResult<object>>());
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));
         }
 
         [Test]
-        public void Test_Playlists_Get()
+        public async Task Get()
         {
-            const string expectedUri = @"https://api.soundcloud.com/playlists/130208739?client_id=myClientId";
+            var expectedUri = new Uri("https://api.soundcloud.com/playlists/130208739?");
 
             var playlist = new Playlist();
-
-            var response = new ApiResponse<Playlist>(HttpStatusCode.OK, "OK");
-            response.Data = playlist;
+            var response = new ApiResponse<Playlist>(HttpStatusCode.OK, playlist);
 
             var requestMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            requestMock.Setup(x => x.InvokeGetRequest<Playlist>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            requestMock.Setup(x => x.InvokeGetRequestAsync<Playlist>(expectedUri)).ReturnsAsync(response);
 
-            var playlistEndpoint = new Playlists(requestMock.Object);
-            playlistEndpoint.Credentials.ClientId = ClientId;
+            // Act
+            var result = await new Playlists(requestMock.Object).GetAsync(PlaylistId);
 
-            var result = playlistEndpoint.Get(PlaylistId);
-
+            // Assert
             Assert.That(result, Is.EqualTo(playlist));
         }
 
         [Test]
-        public void Test_Playlists_GetList()
+        public async Task GetList()
         {
-            const string expectedUri = @"https://api.soundcloud.com/playlists?limit=10&q=search&representation=compact&linked_partitioning=1&client_id=myClientId";
+            var expectedUri = new Uri("https://api.soundcloud.com/playlists?limit=10&q=search&representation=compact&linked_partitioning=1");
 
-            var playlists = new PagedResult<Playlist>();
-            playlists.collection = new List<Playlist> {new Playlist(), new Playlist()};
-
-            var response = new ApiResponse<PagedResult<Playlist>>(HttpStatusCode.OK, "OK");
-            response.Data = playlists;
+            var playlists = new PagedResult<Playlist> { collection = new List<Playlist> { new Playlist(), new Playlist() } };
+            var response = new ApiResponse<PagedResult<Playlist>>(HttpStatusCode.OK, playlists);
 
             var requestMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            requestMock.Setup(x => x.InvokeGetRequest<PagedResult<Playlist>>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            requestMock.Setup(x => x.InvokeGetRequestAsync<PagedResult<Playlist>>(expectedUri)).ReturnsAsync(response);
 
-            var playlistEndpoint = new Playlists(requestMock.Object);
-            playlistEndpoint.Credentials.ClientId = ClientId;
+            // Act
+            var builder = new PlaylistQueryBuilder("search") { Representation = RepresentationMode.Compact };
+            var result = (await new Playlists(requestMock.Object).GetAsync(builder)).ToList();
 
-            var builder = new PlaylistQueryBuilder("search");
-            builder.Representation = RepresentationMode.Compact;
-
-            var result = playlistEndpoint.Get(builder).ToList();
-
+            // Assert
             Assert.That(result, Is.EqualTo(playlists.collection));
         }
 
         [Test]
-        public void Test_Playlists_GetSecretToken()
+        public async Task GetSecretToken()
         {
-            const string expectedUri = @"https://api.soundcloud.com/playlists/130208739/secret-token?oauth_token=myTokenId";
+            var expectedUri = new Uri("https://api.soundcloud.com/playlists/130208739/secret-token?");
 
             var secretToken = new SecretToken();
-
-            var response = new ApiResponse<SecretToken>(HttpStatusCode.OK, "OK");
-            response.Data = secretToken;
+            var response = new ApiResponse<SecretToken>(HttpStatusCode.OK, secretToken);
 
             var requestMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            requestMock.Setup(x => x.InvokeGetRequest<SecretToken>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            requestMock.Setup(x => x.InvokeGetRequestAsync<SecretToken>(expectedUri)).ReturnsAsync(response);
+            
+            // Act
+            var playlist = new Playlist { Id = PlaylistId };
+            var result = await new Playlists(requestMock.Object).GetSecretTokenAsync(playlist);
 
-            var playlistEndpoint = new Playlists(requestMock.Object);
-            playlistEndpoint.Credentials.AccessToken = Token;
-
-            var playlist = new Playlist();
-            playlist.id = PlaylistId;
-
-            var result = playlistEndpoint.GetSecretToken(playlist);
-
+            // Assert
             Assert.That(result, Is.EqualTo(secretToken));
         }
 
         [Test]
-        public void Test_Playlists_Post()
+        public async Task Post()
         {
-            const string expectedUri = @"https://api.soundcloud.com/playlists?oauth_token=myTokenId";
+            var expectedUri = new Uri("https://api.soundcloud.com/playlists?");
 
-            var playlist = new Playlist();
-            playlist.id = PlaylistId;
-            playlist.title = "title";
-            playlist.playlist_type = PlaylistType.Compilation;
-
-            var postedPlaylist = new Playlist();
-            postedPlaylist.id = playlist.id;
-            postedPlaylist.title = playlist.title;
-
-            var response = new ApiResponse<Playlist>(HttpStatusCode.OK, "OK");
-            response.Data = postedPlaylist;
+            var playlist = new Playlist { Id = PlaylistId, title = "title", playlist_type = PlaylistType.Compilation };
+            var postedPlaylist = new Playlist { Id = playlist.Id, title = playlist.title };
+            var response = new ApiResponse<Playlist>(HttpStatusCode.OK, postedPlaylist);
 
             var requestMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            requestMock.Setup(x => x.InvokeCreateRequest<Playlist>(It.Is<Uri>(y => y.ToString() == expectedUri), playlist)).Returns(response);
+            requestMock.Setup(x => x.InvokeCreateRequestAsync<Playlist>(expectedUri, playlist)).ReturnsAsync(response);
 
-            var playlistEndpoint = new Playlists(requestMock.Object);
-            playlistEndpoint.Credentials.AccessToken = Token;
+            // Act
+            var result = await new Playlists(requestMock.Object).PostAsync(playlist);
 
-            var result = playlistEndpoint.Post(playlist);
-
+            // Assert
             Assert.That(result, Is.InstanceOf<SuccessWebResult<Playlist>>());
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));
@@ -149,29 +119,21 @@ namespace SoundCloud.Api.Test.Endpoints
         }
 
         [Test]
-        public void Test_Playlists_Update()
+        public async Task Update()
         {
-            const string expectedUri = @"https://api.soundcloud.com/playlists/130208739?oauth_token=myTokenId";
+            var expectedUri = new Uri("https://api.soundcloud.com/playlists/130208739?");
 
-            var playlist = new Playlist();
-            playlist.id = PlaylistId;
-            playlist.title = "title";
-
-            var updatedPlaylist = new Playlist();
-            updatedPlaylist.id = playlist.id;
-            updatedPlaylist.title = playlist.title;
-
-            var response = new ApiResponse<Playlist>(HttpStatusCode.OK, "OK");
-            response.Data = updatedPlaylist;
+            var playlist = new Playlist { Id = PlaylistId, title = "title" };
+            var updatedPlaylist = new Playlist { Id = playlist.Id, title = playlist.title };
+            var response = new ApiResponse<Playlist>(HttpStatusCode.OK, updatedPlaylist);
 
             var requestMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            requestMock.Setup(x => x.InvokeUpdateRequest<Playlist>(It.Is<Uri>(y => y.ToString() == expectedUri), playlist)).Returns(response);
+            requestMock.Setup(x => x.InvokeUpdateRequestAsync<Playlist>(expectedUri, playlist)).ReturnsAsync(response);
 
-            var playlistEndpoint = new Playlists(requestMock.Object);
-            playlistEndpoint.Credentials.AccessToken = Token;
+            // Act
+            var result = await new Playlists(requestMock.Object).UpdateAsync(playlist);
 
-            var result = playlistEndpoint.Update(playlist);
-
+            // Assert
             Assert.That(result, Is.InstanceOf<SuccessWebResult<Playlist>>());
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));
@@ -180,27 +142,19 @@ namespace SoundCloud.Api.Test.Endpoints
 
         [Test]
         [SuppressMessage("ReSharper", "AccessToDisposedClosure")]
-        public void Test_Playlists_UploadArtwork()
+        public async Task UploadArtwork()
         {
-            const string expectedUri = @"https://api.soundcloud.com/playlists/130208739?oauth_token=myTokenId";
+            var expectedUri = new Uri("https://api.soundcloud.com/playlists/130208739?");
 
-            var playlist = new Playlist();
-            playlist.id = PlaylistId;
-            playlist.title = "title";
-
-            var updatedPlaylist = new Playlist();
-            updatedPlaylist.id = playlist.id;
-            updatedPlaylist.title = playlist.title;
-            updatedPlaylist.artwork_url = "http://sampleurl.com";
-
-            var response = new ApiResponse<Playlist>(HttpStatusCode.OK, "OK");
-            response.Data = updatedPlaylist;
+            var playlist = new Playlist { Id = PlaylistId, title = "title" };
+            var updatedPlaylist = new Playlist { Id = playlist.Id, title = playlist.title, artwork_url = "http://sampleurl.com" };
+            var response = new ApiResponse<Playlist>(HttpStatusCode.OK, updatedPlaylist);
 
             var artwork = TestDataProvider.GetArtwork();
 
             var requestMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            requestMock.Setup(x => x.InvokeUpdateRequest<Playlist>(It.Is<Uri>(y => y.ToString() == expectedUri), It.IsAny<Dictionary<string, object>>()))
-                .Returns(response)
+            requestMock.Setup(x => x.InvokeUpdateRequestAsync<Playlist>(expectedUri, It.IsAny<Dictionary<string, object>>()))
+                .ReturnsAsync(response)
                 .Callback((Uri u, IDictionary<string, object> p) =>
                 {
                     Assert.That(p.Count, Is.EqualTo(1));
@@ -208,12 +162,11 @@ namespace SoundCloud.Api.Test.Endpoints
                     Assert.That(p.First().Value, Is.EqualTo(artwork));
                 });
 
-            var playlistEndpoint = new Playlists(requestMock.Object);
-            playlistEndpoint.Credentials.AccessToken = Token;
-
-            var result = playlistEndpoint.UploadArtwork(playlist, artwork);
+            // Act
+            var result = await new Playlists(requestMock.Object).UploadArtworkAsync(playlist, artwork);
             artwork.Dispose();
 
+            // Assert
             Assert.That(result, Is.InstanceOf<SuccessWebResult<Playlist>>());
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));

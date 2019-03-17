@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Net;
-
+using System.Threading.Tasks;
 using Moq;
-
 using NUnit.Framework;
-
 using SoundCloud.Api.Endpoints;
 using SoundCloud.Api.Entities;
 using SoundCloud.Api.Entities.Base;
@@ -15,27 +13,22 @@ namespace SoundCloud.Api.Test.Endpoints
     [TestFixture]
     public class ResolveTest
     {
-        private const string ClientId = "myClientId";
-
         [Test]
-        public void Test_Resolve_GetEntity()
+        public async Task GetEntity()
         {
             const string requestedUrl = "https://soundcloud.com/sharpsound-2";
-            const string expectedUri = @"https://api.soundcloud.com/resolve?url=https://soundcloud.com/sharpsound-2&client_id=myClientId";
+            var expectedUri = new Uri("https://api.soundcloud.com/resolve?url=https://soundcloud.com/sharpsound-2");
 
             var user = new User();
-
-            var response = new ApiResponse<Entity>(HttpStatusCode.OK, "OK");
-            response.Data = user;
+            var response = new ApiResponse<Entity>(HttpStatusCode.OK, user);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeGetRequest<Entity>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeGetRequestAsync<Entity>(expectedUri)).ReturnsAsync(response);
 
-            var resolveEndpoint = new Resolve(gatewayMock.Object);
-            resolveEndpoint.Credentials.ClientId = ClientId;
+            // Act
+            var result = await new Resolve(gatewayMock.Object).GetEntityAsync(requestedUrl);
 
-            var result = resolveEndpoint.GetEntity(requestedUrl);
-
+            // Assert
             Assert.That(result, Is.EqualTo(user));
         }
     }

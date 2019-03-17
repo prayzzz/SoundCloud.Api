@@ -258,7 +258,7 @@ namespace SoundCloud.Api.Entities
 
         public bool ValidateDelete(ValidationMessages messages)
         {
-            if (id < 1)
+            if (Id < 1)
             {
                 messages.Add("PlaylistId missing. Use the id property to set the id of this playlist.");
                 return false;
@@ -269,7 +269,7 @@ namespace SoundCloud.Api.Entities
 
         public bool ValidateGet(ValidationMessages messages)
         {
-            if (id < 1)
+            if (Id < 1)
             {
                 messages.Add("PlaylistId missing. Use the id property to set the id of this playlist.");
                 return false;
@@ -297,7 +297,7 @@ namespace SoundCloud.Api.Entities
 
         public bool ValidateUpdate(ValidationMessages messages)
         {
-            if (id < 1)
+            if (Id < 1)
             {
                 messages.Add("PlaylistId missing. Use the id property to set the id of this playlist.");
                 return false;
@@ -314,22 +314,13 @@ namespace SoundCloud.Api.Entities
 
         public bool ValidateUploadArtwork(ValidationMessages messages)
         {
-            if (id < 1)
+            if (Id < 1)
             {
                 messages.Add("PlaylistId missing. Use the id property to set the id of this playlist.");
                 return false;
             }
 
             return true;
-        }
-
-        internal override void AppendCredentialsToProperties(SoundCloudCredentials credentials)
-        {
-            created_with?.AppendCredentialsToProperties(credentials);
-            label?.AppendCredentialsToProperties(credentials);
-            tracks.ForEach(x => x.AppendCredentialsToProperties(credentials));
-            user?.AppendCredentialsToProperties(credentials);
-            uri = uri.AppendCredentials(credentials);
         }
 
         internal override BoxedEntity ToBoxedEntity()

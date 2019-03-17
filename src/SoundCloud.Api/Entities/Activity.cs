@@ -39,10 +39,5 @@ namespace SoundCloud.Api.Entities
         /// </summary>
         [JsonIgnoreOnSerialize]
         public ActivityType type { get; set; }
-
-        internal override void AppendCredentialsToProperties(SoundCloudCredentials credentials)
-        {
-            origin?.AppendCredentialsToProperties(credentials);
-        }
     }
 }

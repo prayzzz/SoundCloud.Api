@@ -10,8 +10,6 @@ namespace SoundCloud.Api
 
         IGroups Groups { get; }
 
-        bool IsAuthorized { get; }
-
         IMe Me { get; }
 
         IOAuth2 OAuth2 { get; }

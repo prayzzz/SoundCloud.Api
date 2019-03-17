@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-
+using System.Threading.Tasks;
 using Moq;
-
 using NUnit.Framework;
-
 using SoundCloud.Api.Endpoints;
 using SoundCloud.Api.Entities;
 using SoundCloud.Api.Web;
@@ -16,21 +14,16 @@ namespace SoundCloud.Api.Test.Endpoints
     public class OAuth2Test
     {
         [Test]
-        public void Test_OAuth2_ExchangeToken()
+        public async Task ExchangeToken()
         {
-            const string expectedUri = @"https://api.soundcloud.com/oauth2/token?";
+            var expectedUri = new Uri("https://api.soundcloud.com/oauth2/token?");
 
-            var accessRequest = new Credentials();
-            accessRequest.client_id = "my client id";
-            accessRequest.client_secret = "my client secret";
-            accessRequest.code = "my code";
-
-            var response = new ApiResponse<Credentials>(HttpStatusCode.OK, "OK");
-            response.Data = accessRequest;
+            var accessRequest = new Credentials { client_id = "my client id", client_secret = "my client secret", code = "my code" };
+            var response = new ApiResponse<Credentials>(HttpStatusCode.OK, accessRequest);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeCreateRequest<Credentials>(It.Is<Uri>(y => y.ToString() == expectedUri), It.IsAny<IDictionary<string, object>>()))
-                .Returns(response)
+            gatewayMock.Setup(x => x.InvokeCreateRequestAsync<Credentials>(expectedUri, It.IsAny<IDictionary<string, object>>()))
+                .ReturnsAsync(response)
                 .Callback((Uri u, IDictionary<string, object> p) =>
                 {
                     Assert.That(p["client_id"], Is.EqualTo("my client id"));
@@ -39,32 +32,29 @@ namespace SoundCloud.Api.Test.Endpoints
                     Assert.That(p["grant_type"], Is.EqualTo("authorization_code"));
                 });
 
-            var oauth2Endpoint = new OAuth2(gatewayMock.Object);
+            // Act
+            var result = await new OAuth2(gatewayMock.Object).ExchangeTokenAsync(accessRequest);
 
-            var result = oauth2Endpoint.ExchangeToken(accessRequest);
-
+            // Assert
             Assert.That(result, Is.InstanceOf<SuccessWebResult<Credentials>>());
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));
         }
 
         [Test]
-        public void Test_OAuth2_Login()
+        public async Task Login()
         {
-            const string expectedUri = @"https://api.soundcloud.com/oauth2/token?";
+            var expectedUri = new Uri("https://api.soundcloud.com/oauth2/token?");
 
-            var accessRequest = new Credentials();
-            accessRequest.client_id = "my client id";
-            accessRequest.client_secret = "my client secret";
-            accessRequest.username = "my username";
-            accessRequest.password = "my password";
-
-            var response = new ApiResponse<Credentials>(HttpStatusCode.OK, "OK");
-            response.Data = accessRequest;
+            var accessRequest = new Credentials
+            {
+                client_id = "my client id", client_secret = "my client secret", username = "my username", password = "my password"
+            };
+            var response = new ApiResponse<Credentials>(HttpStatusCode.OK, accessRequest);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeCreateRequest<Credentials>(It.Is<Uri>(y => y.ToString() == expectedUri), It.IsAny<IDictionary<string, object>>()))
-                .Returns(response)
+            gatewayMock.Setup(x => x.InvokeCreateRequestAsync<Credentials>(expectedUri, It.IsAny<IDictionary<string, object>>()))
+                .ReturnsAsync(response)
                 .Callback((Uri u, IDictionary<string, object> p) =>
                 {
                     Assert.That(p["client_id"], Is.EqualTo("my client id"));
@@ -74,30 +64,26 @@ namespace SoundCloud.Api.Test.Endpoints
                     Assert.That(p["grant_type"], Is.EqualTo("password"));
                 });
 
-            var oauth2Endpoint = new OAuth2(gatewayMock.Object);
+            // Act
+            var result = await new OAuth2(gatewayMock.Object).LoginAsync(accessRequest);
 
-            var result = oauth2Endpoint.Login(accessRequest);
-
+            // Assert
             Assert.That(result, Is.InstanceOf<SuccessWebResult<Credentials>>());
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));
         }
 
         [Test]
-        public void Test_OAuth2_ClientCredentials()
+        public async Task ClientCredentials()
         {
-            const string expectedUri = @"https://api.soundcloud.com/oauth2/token?";
+            var expectedUri = new Uri("https://api.soundcloud.com/oauth2/token?");
 
-            var accessRequest = new Credentials();
-            accessRequest.client_id = "my client id";
-            accessRequest.client_secret = "my client secret";
-
-            var response = new ApiResponse<Credentials>(HttpStatusCode.OK, "OK");
-            response.Data = accessRequest;
+            var accessRequest = new Credentials { client_id = "my client id", client_secret = "my client secret" };
+            var response = new ApiResponse<Credentials>(HttpStatusCode.OK, accessRequest);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeCreateRequest<Credentials>(It.Is<Uri>(y => y.ToString() == expectedUri), It.IsAny<IDictionary<string, object>>()))
-                .Returns(response)
+            gatewayMock.Setup(x => x.InvokeCreateRequestAsync<Credentials>(expectedUri, It.IsAny<IDictionary<string, object>>()))
+                .ReturnsAsync(response)
                 .Callback((Uri u, IDictionary<string, object> p) =>
                 {
                     Assert.That(p["client_id"], Is.EqualTo("my client id"));
@@ -105,31 +91,29 @@ namespace SoundCloud.Api.Test.Endpoints
                     Assert.That(p["grant_type"], Is.EqualTo("client_credentials"));
                 });
 
-            var oauth2Endpoint = new OAuth2(gatewayMock.Object);
+            // Act
+            var result = await new OAuth2(gatewayMock.Object).ClientCredentialsAsync(accessRequest);
 
-            var result = oauth2Endpoint.ClientCredentials(accessRequest);
-
+            // Assert
             Assert.That(result, Is.InstanceOf<SuccessWebResult<Credentials>>());
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));
         }
 
         [Test]
-        public void Test_OAuth2_RefreshToken()
+        public async Task RefreshToken()
         {
-            const string expectedUri = @"https://api.soundcloud.com/oauth2/token?";
+            var expectedUri = new Uri("https://api.soundcloud.com/oauth2/token?");
 
-            var accessRequest = new Credentials();
-            accessRequest.client_id = "my client id";
-            accessRequest.client_secret = "my client secret";
-            accessRequest.refresh_token = "my refresh token";
-
-            var response = new ApiResponse<Credentials>(HttpStatusCode.OK, "OK");
-            response.Data = accessRequest;
+            var accessRequest = new Credentials
+            {
+                client_id = "my client id", client_secret = "my client secret", refresh_token = "my refresh token"
+            };
+            var response = new ApiResponse<Credentials>(HttpStatusCode.OK, accessRequest);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeCreateRequest<Credentials>(It.Is<Uri>(y => y.ToString() == expectedUri), It.IsAny<IDictionary<string, object>>()))
-                .Returns(response)
+            gatewayMock.Setup(x => x.InvokeCreateRequestAsync<Credentials>(expectedUri, It.IsAny<IDictionary<string, object>>()))
+                .ReturnsAsync(response)
                 .Callback((Uri u, IDictionary<string, object> p) =>
                 {
                     Assert.That(p["client_id"], Is.EqualTo("my client id"));
@@ -138,10 +122,10 @@ namespace SoundCloud.Api.Test.Endpoints
                     Assert.That(p["grant_type"], Is.EqualTo("refresh_token"));
                 });
 
-            var oauth2Endpoint = new OAuth2(gatewayMock.Object);
+            // Act
+            var result = await new OAuth2(gatewayMock.Object).RefreshTokenAsync(accessRequest);
 
-            var result = oauth2Endpoint.RefreshToken(accessRequest);
-
+            // Assert
             Assert.That(result, Is.InstanceOf<SuccessWebResult<Credentials>>());
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));

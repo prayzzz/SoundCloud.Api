@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundCloud.Api", "src\Sound
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundCloud.Api.Test", "test\SoundCloud.Api.Test\SoundCloud.Api.Test.csproj", "{00072C1F-56A0-455C-9279-A071CD2EC4B7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundCloud.Api.IntegrationTest", "test\SoundCloud.Api.IntegrationTest\SoundCloud.Api.IntegrationTest.csproj", "{59FFBA5C-D698-46DA-BA52-44661968E5D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{BBCC8078-D60C-4D34-8542-E811E79FBCE8} = {F21FF5EE-982D-4709-A950-D78B100173BB}
 		{00072C1F-56A0-455C-9279-A071CD2EC4B7} = {05521404-0BED-448D-BC9C-9F12B1D565D6}
+		{59FFBA5C-D698-46DA-BA52-44661968E5D8} = {05521404-0BED-448D-BC9C-9F12B1D565D6}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{BBCC8078-D60C-4D34-8542-E811E79FBCE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -52,5 +55,17 @@ Global
 		{00072C1F-56A0-455C-9279-A071CD2EC4B7}.Release|x64.Build.0 = Release|Any CPU
 		{00072C1F-56A0-455C-9279-A071CD2EC4B7}.Release|x86.ActiveCfg = Release|Any CPU
 		{00072C1F-56A0-455C-9279-A071CD2EC4B7}.Release|x86.Build.0 = Release|Any CPU
+		{59FFBA5C-D698-46DA-BA52-44661968E5D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59FFBA5C-D698-46DA-BA52-44661968E5D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59FFBA5C-D698-46DA-BA52-44661968E5D8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{59FFBA5C-D698-46DA-BA52-44661968E5D8}.Debug|x64.Build.0 = Debug|Any CPU
+		{59FFBA5C-D698-46DA-BA52-44661968E5D8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{59FFBA5C-D698-46DA-BA52-44661968E5D8}.Debug|x86.Build.0 = Debug|Any CPU
+		{59FFBA5C-D698-46DA-BA52-44661968E5D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59FFBA5C-D698-46DA-BA52-44661968E5D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59FFBA5C-D698-46DA-BA52-44661968E5D8}.Release|x64.ActiveCfg = Release|Any CPU
+		{59FFBA5C-D698-46DA-BA52-44661968E5D8}.Release|x64.Build.0 = Release|Any CPU
+		{59FFBA5C-D698-46DA-BA52-44661968E5D8}.Release|x86.ActiveCfg = Release|Any CPU
+		{59FFBA5C-D698-46DA-BA52-44661968E5D8}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -22,7 +22,7 @@ namespace SoundCloud.Api.Entities
         public User()
         {
             subscriptions = new List<Products>();
-            kind = Kind.User;
+            Kind = Kind.User;
         }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace SoundCloud.Api.Entities
 
         public bool ValidateFollowUnfollow(ValidationMessages messages)
         {
-            if (id < 1)
+            if (Id < 1)
             {
                 messages.Add("UserId missing. Use the id property to set the id of this user.");
                 return false;
@@ -194,19 +194,13 @@ namespace SoundCloud.Api.Entities
 
         public bool ValidateGet(ValidationMessages messages)
         {
-            if (id < 1)
+            if (Id < 1)
             {
                 messages.Add("UserId missing. Use the id property to set the id of this user.");
                 return false;
             }
 
             return true;
-        }
-
-        internal override void AppendCredentialsToProperties(SoundCloudCredentials credentials)
-        {
-            subscriptions.ForEach(x => x.AppendCredentialsToProperties(credentials));
-            uri = uri.AppendCredentials(credentials);
         }
     }
 }

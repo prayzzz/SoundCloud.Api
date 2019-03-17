@@ -1,7 +1,5 @@
-﻿// ReSharper disable InconsistentNaming
-
-using System;
-
+﻿using System;
+using Newtonsoft.Json;
 using SoundCloud.Api.Entities.Enums;
 using SoundCloud.Api.Json;
 using SoundCloud.Api.Utils;
@@ -13,16 +11,16 @@ namespace SoundCloud.Api.Entities.Base
         /// <summary>
         /// Available for GET requests
         /// </summary>
+        [JsonProperty("id")]
         [JsonIgnoreOnSerialize]
-        public int id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Available for GET requests
         /// </summary>
+        [JsonProperty("kind")]
         [JsonIgnoreOnSerialize]
-        public Kind kind { get; set; }
-
-        internal abstract void AppendCredentialsToProperties(SoundCloudCredentials credentials);
+        public Kind Kind { get; set; }
 
         internal virtual BoxedEntity ToBoxedEntity()
         {

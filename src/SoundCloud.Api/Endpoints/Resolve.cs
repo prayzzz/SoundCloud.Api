@@ -2,6 +2,7 @@
 using SoundCloud.Api.QueryBuilders;
 using SoundCloud.Api.Web;
 using System.Threading.Tasks;
+using SoundCloud.Api.Utils;
 
 namespace SoundCloud.Api.Endpoints
 {
@@ -14,23 +15,9 @@ namespace SoundCloud.Api.Endpoints
         {
         }
 
-        public Entity GetEntity(string url)
-        {
-            EnsureClientId();
-
-            var builder = new ResolveQueryBuilder();
-            builder.Path = string.Format(ResolvePath, url);
-
-            return GetById<Entity>(builder.BuildUri());
-        }
-
         public async Task<Entity> GetEntityAsync(string url)
         {
-            EnsureClientId();
-
-            var builder = new ResolveQueryBuilder();
-            builder.Path = string.Format(ResolvePath, url);
-
+            var builder = new ResolveQueryBuilder { Path = string.Format(ResolvePath, url) };
             return await GetByIdAsync<Entity>(builder.BuildUri());
         }
     }

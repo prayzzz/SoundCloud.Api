@@ -5,7 +5,6 @@ using SoundCloud.Api.Utils;
 using SoundCloud.Api.Web;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,43 +12,15 @@ namespace SoundCloud.Api.Endpoints
 {
     internal abstract class Endpoint
     {
-        protected readonly ISoundCloudApiGateway Gateway;
-        internal SoundCloudCredentials Credentials;
+        private readonly ISoundCloudApiGateway _gateway;
 
         internal Endpoint(ISoundCloudApiGateway gateway)
         {
-            Credentials = new SoundCloudCredentials();
-            Gateway = gateway;
+            _gateway = gateway;
         }
 
         /// <summary>
-        /// Perfoms a POST request with <paramref name="entity"/> using <paramref name="uri"/>.
-        /// </summary>
-        /// <typeparam name="T">Type of the response entity</typeparam>
-        /// <param name="uri">Target of the POST request</param>
-        /// <param name="entity">Entity to be created</param>
-        /// <returns>The response entity of the request</returns>
-        protected IWebResult<T> Create<T>(Uri uri, Entity entity) where T : Entity
-        {
-            uri = uri.AppendCredentials(Credentials);
-            var apiResponse = Gateway.InvokeCreateRequest<T>(uri, entity);
-
-            if (apiResponse.IsError)
-            {
-                return new ErrorWebResult<T>(apiResponse.StatusDescription);
-            }
-
-            if (apiResponse.ContainsData)
-            {
-                apiResponse.Data.AppendCredentialsToProperties(Credentials);
-                return new SuccessWebResult<T>(apiResponse.Data);
-            }
-
-            return new SuccessWebResult<T>(null);
-        }
-
-        /// <summary>
-        /// Perfoms a POST request with <paramref name="entity"/> using <paramref name="uri"/>.
+        /// Performs a POST request with <paramref name="entity"/> using <paramref name="uri"/>.
         /// </summary>
         /// <typeparam name="T">Type of the response entity</typeparam>
         /// <param name="uri">Target of the POST request</param>
@@ -57,17 +28,15 @@ namespace SoundCloud.Api.Endpoints
         /// <returns>The response entity of the request</returns>
         protected async Task<IWebResult<T>> CreateAsync<T>(Uri uri, Entity entity) where T : Entity
         {
-            uri = uri.AppendCredentials(Credentials);
-            var apiResponse = await Gateway.InvokeCreateRequestAsync<T>(uri, entity);
+            var apiResponse = await _gateway.InvokeCreateRequestAsync<T>(uri, entity);
 
             if (apiResponse.IsError)
             {
-                return new ErrorWebResult<T>(apiResponse.StatusDescription);
+                return new ErrorWebResult<T>(apiResponse.StatusCode.ToString());
             }
 
             if (apiResponse.ContainsData)
             {
-                apiResponse.Data.AppendCredentialsToProperties(Credentials);
                 return new SuccessWebResult<T>(apiResponse.Data);
             }
 
@@ -75,33 +44,7 @@ namespace SoundCloud.Api.Endpoints
         }
 
         /// <summary>
-        /// Perfoms a POST request with <paramref name="parameters"/> using <paramref name="uri"/>.
-        /// </summary>
-        /// <typeparam name="T">Type of the response entity</typeparam>
-        /// <param name="uri">Target of the POST request</param>
-        /// <param name="parameters">Additional Parameters send with the request</param>
-        /// <returns>The response entity of the request</returns>
-        protected IWebResult<T> Create<T>(Uri uri, IDictionary<string, object> parameters) where T : Entity
-        {
-            uri = uri.AppendCredentials(Credentials);
-            var apiResponse = Gateway.InvokeCreateRequest<T>(uri, parameters);
-
-            if (apiResponse.IsError)
-            {
-                return new ErrorWebResult<T>(apiResponse.StatusDescription);
-            }
-
-            if (apiResponse.ContainsData)
-            {
-                apiResponse.Data.AppendCredentialsToProperties(Credentials);
-                return new SuccessWebResult<T>(apiResponse.Data);
-            }
-
-            return new SuccessWebResult<T>(null);
-        }
-
-        /// <summary>
-        /// Perfoms a POST request with <paramref name="parameters"/> using <paramref name="uri"/>.
+        /// Performs a POST request with <paramref name="parameters"/> using <paramref name="uri"/>.
         /// </summary>
         /// <typeparam name="T">Type of the response entity</typeparam>
         /// <param name="uri">Target of the POST request</param>
@@ -109,17 +52,15 @@ namespace SoundCloud.Api.Endpoints
         /// <returns>The response entity of the request</returns>
         protected async Task<IWebResult<T>> CreateAsync<T>(Uri uri, IDictionary<string, object> parameters) where T : Entity
         {
-            uri = uri.AppendCredentials(Credentials);
-            var apiResponse = await Gateway.InvokeCreateRequestAsync<T>(uri, parameters);
+            var apiResponse = await _gateway.InvokeCreateRequestAsync<T>(uri, parameters);
 
             if (apiResponse.IsError)
             {
-                return new ErrorWebResult<T>(apiResponse.StatusDescription);
+                return new ErrorWebResult<T>(apiResponse.StatusCode.ToString());
             }
 
             if (apiResponse.ContainsData)
             {
-                apiResponse.Data.AppendCredentialsToProperties(Credentials);
                 return new SuccessWebResult<T>(apiResponse.Data);
             }
 
@@ -127,46 +68,13 @@ namespace SoundCloud.Api.Endpoints
         }
 
         /// <summary>
-        /// Perfoms a DELETE request using <paramref name="uri"/>.
-        /// </summary>
-        /// <param name="uri">Target of the DELETE request</param>
-        /// <returns>The response entity of the request</returns>
-        protected IWebResult Delete(Uri uri)
-        {
-            uri = uri.AppendCredentials(Credentials);
-            var apiResponse = Gateway.InvokeDeleteRequest<StatusResponse>(uri);
-
-            if (apiResponse.IsSuccess)
-            {
-                return new SuccessWebResult<object>(null);
-            }
-
-            var errorMessage = new StringBuilder();
-            if (apiResponse.ContainsData)
-            {
-                errorMessage.AppendLineIfNotEmpty(apiResponse.Data.Error);
-                foreach (var message in apiResponse.Data.Errors)
-                {
-                    errorMessage.AppendLineIfNotEmpty(message.error_message);
-                }
-            }
-            else
-            {
-                errorMessage.AppendLineIfNotEmpty(apiResponse.StatusDescription);
-            }
-
-            return new ErrorWebResult<object>(errorMessage.ToString().Trim());
-        }
-
-        /// <summary>
-        /// Perfoms a DELETE request using <paramref name="uri"/>.
+        /// Performs a DELETE request using <paramref name="uri"/>.
         /// </summary>
         /// <param name="uri">Target of the DELETE request</param>
         /// <returns>The response entity of the request</returns>
         protected async Task<IWebResult> DeleteAsync(Uri uri)
         {
-            uri = uri.AppendCredentials(Credentials);
-            var apiResponse = await Gateway.InvokeDeleteRequestAsync<StatusResponse>(uri);
+            var apiResponse = await _gateway.InvokeDeleteRequestAsync<StatusResponse>(uri);
 
             if (apiResponse.IsSuccess)
             {
@@ -184,64 +92,42 @@ namespace SoundCloud.Api.Endpoints
             }
             else
             {
-                errorMessage.AppendLineIfNotEmpty(apiResponse.StatusDescription);
+                errorMessage.AppendLineIfNotEmpty(apiResponse.StatusCode.ToString());
             }
 
             return new ErrorWebResult<object>(errorMessage.ToString().Trim());
         }
 
-        /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown, if no ClientId or OAuth_Token is set.</exception>
-        protected void EnsureClientId()
-        {
-            if (string.IsNullOrEmpty(Credentials.ClientId) && string.IsNullOrEmpty(Credentials.AccessToken))
-            {
-                throw new SoundCloudInsufficientAccessRightsException("ClientId or OAuth_Token is needed for this operation.");
-            }
-        }
-
-        /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown, if no OAuth_Token is set.</exception>
-        protected void EnsureToken()
-        {
-            if (string.IsNullOrEmpty(Credentials.AccessToken))
-            {
-                throw new SoundCloudInsufficientAccessRightsException("OAuth_Token is needed for this operation.");
-            }
-        }
-
-        /// <summary>
-        /// Perfoms a GET request using <paramref name="uri"/>.
-        /// </summary>
-        /// <typeparam name="T">Type of the response ntity</typeparam>
-        /// <param name="uri">Target of the GET request</param>
-        /// <returns>The response entity of the request</returns>
-        protected T GetById<T>(Uri uri) where T : Entity
-        {
-            uri = uri.AppendCredentials(Credentials);
-            var apiResponse = Gateway.InvokeGetRequest<T>(uri);
-
-            if (apiResponse.IsSuccess && apiResponse.ContainsData)
-            {
-                apiResponse.Data.AppendCredentialsToProperties(Credentials);
-                return apiResponse.Data;
-            }
-
-            return null;
-        }
+//        /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown, if no ClientId or OAuth_Token is set.</exception>
+//        protected void EnsureClientId()
+//        {
+//            if (string.IsNullOrEmpty(Credentials.ClientId) && string.IsNullOrEmpty(Credentials.AccessToken))
+//            {
+//                throw new SoundCloudInsufficientAccessRightsException("ClientId or OAuth_Token is needed for this operation.");
+//            }
+//        }
+//
+//        /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown, if no OAuth_Token is set.</exception>
+//        protected void EnsureToken()
+//        {
+//            if (string.IsNullOrEmpty(Credentials.AccessToken))
+//            {
+//                throw new SoundCloudInsufficientAccessRightsException("OAuth_Token is needed for this operation.");
+//            }
+//        }
 
         /// <summary>
-        /// Perfoms a GET request using <paramref name="uri"/>.
+        /// Performs a GET request using <paramref name="uri"/>.
         /// </summary>
-        /// <typeparam name="T">Type of the response ntity</typeparam>
+        /// <typeparam name="T">Type of the response entity</typeparam>
         /// <param name="uri">Target of the GET request</param>
         /// <returns>The response entity of the request</returns>
         protected async Task<T> GetByIdAsync<T>(Uri uri) where T : Entity
         {
-            uri = uri.AppendCredentials(Credentials);
-            var apiResponse = await Gateway.InvokeGetRequestAsync<T>(uri);
+            var apiResponse = await _gateway.InvokeGetRequestAsync<T>(uri);
 
             if (apiResponse.IsSuccess && apiResponse.ContainsData)
             {
-                apiResponse.Data.AppendCredentialsToProperties(Credentials);
                 return apiResponse.Data;
             }
 
@@ -249,98 +135,35 @@ namespace SoundCloud.Api.Endpoints
         }
 
         /// <summary>
-        /// Perfoms a GET request using <paramref name="uri"/>.
+        /// Performs a GET request using <paramref name="uri"/>.
         /// </summary>
-        /// <typeparam name="T">Type of the response ntity</typeparam>
-        /// <param name="uri">Target of the GET request</param>
-        /// <returns>The list of response entity of the request</returns>
-        protected IEnumerable<T> GetList<T>(Uri uri) where T : Entity
-        {
-            Func<Uri, IPagedResult<T>> getPage = x =>
-            {
-                var apiResponse = Gateway.InvokeGetRequest<PagedResult<T>>(x.AppendCredentials(Credentials));
-                if (apiResponse.IsSuccess && apiResponse.ContainsData)
-                {
-                    return apiResponse.Data;
-                }
-
-                return new PagedResult<T>();
-            };
-
-            return new SoundCloudList<T>(uri, getPage).Get().Select(x =>
-            {
-                x.AppendCredentialsToProperties(Credentials);
-                return x;
-            });
-        }
-
-        /// <summary>
-        /// Perfoms a GET request using <paramref name="uri"/>.
-        /// </summary>
-        /// <typeparam name="T">Type of the response ntity</typeparam>
+        /// <typeparam name="T">Type of the response entity</typeparam>
         /// <param name="uri">Target of the GET request</param>
         /// <returns>The list of response entity of the request</returns>
         protected async Task<IEnumerable<T>> GetListAsync<T>(Uri uri) where T : Entity
         {
-            Func<Uri, Task<IPagedResult<T>>> getPage = async x =>
+            async Task<IPagedResult<T>> GetPage(Uri x)
             {
-                var apiResponse = await Gateway.InvokeGetRequestAsync<PagedResult<T>>(x.AppendCredentials(Credentials));
+                var apiResponse = await _gateway.InvokeGetRequestAsync<PagedResult<T>>(x);
                 if (apiResponse.IsSuccess && apiResponse.ContainsData)
                 {
                     return apiResponse.Data;
                 }
 
                 return new PagedResult<T>();
-            };
+            }
 
-            return (await new SoundCloudList<T>(uri, getPage).GetAsync()).Select(x =>
-            {
-                x.AppendCredentialsToProperties(Credentials);
-                return x;
-            });
+            return new SoundCloudList<T>(uri, GetPage).Get();
         }
 
         /// <summary>
-        /// Perfoms a PUT request using <paramref name="uri"/>.
-        /// </summary>
-        /// <param name="uri">Target of the PUT request</param>
-        /// <returns>The response entity of the request</returns>
-        protected IWebResult Update(Uri uri)
-        {
-            uri = uri.AppendCredentials(Credentials);
-            var apiResponse = Gateway.InvokeUpdateRequest<StatusResponse>(uri);
-
-            if (apiResponse.IsSuccess)
-            {
-                return new SuccessWebResult<object>(null);
-            }
-
-            var errorMessage = new StringBuilder();
-            if (apiResponse.ContainsData)
-            {
-                errorMessage.AppendLineIfNotEmpty(apiResponse.Data.Error);
-                foreach (var message in apiResponse.Data.Errors)
-                {
-                    errorMessage.AppendLineIfNotEmpty(message.error_message);
-                }
-            }
-            else
-            {
-                errorMessage.AppendLineIfNotEmpty(apiResponse.StatusDescription);
-            }
-
-            return new ErrorWebResult<object>(errorMessage.ToString().Trim());
-        }
-
-        /// <summary>
-        /// Perfoms a PUT request using <paramref name="uri"/>.
+        /// Performs a PUT request using <paramref name="uri"/>.
         /// </summary>
         /// <param name="uri">Target of the PUT request</param>
         /// <returns>The response entity of the request</returns>
         protected async Task<IWebResult> UpdateAsync(Uri uri)
         {
-            uri = uri.AppendCredentials(Credentials);
-            var apiResponse = await Gateway.InvokeUpdateRequestAsync<StatusResponse>(uri);
+            var apiResponse = await _gateway.InvokeUpdateRequestAsync<StatusResponse>(uri);
 
             if (apiResponse.IsSuccess)
             {
@@ -358,40 +181,14 @@ namespace SoundCloud.Api.Endpoints
             }
             else
             {
-                errorMessage.AppendLineIfNotEmpty(apiResponse.StatusDescription);
+                errorMessage.AppendLineIfNotEmpty(apiResponse.StatusCode.ToString());
             }
 
             return new ErrorWebResult<object>(errorMessage.ToString().Trim());
         }
 
         /// <summary>
-        /// Perfoms a PUT request with <paramref name="entity"/> using <paramref name="uri"/>.
-        /// </summary>
-        /// <typeparam name="T">Type of the response entity</typeparam>
-        /// <param name="uri">Target of the PUT request</param>
-        /// <param name="entity">Entity to be created</param>
-        /// <returns>The response entity of the request</returns>
-        protected IWebResult<T> Update<T>(Uri uri, Entity entity) where T : Entity
-        {
-            uri = uri.AppendCredentials(Credentials);
-            var apiResponse = Gateway.InvokeUpdateRequest<T>(uri, entity);
-
-            if (apiResponse.IsError)
-            {
-                return new ErrorWebResult<T>(apiResponse.StatusDescription);
-            }
-
-            if (apiResponse.ContainsData)
-            {
-                apiResponse.Data.AppendCredentialsToProperties(Credentials);
-                return new SuccessWebResult<T>(apiResponse.Data);
-            }
-
-            return new SuccessWebResult<T>(null);
-        }
-
-        /// <summary>
-        /// Perfoms a PUT request with <paramref name="entity"/> using <paramref name="uri"/>.
+        /// Performs a PUT request with <paramref name="entity"/> using <paramref name="uri"/>.
         /// </summary>
         /// <typeparam name="T">Type of the response entity</typeparam>
         /// <param name="uri">Target of the PUT request</param>
@@ -399,17 +196,15 @@ namespace SoundCloud.Api.Endpoints
         /// <returns>The response entity of the request</returns>
         protected async Task<IWebResult<T>> UpdateAsync<T>(Uri uri, Entity entity) where T : Entity
         {
-            uri = uri.AppendCredentials(Credentials);
-            var apiResponse = await Gateway.InvokeUpdateRequestAsync<T>(uri, entity);
+            var apiResponse = await _gateway.InvokeUpdateRequestAsync<T>(uri, entity);
 
             if (apiResponse.IsError)
             {
-                return new ErrorWebResult<T>(apiResponse.StatusDescription);
+                return new ErrorWebResult<T>(apiResponse.StatusCode.ToString());
             }
 
             if (apiResponse.ContainsData)
             {
-                apiResponse.Data.AppendCredentialsToProperties(Credentials);
                 return new SuccessWebResult<T>(apiResponse.Data);
             }
 
@@ -417,33 +212,7 @@ namespace SoundCloud.Api.Endpoints
         }
 
         /// <summary>
-        /// Perfoms a PUT request with <paramref name="parameters"/> using <paramref name="uri"/>.
-        /// </summary>
-        /// <typeparam name="T">Type of the response entity</typeparam>
-        /// <param name="uri">Target of the PUT request</param>
-        /// <param name="parameters">Additional Parameters send with the request</param>
-        /// <returns>The response entity of the request</returns>
-        protected IWebResult<T> Update<T>(Uri uri, IDictionary<string, object> parameters) where T : Entity
-        {
-            uri = uri.AppendCredentials(Credentials);
-            var apiResponse = Gateway.InvokeUpdateRequest<T>(uri, parameters);
-
-            if (!apiResponse.IsSuccess)
-            {
-                return new ErrorWebResult<T>(apiResponse.StatusDescription);
-            }
-
-            if (apiResponse.ContainsData)
-            {
-                apiResponse.Data.AppendCredentialsToProperties(Credentials);
-                return new SuccessWebResult<T>(apiResponse.Data);
-            }
-
-            return new SuccessWebResult<T>(null);
-        }
-        
-        /// <summary>
-        /// Perfoms a PUT request with <paramref name="parameters"/> using <paramref name="uri"/>.
+        /// Performs a PUT request with <paramref name="parameters"/> using <paramref name="uri"/>.
         /// </summary>
         /// <typeparam name="T">Type of the response entity</typeparam>
         /// <param name="uri">Target of the PUT request</param>
@@ -451,17 +220,15 @@ namespace SoundCloud.Api.Endpoints
         /// <returns>The response entity of the request</returns>
         protected async Task<IWebResult<T>> UpdateAsync<T>(Uri uri, IDictionary<string, object> parameters) where T : Entity
         {
-            uri = uri.AppendCredentials(Credentials);
-            var apiResponse = await Gateway.InvokeUpdateRequestAsync<T>(uri, parameters);
+            var apiResponse = await _gateway.InvokeUpdateRequestAsync<T>(uri, parameters);
 
             if (!apiResponse.IsSuccess)
             {
-                return new ErrorWebResult<T>(apiResponse.StatusDescription);
+                return new ErrorWebResult<T>(apiResponse.StatusCode.ToString());
             }
 
             if (apiResponse.ContainsData)
             {
-                apiResponse.Data.AppendCredentialsToProperties(Credentials);
                 return new SuccessWebResult<T>(apiResponse.Data);
             }
 

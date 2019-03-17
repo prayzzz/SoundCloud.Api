@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
-
+using System.Threading.Tasks;
 using Moq;
-
 using NUnit.Framework;
-
 using SoundCloud.Api.Endpoints;
 using SoundCloud.Api.Entities;
 using SoundCloud.Api.QueryBuilders;
@@ -18,28 +16,43 @@ namespace SoundCloud.Api.Test.Endpoints
     [TestFixture]
     public class GroupsTest
     {
-        private const string ClientId = "myClientId";
         private const int GroupId = 215200;
-        private const string Token = "myTokenId";
         private const int TrackId = 215850263;
 
         [Test]
-        public void Test_Groups_Delete()
+        public async Task Delete()
         {
-            const string expectedUri = @"https://api.soundcloud.com/groups/215200?oauth_token=myTokenId";
+            var expectedUri = new Uri("https://api.soundcloud.com/groups/215200?");
 
-            var group = new Group();
-            group.id = 215200;
-
-            var response = new ApiResponse<StatusResponse>(HttpStatusCode.OK, "OK");
+            var response = new ApiResponse<StatusResponse>(HttpStatusCode.OK);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeDeleteRequest<StatusResponse>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeDeleteRequestAsync<StatusResponse>(expectedUri)).ReturnsAsync(response);
 
-            var groupsEndpoint = new Groups(gatewayMock.Object);
-            groupsEndpoint.Credentials.AccessToken = Token;
+            // Act
+            var group = new Group { Id = GroupId };
+            var result = await new Groups(gatewayMock.Object).DeleteAsync(group);
 
-            var result = groupsEndpoint.Delete(group);
+            // Assert
+            Assert.That(result, Is.InstanceOf<SuccessWebResult<object>>());
+            Assert.That(result.IsSuccess, Is.True);
+            Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));
+        }
+
+        [Test]
+        public async Task DeleteContribution()
+        {
+            var expectedUri = new Uri("https://api.soundcloud.com/groups/215200/contributions/215850263?");
+
+            var response = new ApiResponse<StatusResponse>(HttpStatusCode.OK);
+
+            var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
+            gatewayMock.Setup(x => x.InvokeDeleteRequestAsync<StatusResponse>(expectedUri)).ReturnsAsync(response);
+
+            // Act
+            var group = new Group { Id = GroupId };
+            var track = new Track { Id = TrackId };
+            var result = await new Groups(gatewayMock.Object).DeleteContributionAsync(group, track);
 
             Assert.That(result, Is.InstanceOf<SuccessWebResult<object>>());
             Assert.That(result.IsSuccess, Is.True);
@@ -47,388 +60,282 @@ namespace SoundCloud.Api.Test.Endpoints
         }
 
         [Test]
-        public void Test_Groups_DeleteContribution()
+        public async Task DeletePendingTrack()
         {
-            const string expectedUri = @"https://api.soundcloud.com/groups/215200/contributions/215850263?oauth_token=myTokenId";
+            var expectedUri = new Uri("https://api.soundcloud.com/groups/215200/pending_tracks/215850263?");
 
-            var group = new Group();
-            group.id = 215200;
-
-            var track = new Track();
-            track.id = TrackId;
-
-            var response = new ApiResponse<StatusResponse>(HttpStatusCode.OK, "OK");
+            var response = new ApiResponse<StatusResponse>(HttpStatusCode.OK);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeDeleteRequest<StatusResponse>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeDeleteRequestAsync<StatusResponse>(expectedUri)).ReturnsAsync(response);
 
-            var groupsEndpoint = new Groups(gatewayMock.Object);
-            groupsEndpoint.Credentials.AccessToken = Token;
+            // Act
+            var group = new Group { Id = GroupId };
+            var track = new Track { Id = TrackId };
+            var result = await new Groups(gatewayMock.Object).DeletePendingTrackAsync(group, track);
 
-            var result = groupsEndpoint.DeleteContribution(group, track);
-
+            // Assert
             Assert.That(result, Is.InstanceOf<SuccessWebResult<object>>());
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));
         }
 
         [Test]
-        public void Test_Groups_DeletePendingTrack()
+        public async Task Get()
         {
-            const string expectedUri = @"https://api.soundcloud.com/groups/215200/pending_tracks/215850263?oauth_token=myTokenId";
+            var expectedUri = new Uri("https://api.soundcloud.com/groups/215200?");
 
             var group = new Group();
-            group.id = 215200;
-
-            var track = new Track();
-            track.id = TrackId;
-
-            var response = new ApiResponse<StatusResponse>(HttpStatusCode.OK, "OK");
+            var response = new ApiResponse<Group>(HttpStatusCode.OK, group);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeDeleteRequest<StatusResponse>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeGetRequestAsync<Group>(expectedUri)).ReturnsAsync(response);
 
-            var groupsEndpoint = new Groups(gatewayMock.Object);
-            groupsEndpoint.Credentials.AccessToken = Token;
+            // Act
+            var result = await new Groups(gatewayMock.Object).GetAsync(GroupId);
 
-            var result = groupsEndpoint.DeletePendingTrack(group, track);
-
-            Assert.That(result, Is.InstanceOf<SuccessWebResult<object>>());
-            Assert.That(result.IsSuccess, Is.True);
-            Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));
-        }
-
-        [Test]
-        public void Test_Groups_Get()
-        {
-            const string expectedUri = @"https://api.soundcloud.com/groups/215200?client_id=myClientId";
-
-            var group = new Group();
-
-            var response = new ApiResponse<Group>(HttpStatusCode.OK, "OK");
-            response.Data = group;
-
-            var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeGetRequest<Group>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
-
-            var groupsEndpoint = new Groups(gatewayMock.Object);
-            groupsEndpoint.Credentials.ClientId = ClientId;
-
-            var result = groupsEndpoint.Get(GroupId);
-
+            // Assert
             Assert.That(result, Is.EqualTo(group));
         }
 
         [Test]
-        public void Test_Groups_GetContributions()
+        public async Task GetContributions()
         {
-            const string expectedUri = @"https://api.soundcloud.com/groups/215200/contributions?limit=50&linked_partitioning=1&oauth_token=myTokenId";
+            var expectedUri = new Uri("https://api.soundcloud.com/groups/215200/contributions?limit=50&linked_partitioning=1");
 
-            var contributions = new PagedResult<Track>();
-            contributions.collection = new List<Track> {new Track()};
-
-            var response = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK, "OK");
-            response.Data = contributions;
+            var contributions = new PagedResult<Track> { collection = new List<Track> { new Track() } };
+            var response = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK, contributions);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeGetRequest<PagedResult<Track>>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeGetRequestAsync<PagedResult<Track>>(expectedUri)).ReturnsAsync(response);
 
-            var groupsEndpoint = new Groups(gatewayMock.Object);
-            groupsEndpoint.Credentials.AccessToken = Token;
+            // Act
+            var group = new Group { Id = GroupId };
+            var result = await new Groups(gatewayMock.Object).GetContributionsAsync(group);
 
-            var group = new Group();
-            group.id = GroupId;
-
-            var result = groupsEndpoint.GetContributions(group);
-
+            // Assert
             Assert.That(result, Is.EqualTo(contributions.collection));
         }
 
         [Test]
-        public void Test_Groups_GetContributors()
+        public async Task GetContributors()
         {
-            const string expectedUri = @"https://api.soundcloud.com/groups/215200/contributors?limit=50&linked_partitioning=1&oauth_token=myTokenId";
+            var expectedUri = new Uri("https://api.soundcloud.com/groups/215200/contributors?limit=50&linked_partitioning=1");
 
-            var contributors = new PagedResult<User>();
-            contributors.collection = new List<User> {new User()};
-
-            var response = new ApiResponse<PagedResult<User>>(HttpStatusCode.OK, "OK");
-            response.Data = contributors;
+            var contributors = new PagedResult<User> { collection = new List<User> { new User() } };
+            var response = new ApiResponse<PagedResult<User>>(HttpStatusCode.OK, contributors);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeGetRequest<PagedResult<User>>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeGetRequestAsync<PagedResult<User>>(expectedUri)).ReturnsAsync(response);
 
-            var groupsEndpoint = new Groups(gatewayMock.Object);
-            groupsEndpoint.Credentials.AccessToken = Token;
+            // Act
+            var group = new Group { Id = GroupId };
+            var result = await new Groups(gatewayMock.Object).GetContributorsAsync(group);
 
-            var group = new Group();
-            group.id = GroupId;
-
-            var result = groupsEndpoint.GetContributors(group);
-
+            // Assert
             Assert.That(result, Is.EqualTo(contributors.collection));
         }
 
         [Test]
-        public void Test_Groups_GetList()
+        public async Task GetList()
         {
-            const string expectedUri = @"https://api.soundcloud.com/groups?limit=50&linked_partitioning=1&client_id=myClientId";
+            var expectedUri = new Uri("https://api.soundcloud.com/groups?limit=50&linked_partitioning=1");
 
-            var groups = new PagedResult<Group>();
-            groups.collection = new List<Group> {new Group()};
-
-            var response = new ApiResponse<PagedResult<Group>>(HttpStatusCode.OK, "OK");
-            response.Data = groups;
+            var groups = new PagedResult<Group> { collection = new List<Group> { new Group() } };
+            var response = new ApiResponse<PagedResult<Group>>(HttpStatusCode.OK, groups);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeGetRequest<PagedResult<Group>>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeGetRequestAsync<PagedResult<Group>>(expectedUri)).ReturnsAsync(response);
 
-            var groupsEndpoint = new Groups(gatewayMock.Object);
-            groupsEndpoint.Credentials.ClientId = ClientId;
+            // Act
+            var result = await new Groups(gatewayMock.Object).GetAsync();
 
-            var result = groupsEndpoint.Get();
-
+            // Assert
             Assert.That(result, Is.EqualTo(groups.collection));
         }
 
         [Test]
-        public void Test_Groups_GetList_Query()
+        public async Task GetList_Query()
         {
-            const string expectedUri = @"https://api.soundcloud.com/groups?limit=50&q=group&linked_partitioning=1&client_id=myClientId";
+            var expectedUri = new Uri("https://api.soundcloud.com/groups?limit=50&q=group&linked_partitioning=1");
 
-            var groups = new PagedResult<Group>();
-            groups.collection = new List<Group> {new Group()};
-
-            var response = new ApiResponse<PagedResult<Group>>(HttpStatusCode.OK, "OK");
-            response.Data = groups;
+            var groups = new PagedResult<Group> { collection = new List<Group> { new Group() } };
+            var response = new ApiResponse<PagedResult<Group>>(HttpStatusCode.OK, groups);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeGetRequest<PagedResult<Group>>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeGetRequestAsync<PagedResult<Group>>(expectedUri)).ReturnsAsync(response);
 
-            var groupsEndpoint = new Groups(gatewayMock.Object);
-            groupsEndpoint.Credentials.ClientId = ClientId;
+            // Act
+            var builder = new GroupQueryBuilder { SearchString = "group" };
+            var result = await new Groups(gatewayMock.Object).GetAsync(builder);
 
-            var builder = new GroupQueryBuilder();
-            builder.SearchString = "group";
-
-            var result = groupsEndpoint.Get(builder);
-
+            // Assert
             Assert.That(result, Is.EqualTo(groups.collection));
         }
 
         [Test]
-        public void Test_Groups_GetMembers()
+        public async Task GetMembers()
         {
-            const string expectedUri = @"https://api.soundcloud.com/groups/215200/members?limit=50&linked_partitioning=1&client_id=myClientId";
+            var expectedUri = new Uri("https://api.soundcloud.com/groups/215200/members?limit=50&linked_partitioning=1");
 
-            var members = new PagedResult<User>();
-            members.collection = new List<User> {new User()};
-
-            var response = new ApiResponse<PagedResult<User>>(HttpStatusCode.OK, "OK");
-            response.Data = members;
+            var members = new PagedResult<User> { collection = new List<User> { new User() } };
+            var response = new ApiResponse<PagedResult<User>>(HttpStatusCode.OK, members);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeGetRequest<PagedResult<User>>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeGetRequestAsync<PagedResult<User>>(expectedUri)).ReturnsAsync(response);
 
-            var groupsEndpoint = new Groups(gatewayMock.Object);
-            groupsEndpoint.Credentials.ClientId = ClientId;
+            // Act
+            var group = new Group { Id = GroupId };
+            var result = await new Groups(gatewayMock.Object).GetMembersAsync(group);
 
-            var group = new Group();
-            group.id = GroupId;
-
-            var result = groupsEndpoint.GetMembers(group);
-
+            // Assert
             Assert.That(result, Is.EqualTo(members.collection));
         }
 
         [Test]
-        public void Test_Groups_GetModerators()
+        public async Task GetModerators()
         {
-            const string expectedUri = @"https://api.soundcloud.com/groups/215200/moderators?limit=50&linked_partitioning=1&client_id=myClientId";
+            var expectedUri = new Uri("https://api.soundcloud.com/groups/215200/moderators?limit=50&linked_partitioning=1");
 
-            var moderators = new PagedResult<User>();
-            moderators.collection = new List<User> {new User()};
-
-            var response = new ApiResponse<PagedResult<User>>(HttpStatusCode.OK, "OK");
-            response.Data = moderators;
+            var moderators = new PagedResult<User> { collection = new List<User> { new User() } };
+            var response = new ApiResponse<PagedResult<User>>(HttpStatusCode.OK, moderators);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeGetRequest<PagedResult<User>>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeGetRequestAsync<PagedResult<User>>(expectedUri)).ReturnsAsync(response);
 
-            var groupsEndpoint = new Groups(gatewayMock.Object);
-            groupsEndpoint.Credentials.ClientId = ClientId;
+            // Act
+            var group = new Group { Id = GroupId };
+            var result = await new Groups(gatewayMock.Object).GetModeratorsAsync(group);
 
-            var group = new Group();
-            group.id = GroupId;
-
-            var result = groupsEndpoint.GetModerators(group);
-
+            // Assert
             Assert.That(result, Is.EqualTo(moderators.collection));
         }
 
         [Test]
-        public void Test_Groups_GetPendingTracks()
+        public async Task GetPendingTracks()
         {
-            const string expectedUri = @"https://api.soundcloud.com/groups/215200/pending_tracks?limit=50&linked_partitioning=1&oauth_token=myTokenId";
+            var expectedUri = new Uri("https://api.soundcloud.com/groups/215200/pending_tracks?limit=50&linked_partitioning=1");
 
-            var tracks = new PagedResult<Track>();
-            tracks.collection = new List<Track> {new Track()};
-
-            var response = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK, "OK");
-            response.Data = tracks;
+            var tracks = new PagedResult<Track> { collection = new List<Track> { new Track() } };
+            var response = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK, tracks);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeGetRequest<PagedResult<Track>>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeGetRequestAsync<PagedResult<Track>>(expectedUri)).ReturnsAsync(response);
 
-            var groupsEndpoint = new Groups(gatewayMock.Object);
-            groupsEndpoint.Credentials.AccessToken = Token;
+            // Act
+            var group = new Group { Id = GroupId };
+            var result = await new Groups(gatewayMock.Object).GetPendingTracksAsync(group);
 
-            var group = new Group();
-            group.id = GroupId;
-
-            var result = groupsEndpoint.GetPendingTracks(group);
-
+            // Assert
             Assert.That(result, Is.EqualTo(tracks.collection));
         }
 
         [Test]
-        public void Test_Groups_GetTracks()
+        public async Task GetTracks()
         {
-            const string expectedUri = @"https://api.soundcloud.com/groups/215200/tracks?limit=50&linked_partitioning=1&client_id=myClientId";
+            var expectedUri = new Uri("https://api.soundcloud.com/groups/215200/tracks?limit=50&linked_partitioning=1");
 
-            var tracks = new PagedResult<Track>();
-            tracks.collection = new List<Track> {new Track()};
-
-            var response = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK, "OK");
-            response.Data = tracks;
+            var tracks = new PagedResult<Track> { collection = new List<Track> { new Track() } };
+            var response = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK, tracks);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeGetRequest<PagedResult<Track>>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeGetRequestAsync<PagedResult<Track>>(expectedUri)).ReturnsAsync(response);
 
-            var groupsEndpoint = new Groups(gatewayMock.Object);
-            groupsEndpoint.Credentials.ClientId = ClientId;
+            // Act
+            var group = new Group { Id = GroupId };
+            var result = await new Groups(gatewayMock.Object).GetTracksAsync(group);
 
-            var group = new Group();
-            group.id = GroupId;
-
-            var result = groupsEndpoint.GetTracks(group);
-
+            // Assert
             Assert.That(result, Is.EqualTo(tracks.collection));
         }
 
         [Test]
-        public void Test_Groups_GetUsers()
+        public async Task GetUsers()
         {
-            const string expectedUri = @"https://api.soundcloud.com/groups/215200/users?limit=50&linked_partitioning=1&client_id=myClientId";
+            var expectedUri = new Uri("https://api.soundcloud.com/groups/215200/users?limit=50&linked_partitioning=1");
 
-            var members = new PagedResult<User>();
-            members.collection = new List<User> {new User()};
-
-            var response = new ApiResponse<PagedResult<User>>(HttpStatusCode.OK, "OK");
-            response.Data = members;
+            var members = new PagedResult<User> { collection = new List<User> { new User() } };
+            var response = new ApiResponse<PagedResult<User>>(HttpStatusCode.OK, members);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeGetRequest<PagedResult<User>>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeGetRequestAsync<PagedResult<User>>(expectedUri)).ReturnsAsync(response);
 
-            var groupsEndpoint = new Groups(gatewayMock.Object);
-            groupsEndpoint.Credentials.ClientId = ClientId;
+            // Act
+            var group = new Group { Id = GroupId };
+            var result = await new Groups(gatewayMock.Object).GetUsersAsync(group);
 
-            var group = new Group();
-            group.id = GroupId;
-
-            var result = groupsEndpoint.GetUsers(group);
-
+            // Assert
             Assert.That(result, Is.EqualTo(members.collection));
         }
 
         [Test]
-        public void Test_Groups_Post()
+        public async Task Post()
         {
-            const string expectedUri = @"https://api.soundcloud.com/groups?oauth_token=myTokenId";
+            var expectedUri = new Uri("https://api.soundcloud.com/groups?");
 
-            var group = new Group();
-            group.name = "name";
+            var group = new Group { name = "name" };
+            var postedGroup = new Group { Id = 1, name = group.name };
 
-            var postedGroup = new Group();
-            postedGroup.id = 1;
-            postedGroup.name = group.name;
-
-            var response = new ApiResponse<Group>(HttpStatusCode.OK, "OK");
-            response.Data = postedGroup;
+            var response = new ApiResponse<Group>(HttpStatusCode.OK, postedGroup);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeCreateRequest<Group>(It.Is<Uri>(y => y.ToString() == expectedUri), group)).Returns(response);
+            gatewayMock.Setup(x => x.InvokeCreateRequestAsync<Group>(expectedUri, group)).ReturnsAsync(response);
 
-            var groupsEndpoint = new Groups(gatewayMock.Object);
-            groupsEndpoint.Credentials.AccessToken = Token;
+            // Act
+            var result = await new Groups(gatewayMock.Object).PostAsync(group);
 
-            var result = groupsEndpoint.Post(group);
-
+            // Assert
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));
             Assert.That(result.Data, Is.EqualTo(postedGroup));
         }
 
         [Test]
-        public void Test_Groups_Post_Track()
+        public async Task Post_Track()
         {
-            const string expectedUri = @"https://api.soundcloud.com/groups/215200/contributions?oauth_token=myTokenId";
+            var expectedUri = new Uri("https://api.soundcloud.com/groups/215200/contributions?");
 
-            var group = new Group();
-            group.id = 215200;
+            var group = new Group { Id = GroupId };
+            var track = new Track { Id = TrackId };
 
-            var track = new Track();
-            track.id = TrackId;
-
-            var addedTrack = new Track();
-            addedTrack.id = track.id;
-
-            var response = new ApiResponse<Track>(HttpStatusCode.OK, "OK");
-            response.Data = addedTrack;
+            var addedTrack = new Track { Id = track.Id };
+            var response = new ApiResponse<Track>(HttpStatusCode.OK, addedTrack);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeCreateRequest<Track>(It.Is<Uri>(y => y.ToString() == expectedUri), It.Is<Dictionary<string, object>>(y => y.ContainsValue(track.id))))
-                .Returns(response)
+            gatewayMock.Setup(x => x.InvokeCreateRequestAsync<Track>(expectedUri, It.Is<Dictionary<string, object>>(y => y.ContainsValue(track.Id))))
+                .ReturnsAsync(response)
                 .Callback((Uri u, IDictionary<string, object> p) =>
                 {
                     Assert.That(p.Count, Is.EqualTo(1));
-                    Assert.That(p["track[id]"], Is.EqualTo(track.id));
+                    Assert.That(p["track[id]"], Is.EqualTo(track.Id));
                 });
 
-            var groupsEndpoint = new Groups(gatewayMock.Object);
-            groupsEndpoint.Credentials.AccessToken = Token;
-
-            var result = groupsEndpoint.Post(group, track);
-
+            // Act
+            var result = await new Groups(gatewayMock.Object).PostAsync(group, track);
+            
+            // Assert
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));
             Assert.That(result.Data, Is.EqualTo(addedTrack));
         }
 
         [Test]
-        public void Test_Groups_Update()
+        public async Task Update()
         {
-            const string expectedUri = @"https://api.soundcloud.com/groups/215200?oauth_token=myTokenId";
+            var expectedUri = new Uri("https://api.soundcloud.com/groups/215200?");
 
-            var group = new Group();
-            group.id = 215200;
-            group.name = "name";
+            var group = new Group { Id = GroupId, name = "name" };
+            var updatedGroup = new Group { Id = group.Id, name = group.name };
 
-            var updatedGroup = new Group();
-            updatedGroup.id = group.id;
-            updatedGroup.name = group.name;
-
-            var response = new ApiResponse<Group>(HttpStatusCode.OK, "OK");
-            response.Data = updatedGroup;
+            var response = new ApiResponse<Group>(HttpStatusCode.OK, updatedGroup);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeUpdateRequest<Group>(It.Is<Uri>(y => y.ToString() == expectedUri), group)).Returns(response);
+            gatewayMock.Setup(x => x.InvokeUpdateRequestAsync<Group>(expectedUri, group)).ReturnsAsync(response);
 
-            var groupsEndpoint = new Groups(gatewayMock.Object);
-            groupsEndpoint.Credentials.AccessToken = Token;
+            // Act
+            var result = await new Groups(gatewayMock.Object).UpdateAsync(group);
 
-            var result = groupsEndpoint.Update(group);
-
+            // Assert
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));
             Assert.That(result.Data, Is.EqualTo(updatedGroup));
@@ -436,39 +343,31 @@ namespace SoundCloud.Api.Test.Endpoints
 
         [Test]
         [SuppressMessage("ReSharper", "AccessToDisposedClosure")]
-        public void Test_Groups_UploadArtwork()
+        public async Task UploadArtwork()
         {
-            const string expectedUri = @"https://api.soundcloud.com/groups/215200?oauth_token=myTokenId";
+            var expectedUri = new Uri("https://api.soundcloud.com/groups/215200?");
 
-            var group = new Group();
-            group.id = 215200;
-            group.name = "name";
+            var group = new Group { Id = GroupId, name = "name" };
+            var updatedGroup = new Group { Id = group.Id, name = group.name, artwork_url = "http://sampleurl.com" };
 
-            var updatedGroup = new Group();
-            updatedGroup.id = group.id;
-            updatedGroup.name = group.name;
-            updatedGroup.artwork_url = "http://sampleurl.com";
-
-            var response = new ApiResponse<Group>(HttpStatusCode.OK, "OK");
-            response.Data = updatedGroup;
+            var response = new ApiResponse<Group>(HttpStatusCode.OK, updatedGroup);
 
             var artwork = TestDataProvider.GetArtwork();
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeUpdateRequest<Group>(It.Is<Uri>(y => y.ToString() == expectedUri), It.IsAny<Dictionary<string, object>>()))
-                .Returns(response)
+            gatewayMock.Setup(x => x.InvokeUpdateRequestAsync<Group>(expectedUri, It.IsAny<Dictionary<string, object>>()))
+                .ReturnsAsync(response)
                 .Callback((Uri u, IDictionary<string, object> p) =>
                 {
                     Assert.That(p.Count, Is.EqualTo(1));
                     Assert.That(p["group[artwork_data]"], Is.EqualTo(artwork));
                 });
 
-            var groupsEndpoint = new Groups(gatewayMock.Object);
-            groupsEndpoint.Credentials.AccessToken = Token;
-
-            var result = groupsEndpoint.UploadArtwork(group, artwork);
+            // Act
+            var result = await new Groups(gatewayMock.Object).UploadArtworkAsync(group, artwork);
             artwork.Dispose();
 
+            // Assert
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));
             Assert.That(result.Data, Is.EqualTo(updatedGroup));

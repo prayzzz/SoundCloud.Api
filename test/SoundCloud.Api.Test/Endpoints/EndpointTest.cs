@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-
+using System.Threading.Tasks;
 using Moq;
-
 using NUnit.Framework;
-
 using SoundCloud.Api.Endpoints;
 using SoundCloud.Api.Entities;
 using SoundCloud.Api.Entities.Base;
@@ -19,430 +17,474 @@ namespace SoundCloud.Api.Test.Endpoints
     public class EndpointTest
     {
         [Test]
-        public void Test_Create_Entity_Fail()
+        public async Task Create_Entity_Fail()
         {
-            const string expectedUri = @"https://test.com/create";
+            var expectedUri = new Uri("https://test.com/create");
 
             var testEntity = new TestEntity();
-
-            var response = new ApiResponse<TestEntity>(HttpStatusCode.NotFound, "Not Found");
-            response.Data = testEntity;
+            var response = new ApiResponse<TestEntity>(HttpStatusCode.NotFound, testEntity);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeCreateRequest<TestEntity>(It.Is<Uri>(y => y.ToString() == expectedUri), testEntity)).Returns(response);
+            gatewayMock.Setup(x => x.InvokeCreateRequestAsync<TestEntity>(expectedUri, testEntity)).ReturnsAsync(response);
 
+            // Act
             var endpoint = new TestEndpoint(gatewayMock.Object);
-            var result = endpoint.Create<TestEntity>(expectedUri, testEntity);
+            var result = await endpoint.CreateAsync<TestEntity>(expectedUri, testEntity);
 
+            // Assert
             Assert.That(result, Is.InstanceOf<ErrorWebResult<TestEntity>>());
             Assert.That(result.IsSuccess, Is.False);
             Assert.That(result.Data, Is.Null);
-            Assert.That(result.ErrorMessage, Is.EqualTo("Not Found"));
+            Assert.That(result.ErrorMessage, Is.EqualTo(HttpStatusCode.NotFound.ToString()));
+
+            gatewayMock.VerifyAll();
         }
 
         [Test]
-        public void Test_Create_Entity_Success()
+        public async Task Create_Entity_Success()
         {
-            const string expectedUri = @"https://test.com/create";
+            var expectedUri = new Uri("https://test.com/create");
 
             var testEntity = new TestEntity();
-
-            var response = new ApiResponse<TestEntity>(HttpStatusCode.OK, "OK");
-            response.Data = testEntity;
+            var response = new ApiResponse<TestEntity>(HttpStatusCode.OK, testEntity);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeCreateRequest<TestEntity>(It.Is<Uri>(y => y.ToString() == expectedUri), testEntity)).Returns(response);
+            gatewayMock.Setup(x => x.InvokeCreateRequestAsync<TestEntity>(expectedUri, testEntity)).ReturnsAsync(response);
 
+            // Act
             var endpoint = new TestEndpoint(gatewayMock.Object);
-            var result = endpoint.Create<TestEntity>(expectedUri, testEntity);
+            var result = await endpoint.CreateAsync<TestEntity>(expectedUri, testEntity);
 
+            // Assert
             Assert.That(result, Is.InstanceOf<SuccessWebResult<TestEntity>>());
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.Data, Is.EqualTo(testEntity));
             Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));
+
+            gatewayMock.VerifyAll();
         }
 
         [Test]
-        public void Test_Create_Entity_Success_No_Data()
+        public async Task Create_Entity_Success_No_Data()
         {
-            const string expectedUri = @"https://test.com/create";
+            var expectedUri = new Uri("https://test.com/create");
 
             var testEntity = new TestEntity();
-
-            var response = new ApiResponse<TestEntity>(HttpStatusCode.OK, "OK");
+            var response = new ApiResponse<TestEntity>(HttpStatusCode.OK);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeCreateRequest<TestEntity>(It.Is<Uri>(y => y.ToString() == expectedUri), testEntity)).Returns(response);
+            gatewayMock.Setup(x => x.InvokeCreateRequestAsync<TestEntity>(expectedUri, testEntity)).ReturnsAsync(response);
 
+            // Act
             var endpoint = new TestEndpoint(gatewayMock.Object);
-            var result = endpoint.Create<TestEntity>(expectedUri, testEntity);
+            var result = await endpoint.CreateAsync<TestEntity>(expectedUri, testEntity);
 
+            // Assert
             Assert.That(result, Is.InstanceOf<SuccessWebResult<TestEntity>>());
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.Data, Is.Null);
             Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));
+
+            gatewayMock.VerifyAll();
         }
 
         [Test]
-        public void Test_Create_Params_Fail()
+        public async Task Create_Params_Fail()
         {
-            const string expectedUri = @"https://test.com/create";
+            var expectedUri = new Uri("https://test.com/create");
 
             var testEntity = new TestEntity();
+            var response = new ApiResponse<TestEntity>(HttpStatusCode.NotFound, testEntity);
 
-            var response = new ApiResponse<TestEntity>(HttpStatusCode.NotFound, "Not Found");
-            response.Data = testEntity;
-
-            var parameters = new Dictionary<string, object>();
-            parameters.Add("foo", "bar");
+            var parameters = new Dictionary<string, object> { { "foo", "bar" } };
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeCreateRequest<TestEntity>(It.Is<Uri>(y => y.ToString() == expectedUri), parameters)).Returns(response);
+            gatewayMock.Setup(x => x.InvokeCreateRequestAsync<TestEntity>(expectedUri, parameters)).ReturnsAsync(response);
 
+            // Act
             var endpoint = new TestEndpoint(gatewayMock.Object);
-            var result = endpoint.Create<TestEntity>(expectedUri, parameters);
+            var result = await endpoint.CreateAsync<TestEntity>(expectedUri, parameters);
 
+            // Assert
             Assert.That(result, Is.InstanceOf<ErrorWebResult<TestEntity>>());
             Assert.That(result.IsSuccess, Is.False);
             Assert.That(result.Data, Is.Null);
-            Assert.That(result.ErrorMessage, Is.EqualTo("Not Found"));
+            Assert.That(result.ErrorMessage, Is.EqualTo(HttpStatusCode.NotFound.ToString()));
+
+            gatewayMock.VerifyAll();
         }
 
         [Test]
-        public void Test_Create_Params_Success()
+        public async Task Create_Params_Success()
         {
-            const string expectedUri = @"https://test.com/create";
+            var expectedUri = new Uri("https://test.com/create");
 
             var testEntity = new TestEntity();
+            var response = new ApiResponse<TestEntity>(HttpStatusCode.OK, testEntity);
 
-            var response = new ApiResponse<TestEntity>(HttpStatusCode.OK, "OK");
-            response.Data = testEntity;
-
-            var parameters = new Dictionary<string, object>();
-            parameters.Add("foo", "bar");
+            var parameters = new Dictionary<string, object> { { "foo", "bar" } };
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeCreateRequest<TestEntity>(It.Is<Uri>(y => y.ToString() == expectedUri), parameters)).Returns(response);
+            gatewayMock.Setup(x => x.InvokeCreateRequestAsync<TestEntity>(expectedUri, parameters)).ReturnsAsync(response);
 
+            // Act
             var endpoint = new TestEndpoint(gatewayMock.Object);
-            var result = endpoint.Create<TestEntity>(expectedUri, parameters);
+            var result = await endpoint.CreateAsync<TestEntity>(expectedUri, parameters);
 
+            // Assert
             Assert.That(result, Is.InstanceOf<SuccessWebResult<TestEntity>>());
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.Data, Is.EqualTo(testEntity));
             Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));
+
+            gatewayMock.VerifyAll();
         }
 
         [Test]
-        public void Test_Create_Params_Success_No_Data()
+        public async Task Create_Params_Success_No_Data()
         {
-            const string expectedUri = @"https://test.com/create";
+            var expectedUri = new Uri("https://test.com/create");
 
-            var response = new ApiResponse<TestEntity>(HttpStatusCode.OK, "OK");
+            var response = new ApiResponse<TestEntity>(HttpStatusCode.OK);
 
-            var parameters = new Dictionary<string, object>();
-            parameters.Add("foo", "bar");
+            var parameters = new Dictionary<string, object> { { "foo", "bar" } };
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeCreateRequest<TestEntity>(It.Is<Uri>(y => y.ToString() == expectedUri), parameters)).Returns(response);
+            gatewayMock.Setup(x => x.InvokeCreateRequestAsync<TestEntity>(expectedUri, parameters)).ReturnsAsync(response);
 
+            // Act
             var endpoint = new TestEndpoint(gatewayMock.Object);
-            var result = endpoint.Create<TestEntity>(expectedUri, parameters);
+            var result = await endpoint.CreateAsync<TestEntity>(expectedUri, parameters);
 
+            // Assert
             Assert.That(result, Is.InstanceOf<SuccessWebResult<TestEntity>>());
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.Data, Is.Null);
             Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));
+
+            gatewayMock.VerifyAll();
         }
 
         [Test]
-        public void Test_Delete_Fail()
+        public async Task Delete_Fail()
         {
-            const string expectedUri = @"https://test.com/delete";
+            var expectedUri = new Uri("https://test.com/delete");
 
-            var status = new StatusResponse();
-            status.Error = "FooError";
-            status.Errors.Add(new ErrorMessage {error_message = "BarError"});
-
-            var response = new ApiResponse<StatusResponse>(HttpStatusCode.NotFound, "Not Found");
-            response.Data = status;
+            var status = new StatusResponse { Error = "Foo", Errors = new List<ErrorMessage> { new ErrorMessage { error_message = "Bar" } } };
+            var response = new ApiResponse<StatusResponse>(HttpStatusCode.NotFound, status);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeDeleteRequest<StatusResponse>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeDeleteRequestAsync<StatusResponse>(expectedUri)).ReturnsAsync(response);
 
+            // Act
             var endpoint = new TestEndpoint(gatewayMock.Object);
-            var result = endpoint.Delete(expectedUri);
+            var result = await endpoint.DeleteAsync(expectedUri);
 
+            // Assert
             Assert.That(result, Is.InstanceOf<ErrorWebResult<object>>());
             Assert.That(result.IsSuccess, Is.False);
-            Assert.That(result.ErrorMessage, Is.EqualTo("FooError\r\nBarError"));
+            Assert.That(result.ErrorMessage, Is.EqualTo("Foo\r\nBar"));
+
+            gatewayMock.VerifyAll();
         }
 
         [Test]
-        public void Test_Delete_Success()
+        public async Task Delete_Success()
         {
-            const string expectedUri = @"https://test.com/delete";
+            var expectedUri = new Uri("https://test.com/delete");
 
-            var response = new ApiResponse<StatusResponse>(HttpStatusCode.OK, "OK");
+            var response = new ApiResponse<StatusResponse>(HttpStatusCode.OK);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeDeleteRequest<StatusResponse>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeDeleteRequestAsync<StatusResponse>(expectedUri)).ReturnsAsync(response);
 
+            // Act
             var endpoint = new TestEndpoint(gatewayMock.Object);
-            var result = endpoint.Delete(expectedUri);
+            var result = await endpoint.DeleteAsync(expectedUri);
 
+            // Assert
             Assert.That(result, Is.InstanceOf<SuccessWebResult<object>>());
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));
+
+            gatewayMock.VerifyAll();
         }
 
         [Test]
-        public void Test_Get_Fail()
+        public async Task Get_Fail()
         {
-            const string expectedUri = @"https://test.com/get";
+            var expectedUri = new Uri("https://test.com/get");
 
-            var response = new ApiResponse<TestEntity>(HttpStatusCode.NotFound, "Not Found");
+            var response = new ApiResponse<TestEntity>(HttpStatusCode.NotFound);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeGetRequest<TestEntity>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeGetRequestAsync<TestEntity>(expectedUri)).ReturnsAsync(response);
 
+            // Act
             var endpoint = new TestEndpoint(gatewayMock.Object);
-            var result = endpoint.GetById<TestEntity>(expectedUri);
+            var result = await endpoint.GetByIdAsync<TestEntity>(expectedUri);
 
+            // Assert
             Assert.That(result, Is.Null);
+
+            gatewayMock.VerifyAll();
         }
 
         [Test]
-        public void Test_Get_Success()
+        public async Task Get_Success()
         {
-            const string expectedUri = @"https://test.com/get";
+            var expectedUri = new Uri("https://test.com/get");
 
             var testEntity = new TestEntity();
-
-            var response = new ApiResponse<TestEntity>(HttpStatusCode.OK, "OK");
-            response.Data = testEntity;
+            var response = new ApiResponse<TestEntity>(HttpStatusCode.OK, testEntity);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeGetRequest<TestEntity>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeGetRequestAsync<TestEntity>(expectedUri)).ReturnsAsync(response);
 
+            // Act
             var endpoint = new TestEndpoint(gatewayMock.Object);
-            var result = endpoint.GetById<TestEntity>(expectedUri);
+            var result = await endpoint.GetByIdAsync<TestEntity>(expectedUri);
 
+            // Assert
             Assert.That(result, Is.EqualTo(testEntity));
+
+            gatewayMock.VerifyAll();
         }
 
         [Test]
-        public void Test_GetList_Fail()
+        public async Task GetList_Fail()
         {
-            const string expectedUri = @"https://test.com/get";
+            var expectedUri = new Uri("https://test.com/get");
 
-            var response = new ApiResponse<PagedResult<TestEntity>>(HttpStatusCode.NotFound, "Not Found");
+            var response = new ApiResponse<PagedResult<TestEntity>>(HttpStatusCode.NotFound);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeGetRequest<PagedResult<TestEntity>>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeGetRequestAsync<PagedResult<TestEntity>>(expectedUri)).ReturnsAsync(response);
 
+            // Act
             var endpoint = new TestEndpoint(gatewayMock.Object);
-            var result = endpoint.GetList<TestEntity>(expectedUri);
+            var result = await endpoint.GetListAsync<TestEntity>(expectedUri);
 
+            // Assert
             Assert.That(result, Is.Empty);
+
+            gatewayMock.VerifyAll();
         }
 
         [Test]
-        public void Test_GetList_Success()
+        public async Task GetList_Success()
         {
-            const string expectedUri = @"https://test.com/get";
+            var expectedUri = new Uri("https://test.com/get");
 
-            var testEntities = new PagedResult<TestEntity>();
-            testEntities.collection.Add(new TestEntity());
-
-            var response = new ApiResponse<PagedResult<TestEntity>>(HttpStatusCode.OK, "OK");
-            response.Data = testEntities;
+            var testEntities = new PagedResult<TestEntity> { collection = new List<TestEntity> { new TestEntity() } };
+            var response = new ApiResponse<PagedResult<TestEntity>>(HttpStatusCode.OK, testEntities);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeGetRequest<PagedResult<TestEntity>>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeGetRequestAsync<PagedResult<TestEntity>>(expectedUri)).ReturnsAsync(response);
 
+            // Act
             var endpoint = new TestEndpoint(gatewayMock.Object);
-            var result = endpoint.GetList<TestEntity>(expectedUri).ToList();
+            var result = (await endpoint.GetListAsync<TestEntity>(expectedUri)).ToList();
 
+            // Assert
             Assert.That(result[0], Is.EqualTo(testEntities.collection[0]));
+
+            gatewayMock.VerifyAll();
         }
 
         [Test]
-        public void Test_Update_Entity_Fail()
+        public async Task Update_Entity_Fail()
         {
-            const string expectedUri = @"https://test.com/update";
+            var expectedUri = new Uri("https://test.com/update");
 
             var testEntity = new TestEntity();
-
-            var response = new ApiResponse<TestEntity>(HttpStatusCode.NotFound, "Not Found");
-            response.Data = testEntity;
+            var response = new ApiResponse<TestEntity>(HttpStatusCode.NotFound, testEntity);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeUpdateRequest<TestEntity>(It.Is<Uri>(y => y.ToString() == expectedUri), testEntity)).Returns(response);
+            gatewayMock.Setup(x => x.InvokeUpdateRequestAsync<TestEntity>(expectedUri, testEntity)).ReturnsAsync(response);
 
+            // Act
             var endpoint = new TestEndpoint(gatewayMock.Object);
-            var result = endpoint.Update<TestEntity>(expectedUri, testEntity);
+            var result = await endpoint.UpdateAsync<TestEntity>(expectedUri, testEntity);
 
+            // Assert
             Assert.That(result, Is.InstanceOf<ErrorWebResult<TestEntity>>());
             Assert.That(result.IsSuccess, Is.False);
             Assert.That(result.Data, Is.Null);
-            Assert.That(result.ErrorMessage, Is.EqualTo("Not Found"));
+            Assert.That(result.ErrorMessage, Is.EqualTo(HttpStatusCode.NotFound.ToString()));
+
+            gatewayMock.VerifyAll();
         }
 
         [Test]
-        public void Test_Update_Entity_Success()
+        public async Task Update_Entity_Success()
         {
-            const string expectedUri = @"https://test.com/update";
+            var expectedUri = new Uri("https://test.com/update");
 
             var testEntity = new TestEntity();
-
-            var response = new ApiResponse<TestEntity>(HttpStatusCode.OK, "OK");
-            response.Data = testEntity;
+            var response = new ApiResponse<TestEntity>(HttpStatusCode.OK, testEntity);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeUpdateRequest<TestEntity>(It.Is<Uri>(y => y.ToString() == expectedUri), testEntity)).Returns(response);
+            gatewayMock.Setup(x => x.InvokeUpdateRequestAsync<TestEntity>(expectedUri, testEntity)).ReturnsAsync(response);
 
+            // Act
             var endpoint = new TestEndpoint(gatewayMock.Object);
-            var result = endpoint.Update<TestEntity>(expectedUri, testEntity);
+            var result = await endpoint.UpdateAsync<TestEntity>(expectedUri, testEntity);
 
+            // Assert
             Assert.That(result, Is.InstanceOf<SuccessWebResult<TestEntity>>());
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.Data, Is.EqualTo(testEntity));
             Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));
+
+            gatewayMock.VerifyAll();
         }
 
         [Test]
-        public void Test_Update_Entity_Success_No_Data()
+        public async Task Update_Entity_Success_No_Data()
         {
-            const string expectedUri = @"https://test.com/update";
+            var expectedUri = new Uri("https://test.com/update");
+
+            var response = new ApiResponse<TestEntity>(HttpStatusCode.OK);
 
             var testEntity = new TestEntity();
-
-            var response = new ApiResponse<TestEntity>(HttpStatusCode.OK, "OK");
-
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeUpdateRequest<TestEntity>(It.Is<Uri>(y => y.ToString() == expectedUri), testEntity)).Returns(response);
+            gatewayMock.Setup(x => x.InvokeUpdateRequestAsync<TestEntity>(expectedUri, testEntity)).ReturnsAsync(response);
 
+            // Act
             var endpoint = new TestEndpoint(gatewayMock.Object);
-            var result = endpoint.Update<TestEntity>(expectedUri, testEntity);
+            var result = await endpoint.UpdateAsync<TestEntity>(expectedUri, testEntity);
 
+            // Assert
             Assert.That(result, Is.InstanceOf<SuccessWebResult<TestEntity>>());
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.Data, Is.Null);
             Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));
+
+            gatewayMock.VerifyAll();
         }
 
         [Test]
-        public void Test_Update_Fail()
+        public async Task Update_Fail()
         {
-            const string expectedUri = @"https://test.com/update";
+            var expectedUri = new Uri("https://test.com/update");
 
-            var status = new StatusResponse();
-            status.Error = "FooError";
-            status.Errors.Add(new ErrorMessage {error_message = "BarError"});
+            var status = new StatusResponse { Error = "Foo", Errors = new List<ErrorMessage> { new ErrorMessage { error_message = "Bar" } } };
 
-            var response = new ApiResponse<StatusResponse>(HttpStatusCode.NotFound, "Not Found");
-            response.Data = status;
+            var response = new ApiResponse<StatusResponse>(HttpStatusCode.NotFound, status);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeUpdateRequest<StatusResponse>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeUpdateRequestAsync<StatusResponse>(expectedUri)).ReturnsAsync(response);
 
+            // Act
             var endpoint = new TestEndpoint(gatewayMock.Object);
-            var result = endpoint.Update(expectedUri);
+            var result = await endpoint.UpdateAsync(expectedUri);
 
+            // Assert
             Assert.That(result, Is.InstanceOf<ErrorWebResult<object>>());
             Assert.That(result.IsSuccess, Is.False);
-            Assert.That(result.ErrorMessage, Is.EqualTo("FooError\r\nBarError"));
+            Assert.That(result.ErrorMessage, Is.EqualTo("Foo\r\nBar"));
+
+            gatewayMock.VerifyAll();
         }
 
         [Test]
-        public void Test_Update_Params_Fail()
+        public async Task Update_Params_Fail()
         {
-            const string expectedUri = @"https://test.com/update";
+            var expectedUri = new Uri("https://test.com/update");
 
             var testEntity = new TestEntity();
+            var response = new ApiResponse<TestEntity>(HttpStatusCode.NotFound, testEntity);
 
-            var response = new ApiResponse<TestEntity>(HttpStatusCode.NotFound, "Not Found");
-            response.Data = testEntity;
-
-            var parameters = new Dictionary<string, object>();
-            parameters.Add("foo", "bar");
+            var parameters = new Dictionary<string, object> { { "foo", "bar" } };
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeUpdateRequest<TestEntity>(It.Is<Uri>(y => y.ToString() == expectedUri), parameters)).Returns(response);
+            gatewayMock.Setup(x => x.InvokeUpdateRequestAsync<TestEntity>(expectedUri, parameters)).ReturnsAsync(response);
 
+            // Act
             var endpoint = new TestEndpoint(gatewayMock.Object);
-            var result = endpoint.Update<TestEntity>(expectedUri, parameters);
+            var result = await endpoint.UpdateAsync<TestEntity>(expectedUri, parameters);
 
+            // Assert
             Assert.That(result, Is.InstanceOf<ErrorWebResult<TestEntity>>());
             Assert.That(result.IsSuccess, Is.False);
             Assert.That(result.Data, Is.Null);
-            Assert.That(result.ErrorMessage, Is.EqualTo("Not Found"));
+            Assert.That(result.ErrorMessage, Is.EqualTo(HttpStatusCode.NotFound.ToString()));
+
+            gatewayMock.VerifyAll();
         }
 
         [Test]
-        public void Test_Update_Params_Success()
+        public async Task Update_Params_Success()
         {
-            const string expectedUri = @"https://test.com/update";
+            var expectedUri = new Uri("https://test.com/update");
 
             var testEntity = new TestEntity();
+            var response = new ApiResponse<TestEntity>(HttpStatusCode.OK, testEntity);
 
-            var response = new ApiResponse<TestEntity>(HttpStatusCode.OK, "OK");
-            response.Data = testEntity;
-
-            var parameters = new Dictionary<string, object>();
-            parameters.Add("foo", "bar");
+            var parameters = new Dictionary<string, object> { { "foo", "bar" } };
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeUpdateRequest<TestEntity>(It.Is<Uri>(y => y.ToString() == expectedUri), parameters)).Returns(response);
+            gatewayMock.Setup(x => x.InvokeUpdateRequestAsync<TestEntity>(expectedUri, parameters)).ReturnsAsync(response);
 
+            // Act
             var endpoint = new TestEndpoint(gatewayMock.Object);
-            var result = endpoint.Update<TestEntity>(expectedUri, parameters);
+            var result = await endpoint.UpdateAsync<TestEntity>(expectedUri, parameters);
 
+            // Assert
             Assert.That(result, Is.InstanceOf<SuccessWebResult<TestEntity>>());
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.Data, Is.EqualTo(testEntity));
             Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));
+
+            gatewayMock.VerifyAll();
         }
 
         [Test]
-        public void Test_Update_Params_Success_No_Data()
+        public async Task Update_Params_Success_No_Data()
         {
-            const string expectedUri = @"https://test.com/update";
+            var expectedUri = new Uri("https://test.com/update");
 
-            var response = new ApiResponse<TestEntity>(HttpStatusCode.OK, "OK");
+            var response = new ApiResponse<TestEntity>(HttpStatusCode.OK);
 
-            var parameters = new Dictionary<string, object>();
-            parameters.Add("foo", "bar");
+            var parameters = new Dictionary<string, object> { { "foo", "bar" } };
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeUpdateRequest<TestEntity>(It.Is<Uri>(y => y.ToString() == expectedUri), parameters)).Returns(response);
+            gatewayMock.Setup(x => x.InvokeUpdateRequestAsync<TestEntity>(expectedUri, parameters)).ReturnsAsync(response);
 
+            // Act
             var endpoint = new TestEndpoint(gatewayMock.Object);
-            var result = endpoint.Update<TestEntity>(expectedUri, parameters);
+            var result = await endpoint.UpdateAsync<TestEntity>(expectedUri, parameters);
 
+            // Assert
             Assert.That(result, Is.InstanceOf<SuccessWebResult<TestEntity>>());
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.Data, Is.Null);
             Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));
+
+            gatewayMock.VerifyAll();
         }
 
         [Test]
-        public void Test_Update_Success()
+        public async Task Update_Success()
         {
-            const string expectedUri = @"https://test.com/update";
+            var expectedUri = new Uri("https://test.com/update");
 
-            var response = new ApiResponse<StatusResponse>(HttpStatusCode.OK, "OK");
+            var response = new ApiResponse<StatusResponse>(HttpStatusCode.OK);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeUpdateRequest<StatusResponse>(It.Is<Uri>(y => y.ToString() == expectedUri))).Returns(response);
+            gatewayMock.Setup(x => x.InvokeUpdateRequestAsync<StatusResponse>(expectedUri)).ReturnsAsync(response);
 
+            // Act
             var endpoint = new TestEndpoint(gatewayMock.Object);
-            var result = endpoint.Update(expectedUri);
+            var result = await endpoint.UpdateAsync(expectedUri);
 
+            // Assert
             Assert.That(result, Is.InstanceOf<SuccessWebResult<object>>());
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.ErrorMessage, Is.EqualTo(string.Empty));
+
+            gatewayMock.VerifyAll();
         }
 
         private class TestEndpoint : Endpoint
@@ -452,52 +494,49 @@ namespace SoundCloud.Api.Test.Endpoints
             {
             }
 
-            public IWebResult<T> Create<T>(string uri, Entity entity) where T : Entity
+            public new Task<IWebResult<T>> CreateAsync<T>(Uri uri, Entity entity) where T : Entity
             {
-                return Create<T>(new Uri(uri), entity);
+                return base.CreateAsync<T>(uri, entity);
             }
 
-            public IWebResult<T> Create<T>(string uri, Dictionary<string, object> parameters) where T : Entity
+            public Task<IWebResult<T>> CreateAsync<T>(Uri uri, Dictionary<string, object> parameters) where T : Entity
             {
-                return Create<T>(new Uri(uri), parameters);
+                return base.CreateAsync<T>(uri, parameters);
             }
 
-            public IWebResult Delete(string uri)
+            public new Task<IWebResult> DeleteAsync(Uri uri)
             {
-                return Delete(new Uri(uri));
+                return base.DeleteAsync(uri);
             }
 
-            public T GetById<T>(string uri) where T : Entity
+            public new Task<T> GetByIdAsync<T>(Uri uri) where T : Entity
             {
-                return GetById<T>(new Uri(uri));
+                return base.GetByIdAsync<T>(uri);
             }
 
-            public IEnumerable<T> GetList<T>(string uri) where T : Entity
+            public new Task<IEnumerable<T>> GetListAsync<T>(Uri uri) where T : Entity
             {
-                return GetList<T>(new Uri(uri));
+                return base.GetListAsync<T>(uri);
             }
 
-            public IWebResult Update(string uri)
+            public new Task<IWebResult> UpdateAsync(Uri uri)
             {
-                return Update(new Uri(uri));
+                return base.UpdateAsync(uri);
             }
 
-            public IWebResult<T> Update<T>(string uri, Entity entity) where T : Entity
+            public new Task<IWebResult<T>> UpdateAsync<T>(Uri uri, Entity entity) where T : Entity
             {
-                return Update<T>(new Uri(uri), entity);
+                return base.UpdateAsync<T>(uri, entity);
             }
 
-            public IWebResult<T> Update<T>(string uri, Dictionary<string, object> parameters) where T : Entity
+            public Task<IWebResult<T>> UpdateAsync<T>(Uri uri, Dictionary<string, object> parameters) where T : Entity
             {
-                return Update<T>(new Uri(uri), parameters);
+                return base.UpdateAsync<T>(uri, parameters);
             }
         }
 
         private class TestEntity : Entity
         {
-            internal override void AppendCredentialsToProperties(SoundCloudCredentials credentials)
-            {
-            }
         }
     }
 }

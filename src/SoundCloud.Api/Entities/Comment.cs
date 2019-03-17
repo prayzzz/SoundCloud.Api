@@ -66,12 +66,6 @@ namespace SoundCloud.Api.Entities
             return true;
         }
 
-        internal override void AppendCredentialsToProperties(SoundCloudCredentials credentials)
-        {
-            user?.AppendCredentialsToProperties(credentials);
-            uri = uri.AppendCredentials(credentials);
-        }
-
         internal override BoxedEntity ToBoxedEntity()
         {
             return new CommentsBox(this);

@@ -1,9 +1,22 @@
-﻿namespace SoundCloud.Api.Utils
+﻿using System;
+
+namespace SoundCloud.Api.Utils
 {
     public class SoundCloudCredentials
     {
-        public string AccessToken { get; set; }
+        public SoundCloudCredentials(string accessToken, string clientId)
+        {
+            if (string.IsNullOrEmpty(accessToken) && string.IsNullOrEmpty(clientId))
+            {
+                throw new ArgumentException($"{nameof(accessToken)} or {nameof(clientId)} must not be null or empty");
+            }
 
-        public string ClientId { get; set; }
+            AccessToken = accessToken;
+            ClientId = clientId;
+        }
+
+        public string AccessToken { get; }
+
+        public string ClientId { get; }
     }
 }

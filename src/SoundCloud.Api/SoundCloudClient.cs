@@ -1,10 +1,18 @@
-﻿using SoundCloud.Api.Endpoints;
+﻿using System;
+using System.Net;
+using System.Net.Http;
+using System.Runtime.CompilerServices;
+using Microsoft.Extensions.DependencyInjection;
+using SoundCloud.Api.Endpoints;
 using SoundCloud.Api.Web;
 
 namespace SoundCloud.Api
 {
     public sealed class SoundCloudClient : ISoundCloudClient
     {
+        private const string ArgumentMustNotBeNullOrEmpty = "Argument must not be null or empty";
+        public const string HttpClientName = "SoundCloud.Api";
+
         private readonly Apps _apps;
         private readonly Comments _comments;
         private readonly Groups _groups;
@@ -14,12 +22,10 @@ namespace SoundCloud.Api
         private readonly Resolve _resolve;
         private readonly Tracks _tracks;
         private readonly Users _users;
-        private string _clientId;
-        private string _token;
 
-        private SoundCloudClient()
+        public SoundCloudClient(IHttpClientFactory httpClientFactory)
         {
-            var gateway = new SoundCloudApiGateway();
+            var gateway = new SoundCloudApiGateway(httpClientFactory);
             _comments = new Comments(gateway);
             _oAuth2 = new OAuth2(gateway);
             _playlists = new Playlists(gateway);
@@ -31,102 +37,48 @@ namespace SoundCloud.Api
             _resolve = new Resolve(gateway);
         }
 
-        internal string ClientId
-        {
-            get { return _clientId; }
-            set
-            {
-                _clientId = value;
-                _apps.Credentials.ClientId = value;
-                _comments.Credentials.ClientId = value;
-                _groups.Credentials.ClientId = value;
-                _me.Credentials.ClientId = value;
-                _oAuth2.Credentials.ClientId = value;
-                _playlists.Credentials.ClientId = value;
-                _resolve.Credentials.ClientId = value;
-                _tracks.Credentials.ClientId = value;
-                _users.Credentials.ClientId = value;
-            }
-        }
+        public IApps Apps => _apps;
 
-        internal string Token
-        {
-            get { return _token; }
-            set
-            {
-                _token = value;
-                _apps.Credentials.AccessToken = value;
-                _comments.Credentials.AccessToken = value;
-                _groups.Credentials.AccessToken = value;
-                _me.Credentials.AccessToken = value;
-                _oAuth2.Credentials.AccessToken = value;
-                _playlists.Credentials.AccessToken = value;
-                _resolve.Credentials.AccessToken = value;
-                _tracks.Credentials.AccessToken = value;
-                _users.Credentials.AccessToken = value;
-            }
-        }
+        public IComments Comments => _comments;
 
-        public IApps Apps
-        {
-            get { return _apps; }
-        }
+        public IGroups Groups => _groups;
 
-        public IComments Comments
-        {
-            get { return _comments; }
-        }
+        public IMe Me => _me;
 
-        public IGroups Groups
-        {
-            get { return _groups; }
-        }
+        public IOAuth2 OAuth2 => _oAuth2;
 
-        public bool IsAuthorized => !string.IsNullOrEmpty(Token);
+        public IPlaylists Playlists => _playlists;
 
-        public IMe Me
-        {
-            get { return _me; }
-        }
+        public IResolve Resolve => _resolve;
 
-        public IOAuth2 OAuth2
-        {
-            get { return _oAuth2; }
-        }
+        public ITracks Tracks => _tracks;
 
-        public IPlaylists Playlists
-        {
-            get { return _playlists; }
-        }
+        public IUsers Users => _users;
 
-        public IResolve Resolve
+        public static ISoundCloudClient CreateAuthorized(string accessToken)
         {
-            get { return _resolve; }
-        }
+            if (string.IsNullOrEmpty(accessToken)) throw new ArgumentException(ArgumentMustNotBeNullOrEmpty, nameof(accessToken));
 
-        public ITracks Tracks
-        {
-            get { return _tracks; }
-        }
-
-        public IUsers Users
-        {
-            get { return _users; }
-        }
-
-        public static ISoundCloudClient CreateAuthorized(string token)
-        {
-            return new SoundCloudClient {Token = token};
+            var httpClientFactory = GetDefaultHttpClientFactory(accessToken, null);
+            return new SoundCloudClient(httpClientFactory);
         }
 
         public static ISoundCloudClient CreateUnauthorized(string clientId)
         {
-            return new SoundCloudClient {ClientId = clientId};
+            if (string.IsNullOrEmpty(clientId)) throw new ArgumentException(ArgumentMustNotBeNullOrEmpty, nameof(clientId));
+
+            var httpClientFactory = GetDefaultHttpClientFactory(null, clientId);
+            return new SoundCloudClient(httpClientFactory);
         }
 
-        internal static SoundCloudClient Create()
+        private static IHttpClientFactory GetDefaultHttpClientFactory(string accessToken, string clientId)
         {
-            return new SoundCloudClient();
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddSoundCloudHttpClient(accessToken, clientId);
+
+            var provider = serviceCollection.BuildServiceProvider();
+            var httpClientFactory = provider.GetService<IHttpClientFactory>();
+            return httpClientFactory;
         }
     }
 }
