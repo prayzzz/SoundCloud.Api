@@ -28,16 +28,6 @@ namespace SoundCloud.Api.Test
         }
 
         [Test]
-        public void Test_Groups()
-        {
-            var client = SoundCloudClient.CreateUnauthorized(ClientId);
-
-            var groups = client.Groups;
-
-            Assert.That(groups, Is.Not.Null);
-        }
-
-        [Test]
         public void Test_Me()
         {
             var client = SoundCloudClient.CreateUnauthorized(ClientId);

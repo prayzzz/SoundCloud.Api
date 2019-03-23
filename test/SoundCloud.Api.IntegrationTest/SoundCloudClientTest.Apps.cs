@@ -1,13 +1,12 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
-
 using SoundCloud.Api.Utils;
 
 namespace SoundCloud.Api.IntegrationTest
 {
     [TestFixture]
-    public partial class SoundCloudClientTest
+    public class AppsTest : SoundCloudClientTest
     {
         [Test]
         public async Task Test_Apps_Get()
@@ -16,14 +15,13 @@ namespace SoundCloud.Api.IntegrationTest
 
             var appToGet = (await client.Apps.GetAsync()).First();
 
-            var app = await client.Apps.GetAsync(appToGet.id);
+            var app = await client.Apps.GetAsync(appToGet.Id);
 
             Assert.That(app, Is.Not.Null);
-            Assert.That(app.uri.Query, Does.Contain(_settings.Token));
         }
 
         /// <summary>
-        /// Some extended testing to ensure functionality of <see cref="SoundCloudList{T}"/> against live api.
+        ///     Some extended testing to ensure functionality of <see cref="SoundCloudList{T}" /> against live api.
         /// </summary>
         [Test]
         public async Task Test_Apps_GetList()

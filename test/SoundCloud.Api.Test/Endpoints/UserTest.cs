@@ -112,25 +112,6 @@ namespace SoundCloud.Api.Test.Endpoints
         }
 
         [Test]
-        public async Task GetGroups()
-        {
-            var expectedUri = new Uri("https://api.soundcloud.com/users/164386753/groups?limit=200&linked_partitioning=1");
-
-            var groups = new PagedResult<Group> { collection = new List<Group> { new Group(), new Group() } };
-            var response = new ApiResponse<PagedResult<Group>>(HttpStatusCode.OK, groups);
-
-            var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeGetRequestAsync<PagedResult<Group>>(expectedUri)).ReturnsAsync(response);
-
-            // Act
-            var user = new User { Id = UserId };
-            var result = (await new Users(gatewayMock.Object).GetGroupsAsync(user)).ToList();
-
-            // Assert
-            Assert.That(result, Is.EqualTo(groups.collection));
-        }
-
-        [Test]
         public async Task GetList()
         {
             var expectedUri = new Uri("https://api.soundcloud.com/users?limit=200&linked_partitioning=1");

@@ -72,12 +72,6 @@ namespace SoundCloud.Api.Endpoints
         Task<IEnumerable<User>> GetFollowingsAsync();
 
         /// <summary>
-        /// Gets a list of groups
-        /// </summary>
-        /// <returns></returns>
-        Task<IEnumerable<Group>> GetGroupsAsync();
-
-        /// <summary>
         /// Gets a list of playlists
         /// </summary>
         /// <returns></returns>

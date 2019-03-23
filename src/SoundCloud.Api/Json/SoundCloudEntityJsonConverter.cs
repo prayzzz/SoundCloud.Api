@@ -55,8 +55,6 @@ namespace SoundCloud.Api.Json
                     return jsonObject.ToObject<AppClient>();
                 case Kind.WebProfile:
                     return jsonObject.ToObject<WebProfile>();
-                case Kind.Group:
-                    return jsonObject.ToObject<Group>();
                 default:
                     throw new ArgumentOutOfRangeException("kind", kind, "Not supported.");
             }

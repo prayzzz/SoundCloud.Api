@@ -87,12 +87,6 @@ namespace SoundCloud.Api.Endpoints
             return await GetListAsync<User>(builder.BuildUri());
         }
 
-        public async Task<IEnumerable<Group>> GetGroupsAsync()
-        {
-            var builder = new MeQueryBuilder { Path = MeGroupsPath, Paged = true };
-            return await GetListAsync<Group>(builder.BuildUri());
-        }
-
         public async Task<IEnumerable<Playlist>> GetPlaylistsAsync()
         {
             var builder = new MeQueryBuilder { Path = MePlaylistsPath, Paged = true };

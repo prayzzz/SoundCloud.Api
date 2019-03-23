@@ -13,7 +13,6 @@ namespace SoundCloud.Api.Endpoints
         private const string UserFavoritesPath = "users/{0}/favorites?";
         private const string UserFollowersPath = "users/{0}/followers?";
         private const string UserFollowingsPath = "users/{0}/followings?";
-        private const string UserGroupsPath = "users/{0}/groups?";
         private const string UserPath = "users/{0}?";
         private const string UserPlaylistsPath = "users/{0}/playlists?";
         private const string UsersPath = "users?";
@@ -74,14 +73,6 @@ namespace SoundCloud.Api.Endpoints
 
             var builder = new UserQueryBuilder { Path = string.Format(UserFollowingsPath, user.Id), Paged = true };
             return await GetListAsync<User>(builder.BuildUri());
-        }
-
-        public async Task<IEnumerable<Group>> GetGroupsAsync(User user)
-        {
-            Validate(user.ValidateGet);
-
-            var builder = new UserQueryBuilder { Path = string.Format(UserGroupsPath, user.Id), Paged = true };
-            return await GetListAsync<Group>(builder.BuildUri());
         }
 
         public async Task<IEnumerable<Playlist>> GetPlaylistsAsync(User user)

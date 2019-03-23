@@ -99,7 +99,6 @@ namespace SoundCloud.Api.Endpoints
             }
 
             var parameters = new Dictionary<string, object>();
-// TODO            parameters.Add("oauth_token", Credentials.AccessToken);
             parameters.Add("track[title]", title);
             parameters.Add("track[asset_data]", file);
 

@@ -5,4 +5,4 @@
 
 .idea/
 
-/SoundCloud.Api.IntegrationTest/settings.json
+test/SoundCloud.Api.IntegrationTest/settings.json

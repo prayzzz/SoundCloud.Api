@@ -1,145 +1,114 @@
 ﻿using System.Linq;
-
+using System.Threading.Tasks;
 using NUnit.Framework;
-
 using SoundCloud.Api.Entities;
 
 namespace SoundCloud.Api.IntegrationTest
 {
-    /// <summary>
-    /// This class tests the logic of the wrapper against the real SoundCloud API.
-    /// Therefore a clientid and token is needed. Both values are loaded from a settings.json file.
-    /// In order to run this tests, the file must be provided.
-    /// All tests are marked as inconclusive, if the file is not available.
-    /// </summary>
     [TestFixture]
-    public partial class SoundCloudClientTest
+    public class UserTest : SoundCloudClientTest
     {
         [Test]
-        public void Test_Users_Get()
+        public async Task Users_Get()
         {
             var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
 
-            var user = client.Users.Get(UserId);
+            var user = await client.Users.GetAsync(UserId);
 
             Assert.That(user, Is.Not.Null);
             Assert.That(user.username, Is.EqualTo("sharpsound"));
         }
 
         [Test]
-        public void Test_Users_GetComments()
+        public async Task Users_GetComments()
         {
             var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
 
-            var user = new User();
-            user.id = UserId;
+            var user = new User { Id = UserId };
 
-            var comments = client.Users.GetComments(user);
+            var comments = await client.Users.GetCommentsAsync(user);
 
             Assert.That(comments.Any(), Is.True);
         }
 
         [Test]
-        public void Test_Users_GetFavorites()
+        public async Task Users_GetFavorites()
         {
             var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
 
-            var user = new User();
-            user.id = UserId;
+            var user = new User { Id = UserId };
 
-            var favorites = client.Users.GetFavorites(user);
+            var favorites = await client.Users.GetFavoritesAsync(user);
 
             Assert.That(favorites.Any(), Is.True);
         }
 
         [Test]
-        public void Test_Users_GetFollowers()
+        public async Task Users_GetFollowers()
         {
             var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
 
-            var user = new User();
-            user.id = UserId;
+            var user = new User { Id = UserId };
 
-            var followers = client.Users.GetFollowers(user);
+            var followers = await client.Users.GetFollowersAsync(user);
 
             Assert.That(followers.Any(), Is.True);
         }
 
         [Test]
-        public void Test_Users_GetFollowings()
+        public async Task Users_GetFollowings()
         {
             var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
 
-            var user = new User();
-            user.id = UserId;
+            var user = new User { Id = UserId };
 
-            var followings = client.Users.GetFollowings(user);
+            var followings = await client.Users.GetFollowingsAsync(user);
 
             Assert.That(followings.Any(), Is.True);
         }
 
         [Test]
-        public void Test_Users_GetGroups()
+        public async Task Users_GetList()
         {
             var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
 
-            var user = new User();
-            user.id = UserId;
-
-            var groups = client.Users.GetGroups(user).ToList();
-
-            Assert.That(groups.Any(), Is.True);
-
-            var sampleGroup = groups.FirstOrDefault(x => x.name == SharpSoundGroupName);
-
-            Assert.That(sampleGroup, Is.Not.Null);
-        }
-
-        [Test]
-        public void Test_Users_GetList()
-        {
-            var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
-
-            var users = client.Users.Get().Take(150).ToList();
+            var users = (await client.Users.GetAsync()).Take(150).ToList();
 
             Assert.That(users.Count, Is.EqualTo(150));
         }
 
         [Test]
-        public void Test_Users_GetPlaylists()
+        public async Task Users_GetPlaylists()
         {
             var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
 
-            var user = new User();
-            user.id = UserId;
+            var user = new User { Id = UserId };
 
-            var playlists = client.Users.GetPlaylists(user).ToList();
+            var playlists = (await client.Users.GetPlaylistsAsync(user)).ToList();
 
             Assert.That(playlists.Any(), Is.True);
         }
 
         [Test]
-        public void Test_Users_GetTracks()
+        public async Task Users_GetTracks()
         {
             var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
 
-            var user = new User();
-            user.id = UserId;
+            var user = new User { Id = UserId };
 
-            var tracks = client.Users.GetTracks(user);
+            var tracks = await client.Users.GetTracksAsync(user);
 
             Assert.That(tracks.Any(), Is.True);
         }
 
         [Test]
-        public void Test_Users_GetWebProfiles()
+        public async Task Users_GetWebProfiles()
         {
             var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
 
-            var user = new User();
-            user.id = UserId;
+            var user = new User { Id = UserId };
 
-            var groups = client.Users.GetWebProfiles(user).ToList();
+            var groups = (await client.Users.GetWebProfilesAsync(user)).ToList();
 
             Assert.That(groups.Any(), Is.True);
         }

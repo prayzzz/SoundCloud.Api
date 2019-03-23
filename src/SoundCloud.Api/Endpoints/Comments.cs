@@ -10,7 +10,7 @@ namespace SoundCloud.Api.Endpoints
     internal sealed class Comments : Endpoint, IComments
     {
         private const string CommentPath = "comments/{0}?";
-        private const string CommentsPath = "comments?";
+        private const string CommentsPath = "comments/?";
 
         internal Comments(ISoundCloudApiGateway gateway)
             : base(gateway)

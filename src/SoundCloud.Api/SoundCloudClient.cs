@@ -15,7 +15,6 @@ namespace SoundCloud.Api
 
         private readonly Apps _apps;
         private readonly Comments _comments;
-        private readonly Groups _groups;
         private readonly Me _me;
         private readonly OAuth2 _oAuth2;
         private readonly Playlists _playlists;
@@ -31,7 +30,6 @@ namespace SoundCloud.Api
             _playlists = new Playlists(gateway);
             _tracks = new Tracks(gateway);
             _users = new Users(gateway);
-            _groups = new Groups(gateway);
             _me = new Me(gateway);
             _apps = new Apps(gateway);
             _resolve = new Resolve(gateway);
@@ -40,8 +38,6 @@ namespace SoundCloud.Api
         public IApps Apps => _apps;
 
         public IComments Comments => _comments;
-
-        public IGroups Groups => _groups;
 
         public IMe Me => _me;
 

@@ -8,8 +8,6 @@ namespace SoundCloud.Api
 
         IComments Comments { get; }
 
-        IGroups Groups { get; }
-
         IMe Me { get; }
 
         IOAuth2 OAuth2 { get; }

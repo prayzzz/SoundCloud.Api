@@ -7,7 +7,7 @@ namespace SoundCloud.Api.Test.Data
     {
         private const string ArtworkPath = "SoundCloud.Api.Test.Data.artwork.jpeg";
         private const string FollowingsPath = "SoundCloud.Api.Test.Data.followings.json";
-        private const string SoundPath = "SoundCloud.Api.Test.Data.artwork.jpeg";
+        private const string SoundPath = "SoundCloud.Api.Test.Data.sound.wav";
         private const string UserPath = "SoundCloud.Api.Test.Data.user.json";
 
         public static Stream GetArtwork()

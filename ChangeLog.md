@@ -12,6 +12,7 @@ I'm not actively looking if this has changed. Please notify me it it did.
 **Breaking Changes**
 * removed `ISoundCloudClient.IsAuthorized`
 * removed all synchronous methods
+* removed Groups Endpoints
 
 **Changes**
 * moved to IHttpClientFactory for requests 

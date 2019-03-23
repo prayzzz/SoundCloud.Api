@@ -1,96 +1,84 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Threading.Tasks;
 using NUnit.Framework;
-
 using SoundCloud.Api.Entities;
 using SoundCloud.Api.Entities.Enums;
 using SoundCloud.Api.Test.Data;
 
 namespace SoundCloud.Api.IntegrationTest
 {
-    /// <summary>
-    /// This class tests the logic of the wrapper against the real SoundCloud API.
-    /// Therefore a clientid and token is needed. Both values are loaded from a settings.json file.
-    /// In order to run this tests, the file must be provided.
-    /// All tests are marked as inconclusive, if the file is not available.
-    /// </summary>
     [TestFixture]
-    public partial class SoundCloudClientTest
+    public class TracksTest : SoundCloudClientTest
     {
         [Test]
-        public void Test_Tracks_Get()
+        public async Task Tracks_Get()
         {
-            var client = SoundCloudClient.CreateAuthorized(_settings.Token);
+            var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
 
-            var tracks = client.Tracks.Get(TrackId);
+            var tracks = await client.Tracks.GetAsync(TrackId);
 
             Assert.That(tracks, Is.Not.Null);
             Assert.That(tracks.genre, Is.EqualTo("Sample"));
             Assert.That(tracks.playback_count, Is.GreaterThan(0));
-
-            Assert.That(tracks.uri.Query, Does.Contain("oauth_token=" + _settings.Token));
-            Assert.That(tracks.stream_url.Query, Does.Contain("oauth_token=" + _settings.Token));
-            Assert.That(tracks.user.uri.Query, Does.Contain("oauth_token=" + _settings.Token));
         }
 
         [Test]
-        public void Test_Tracks_GetComments()
+        public async Task Tracks_GetComments()
         {
             var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
 
             var track = new Track();
-            track.id = Track2Id;
+            track.Id = Track2Id;
 
-            var comments = client.Tracks.GetComments(track);
+            var comments = await client.Tracks.GetCommentsAsync(track);
 
             Assert.That(comments.Any(), Is.True);
         }
 
         [Test]
-        public void Test_Tracks_GetFavoriters()
+        public async Task Tracks_GetFavoriters()
         {
             var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
 
             var track = new Track();
-            track.id = Track2Id;
+            track.Id = Track2Id;
 
-            var users = client.Tracks.GetFavoriters(track);
+            var users = await client.Tracks.GetFavoritersAsync(track);
 
             Assert.That(users.Any(), Is.True);
         }
 
         [Test]
-        public void Test_Tracks_GetList()
+        public async Task Tracks_GetList()
         {
             var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
 
-            var tracks = client.Tracks.Get().Take(150).ToList();
+            var tracks = (await client.Tracks.GetAsync()).Take(150).ToList();
 
             Assert.That(tracks.Count, Is.EqualTo(150));
         }
 
         [Test]
-        public void Test_Tracks_GetSecretToken()
+        public async Task Tracks_GetSecretToken()
         {
             var client = SoundCloudClient.CreateAuthorized(_settings.Token);
 
-            var track = new Track();
-            track.id = TrackId;
+            var track = new Track { Id = TrackId };
 
-            var secretToken = client.Tracks.GetSecretToken(track);
+            var secretToken = await client.Tracks.GetSecretTokenAsync(track);
 
             Assert.That(string.IsNullOrEmpty(secretToken.token), Is.False);
         }
 
         [Test]
-        public void Test_Tracks_Post_Delete()
+        public async Task Tracks_Post_Delete()
         {
             var client = SoundCloudClient.CreateAuthorized(_settings.Token);
 
             var title = "SampleTitle at " + DateTime.Now.ToLocalTime();
-            var postResult = client.Tracks.UploadTrack(title, TestDataProvider.GetSound());
+            var postResult = await client.Tracks.UploadTrackAsync(title, TestDataProvider.GetSound());
 
             Assert.That(postResult.Data.title, Is.EqualTo(title));
 
@@ -107,18 +95,18 @@ namespace SoundCloud.Api.IntegrationTest
             postedTrack.release_month = 10;
             postedTrack.release_year = 2010;
             postedTrack.sharing = Sharing.Public;
-            postedTrack.tag_list = new List<string> {"Tag1", "Tag2"};
+            postedTrack.tag_list = new List<string> { "Tag1", "Tag2" };
             postedTrack.title = "NewTitle";
             postedTrack.track_type = TrackType.Sample;
 
-            var updateResult = client.Tracks.UploadArtwork(postedTrack, TestDataProvider.GetArtwork());
+            var updateResult = await client.Tracks.UploadArtworkAsync(postedTrack, TestDataProvider.GetArtwork());
 
             Assert.That(updateResult.Data.artwork_url, Is.Not.Null);
 
-            updateResult = client.Tracks.Update(postedTrack);
+            updateResult = await client.Tracks.UpdateAsync(postedTrack);
 
             Assert.That(updateResult.Data.description, Is.EqualTo(postedTrack.description));
-            Assert.That(updateResult.Data.download_url.ToString(), Does.Contain("https://api.soundcloud.com/tracks/" + postedTrack.id + "/download"));
+            Assert.That(updateResult.Data.download_url.ToString(), Does.Contain("https://api.soundcloud.com/tracks/" + postedTrack.Id + "/download"));
             Assert.That(updateResult.Data.downloadable, Is.EqualTo(postedTrack.downloadable));
             Assert.That(updateResult.Data.genre, Is.EqualTo(postedTrack.genre));
             Assert.That(updateResult.Data.label_name, Is.EqualTo(postedTrack.label_name));
@@ -133,7 +121,7 @@ namespace SoundCloud.Api.IntegrationTest
             Assert.That(updateResult.Data.title, Is.EqualTo(postedTrack.title));
             Assert.That(updateResult.Data.track_type, Is.EqualTo(postedTrack.track_type));
 
-            client.Tracks.Delete(postedTrack);
+            await client.Tracks.DeleteAsync(postedTrack);
 
             Assert.Pass();
         }
