@@ -1,25 +1,25 @@
-﻿using SoundCloud.Api.Entities;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
+using SoundCloud.Api.Entities;
 using SoundCloud.Api.Exceptions;
 using SoundCloud.Api.QueryBuilders;
 using SoundCloud.Api.Web;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace SoundCloud.Api.Endpoints
 {
     public interface IPlaylists
     {
         /// <summary>
-        /// Deletes the playlist
+        ///     Deletes the playlist
         /// </summary>
         /// <param name="playlist"></param>
-        /// <exception cref="System.Web.HttpException">Thrown if the WebRequest failed. Contains HttpStatusCode and StatusDescription</exception>
+        /// <exception cref="System.Net.Http.HttpRequestException">Thrown if the WebRequest failed.</exception>
         /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no OAuth token is set.</exception>
         Task<IWebResult> DeleteAsync(Playlist playlist);
 
         /// <summary>
-        /// Gets a playlist
+        ///     Gets a playlist
         /// </summary>
         /// <param name="playlistId"></param>
         /// <returns></returns>
@@ -27,7 +27,7 @@ namespace SoundCloud.Api.Endpoints
         Task<Playlist> GetAsync(int playlistId);
 
         /// <summary>
-        /// Gets a list of playlists
+        ///     Gets a list of playlists
         /// </summary>
         /// <param name="queryBuilder"></param>
         /// <returns></returns>
@@ -35,7 +35,7 @@ namespace SoundCloud.Api.Endpoints
         Task<IEnumerable<Playlist>> GetAsync(PlaylistQueryBuilder queryBuilder);
 
         /// <summary>
-        /// Gets the secret token of the playlist
+        ///     Gets the secret token of the playlist
         /// </summary>
         /// <param name="playlist"></param>
         /// <returns></returns>
@@ -43,31 +43,31 @@ namespace SoundCloud.Api.Endpoints
         Task<SecretToken> GetSecretTokenAsync(Playlist playlist);
 
         /// <summary>
-        /// Posts the playlist
+        ///     Posts the playlist
         /// </summary>
         /// <param name="playlist"></param>
         /// <returns></returns>
         /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no OAuth token is set.</exception>
-        /// <exception cref="SoundCloudValidationException">Thrown if validation of <paramref name="playlist"/> failed.</exception>
+        /// <exception cref="SoundCloudValidationException">Thrown if validation of <paramref name="playlist" /> failed.</exception>
         Task<IWebResult<Playlist>> PostAsync(Playlist playlist);
 
         /// <summary>
-        /// Updates the playlist
+        ///     Updates the playlist
         /// </summary>
         /// <param name="playlist"></param>
         /// <returns></returns>
         /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no OAuth token is set.</exception>
-        /// <exception cref="SoundCloudValidationException">Thrown if validation of <paramref name="playlist"/> failed.</exception>
+        /// <exception cref="SoundCloudValidationException">Thrown if validation of <paramref name="playlist" /> failed.</exception>
         Task<IWebResult<Playlist>> UpdateAsync(Playlist playlist);
 
         /// <summary>
-        /// Uploads the given file as artwork to the given playlist
+        ///     Uploads the given file as artwork to the given playlist
         /// </summary>
         /// <param name="playlist"></param>
         /// <param name="file"></param>
         /// <returns></returns>
         /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no OAuth token is set.</exception>
-        /// <exception cref="SoundCloudValidationException">Thrown if validation of <paramref name="playlist"/> failed.</exception>
+        /// <exception cref="SoundCloudValidationException">Thrown if validation of <paramref name="playlist" /> failed.</exception>
         Task<IWebResult<Playlist>> UploadArtworkAsync(Playlist playlist, Stream file);
     }
 }

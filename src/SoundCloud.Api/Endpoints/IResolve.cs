@@ -1,16 +1,16 @@
-﻿using SoundCloud.Api.Entities.Base;
+﻿using System.Threading.Tasks;
+using SoundCloud.Api.Entities.Base;
 using SoundCloud.Api.Exceptions;
-using System.Threading.Tasks;
 
 namespace SoundCloud.Api.Endpoints
 {
     /// <summary>
-    /// The resolve resource allows you to lookup and access API resources when you only know the SoundCloud.com URL.
+    ///     The resolve resource allows you to lookup and access API resources when you only know the SoundCloud.com URL.
     /// </summary>
     public interface IResolve
     {
         /// <summary>
-        /// Gets an entity
+        ///     Gets an entity
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>

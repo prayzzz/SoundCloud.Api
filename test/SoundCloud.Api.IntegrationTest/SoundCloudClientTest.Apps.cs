@@ -11,7 +11,7 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task Test_Apps_Get()
         {
-            var client = SoundCloudClient.CreateAuthorized(_settings.Token);
+            var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
             var appToGet = (await client.Apps.GetAsync()).First();
 
@@ -26,7 +26,7 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task Test_Apps_GetList()
         {
-            var client = SoundCloudClient.CreateAuthorized(_settings.Token);
+            var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
             var appClients = await client.Apps.GetAsync();
 

@@ -7,7 +7,6 @@ using Moq;
 using NUnit.Framework;
 using SoundCloud.Api.Endpoints;
 using SoundCloud.Api.Entities;
-using SoundCloud.Api.Utils;
 using SoundCloud.Api.Web;
 
 namespace SoundCloud.Api.Test.Endpoints
@@ -41,7 +40,7 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/apps?limit=200&linked_partitioning=1");
 
-            var appList = new PagedResult<AppClient> { collection = new List<AppClient> { new AppClient(), new AppClient() } };
+            var appList = new PagedResult<AppClient> { Collection = new List<AppClient> { new AppClient(), new AppClient() } };
             var response = new ApiResponse<PagedResult<AppClient>>(HttpStatusCode.OK, appList);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
@@ -52,7 +51,7 @@ namespace SoundCloud.Api.Test.Endpoints
             var result = (await apps.GetAsync()).ToList();
 
             // Assert
-            Assert.That(result, Is.EqualTo(appList.collection));
+            Assert.That(result, Is.EqualTo(appList.Collection));
 
             gatewayMock.VerifyAll();
         }

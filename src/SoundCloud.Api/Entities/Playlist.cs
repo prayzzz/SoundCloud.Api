@@ -1,10 +1,6 @@
-﻿// ReSharper disable InconsistentNaming
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-
 using Newtonsoft.Json;
-
 using SoundCloud.Api.Entities.Base;
 using SoundCloud.Api.Entities.Enums;
 using SoundCloud.Api.Json;
@@ -13,258 +9,294 @@ using SoundCloud.Api.Utils;
 namespace SoundCloud.Api.Entities
 {
     /// <summary>
-    /// Represents a playlist
+    ///     Represents a playlist
     /// </summary>
     public sealed class Playlist : Entity
     {
         /// <summary>
-        /// Constructs a new <see cref="Playlist"/> object.
+        ///     Constructs a new <see cref="Playlist" /> object.
         /// </summary>
         public Playlist()
         {
-            tracks = new List<Track>();
-            tag_list = new List<string>();
+            Tracks = new List<Track>();
+            TagList = new List<string>();
         }
 
         /// <summary>
-        /// Available for GET requests
-        /// URL to a JPEG image
+        ///     Available for GET requests
+        ///     URL to a JPEG image
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public string artwork_url { get; set; }
+        [JsonProperty("artwork_url")]
+        public string ArtworkUrl { get; set; }
 
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public string created_at { get; set; }
+        [JsonProperty("created_at")]
+        public string CreatedAt { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// timestamp of creation
+        ///     Available for GET requests
+        ///     timestamp of creation
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public AppClient created_with { get; set; }
+        [JsonProperty("created_with")]
+        public AppClient CreatedWith { get; set; }
 
         /// <summary>
-        /// Available for GET, PUT, POST requests
-        /// HTML description
+        ///     Available for GET, PUT, POST requests
+        ///     HTML description
         /// </summary>
-        public string description { get; set; }
+        [JsonProperty("description")]
+        public string Description { get; set; }
 
         /// <summary>
-        /// Available for GET, PUT, POST requests
-        /// downloadable 
-        /// </summary>
-        [JsonIgnoreOnSerialize]
-        public bool? downloadable { get; set; }
-
-        /// <summary>
-        /// Available for GET requests
-        /// duration in milliseconds
+        ///     Available for GET, PUT, POST requests
+        ///     downloadable
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public int duration { get; set; }
+        [JsonProperty("downloadable")]
+        public bool? Downloadable { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// EAN identifier for the playlist
+        ///     Available for GET requests
+        ///     duration in milliseconds
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public string ean { get; set; }
+        [JsonProperty("duration")]
+        public int Duration { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// who can embed this track or playlist
-        /// </summary>
-        public EmbeddableBy embeddable_by { get; set; }
-
-        /// <summary>
-        /// Available for GET, PUT, POST requests
-        /// genre
-        /// </summary>
-        public string genre { get; set; }
-
-        /// <summary>
-        /// Available for GET requests
-        /// label mini user object
+        ///     Available for GET requests
+        ///     EAN identifier for the playlist
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public User label { get; set; }
+        [JsonProperty("ean")]
+        public string Ean { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// id of the label user
+        ///     Available for GET requests
+        ///     who can embed this track or playlist
         /// </summary>
-        [JsonIgnoreOnSerialize]
-        public string label_id { get; set; }
+        [JsonProperty("embeddable_by")]
+        public EmbeddableBy EmbeddableBy { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// label name
+        ///     Available for GET, PUT, POST requests
+        ///     genre
         /// </summary>
-        [JsonIgnoreOnSerialize]
-        public string label_name { get; set; }
+        [JsonProperty("genre")]
+        public string Genre { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// timestamp of last modification
+        ///     Available for GET requests
+        ///     label mini user object
         /// </summary>
         [JsonIgnoreOnSerialize]
+        [JsonProperty("label")]
+        public User Label { get; set; }
+
+        /// <summary>
+        ///     Available for GET requests
+        ///     id of the label user
+        /// </summary>
+        [JsonIgnoreOnSerialize]
+        [JsonProperty("label_id")]
+        public string LabelId { get; set; }
+
+        /// <summary>
+        ///     Available for GET requests
+        ///     label name
+        /// </summary>
+        [JsonIgnoreOnSerialize]
+        [JsonProperty("label_name")]
+        public string LabelName { get; set; }
+
+        /// <summary>
+        ///     Available for GET requests
+        ///     timestamp of last modification
+        /// </summary>
+        [JsonIgnoreOnSerialize]
+        [JsonProperty("last_modified")]
         [JsonConverter(typeof(DateTimeConverter), Settings.SoundCloudDateTimeWithTimezonePattern)]
-        public DateTime last_modified { get; set; }
+        public DateTime LastModified { get; set; }
 
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public License license { get; set; }
+        [JsonProperty("license")]
+        public License License { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// permalink of the resource
+        ///     Available for GET requests
+        ///     permalink of the resource
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public string permalink { get; set; }
+        [JsonProperty("permalink")]
+        public string Permalink { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// URL to the SoundCloud.com page
+        ///     Available for GET requests
+        ///     URL to the SoundCloud.com page
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public string permalink_url { get; set; }
+        [JsonProperty("permalink_url")]
+        public string PermalinkUrl { get; set; }
 
         /// <summary>
-        /// Available for GET, PUT, POST requests
-        /// playlist type
+        ///     Available for GET, PUT, POST requests
+        ///     playlist type
         /// </summary>
-        public PlaylistType playlist_type { get; set; }
+        [JsonProperty("playlist_type")]
+        public PlaylistType PlaylistType { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// </summary>
-        [JsonIgnoreOnSerialize]
-        public string purchase_title { get; set; }
-
-        /// <summary>
-        /// Available for GET requests
-        /// external purchase link
+        ///     Available for GET requests
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public string purchase_url { get; set; }
+        [JsonProperty("purchase_title")]
+        public string PurchaseTitle { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// release number
+        ///     Available for GET requests
+        ///     external purchase link
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public string release { get; set; }
+        [JsonProperty("purchase_url")]
+        public string PurchaseUrl { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// day of the release
+        ///     Available for GET requests
+        ///     release number
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public string release_day { get; set; }
+        [JsonProperty("release")]
+        public string Release { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// month of the release
+        ///     Available for GET requests
+        ///     day of the release
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public string release_month { get; set; }
+        [JsonProperty("release_day")]
+        public string ReleaseDay { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// year of the release
+        ///     Available for GET requests
+        ///     month of the release
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public string release_year { get; set; }
+        [JsonProperty("release_month")]
+        public string ReleaseMonth { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// </summary>
-        public string secret_token { get; set; }
-
-        /// <summary>
-        /// Available for GET requests
-        /// </summary>
-        public string secret_uri { get; set; }
-
-        /// <summary>
-        /// Available for GET, PUT, POST requests
-        /// public/private sharing
-        /// </summary>
-        public Sharing sharing { get; set; }
-
-        /// <summary>
-        /// Available for GET requests
-        /// streamable via API 
+        ///     Available for GET requests
+        ///     year of the release
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public bool? streamable { get; set; }
+        [JsonProperty("release_year")]
+        public string ReleaseYear { get; set; }
 
         /// <summary>
-        /// Available for GET, PUT, POST requests
-        /// list of tags
+        ///     Available for GET requests
         /// </summary>
+        [JsonProperty("secret_token")]
+        public string SecretToken { get; set; }
+
+        /// <summary>
+        ///     Available for GET requests
+        /// </summary>
+        [JsonProperty("secret_uri")]
+        public string SecretUri { get; set; }
+
+        /// <summary>
+        ///     Available for GET, PUT, POST requests
+        ///     public/private sharing
+        /// </summary>
+        [JsonProperty("sharing")]
+        public Sharing Sharing { get; set; }
+
+        /// <summary>
+        ///     Available for GET requests
+        ///     streamable via API
+        /// </summary>
+        [JsonIgnoreOnSerialize]
+        [JsonProperty("streamable")]
+        public bool? Streamable { get; set; }
+
+        /// <summary>
+        ///     Available for GET, PUT, POST requests
+        ///     list of tags
+        /// </summary>
+        [JsonProperty("tag_list")]
         [JsonConverter(typeof(StringToListJsonConverter), ' ', '"')]
-        public List<string> tag_list { get; set; }
+        public List<string> TagList { get; set; }
 
         /// <summary>
-        /// Available for GET, PUT, POST requests
-        /// track title
+        ///     Available for GET, PUT, POST requests
+        ///     track title
         /// </summary>
-        public string title { get; set; }
+        [JsonProperty("title")]
+        public string Title { get; set; }
 
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public int track_count { get; set; }
+        [JsonProperty("track_count")]
+        public int TrackCount { get; set; }
 
         /// <summary>
-        /// Available for GET, PUT, POST requests
+        ///     Available for GET, PUT, POST requests
         /// </summary>
+        [JsonProperty("tracks")]
         [JsonConverter(typeof(PlaylistTracksJsonConverter))]
-        public List<Track> tracks { get; set; }
+        public List<Track> Tracks { get; set; }
 
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
         /// </summary>
+        [JsonProperty("type")]
         [JsonIgnoreOnSerialize]
-        public PlaylistType type { get; set; }
+        public PlaylistType Type { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// API resource URL
+        ///     Available for GET requests
+        ///     API resource URL
         /// </summary>
+        [JsonProperty("uri")]
         [JsonIgnoreOnSerialize]
-        public Uri uri { get; set; }
+        public Uri Uri { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// mini user representation of the owner
+        ///     Available for GET requests
+        ///     mini user representation of the owner
         /// </summary>
+        [JsonProperty("user")]
         [JsonIgnoreOnSerialize]
-        public User user { get; set; }
+        public User User { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// user-id of the owner
+        ///     Available for GET requests
+        ///     user-id of the owner
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public int user_id { get; set; }
+        [JsonProperty("user_id")]
+        public int UserId { get; set; }
 
         public bool ValidateDelete(ValidationMessages messages)
         {
-            if (Id < 1)
+            if (Id >= 1)
             {
-                messages.Add("PlaylistId missing. Use the id property to set the id of this playlist.");
-                return false;
+                return true;
             }
 
-            return true;
+            messages.Add("PlaylistId missing. Use the id property to set the id of this playlist.");
+            return false;
+
         }
 
         public bool ValidateGet(ValidationMessages messages)
@@ -280,13 +312,13 @@ namespace SoundCloud.Api.Entities
 
         public bool ValidatePost(ValidationMessages messages)
         {
-            if (string.IsNullOrEmpty(title))
+            if (string.IsNullOrEmpty(Title))
             {
                 messages.Add("Title missing. Use the title property to set your track title.");
                 return false;
             }
 
-            if (playlist_type == PlaylistType.Other)
+            if (PlaylistType == PlaylistType.Other)
             {
                 messages.Add("Playlist type must not be 'other'.");
                 return false;
@@ -303,7 +335,7 @@ namespace SoundCloud.Api.Entities
                 return false;
             }
 
-            if (string.IsNullOrEmpty(title))
+            if (string.IsNullOrEmpty(Title))
             {
                 messages.Add("Title missing. Use the title property to set your track title.");
                 return false;
@@ -332,10 +364,13 @@ namespace SoundCloud.Api.Entities
         {
             public PlaylistBox(Playlist p)
             {
-                playlist = p;
+                Playlist = p;
             }
 
-            public Playlist playlist { get; set; }
+            // ReSharper disable once UnusedAutoPropertyAccessor.Local
+            // ReSharper disable once MemberCanBePrivate.Local
+            [JsonProperty("playlist")]
+            public Playlist Playlist { get; }
         }
     }
 }

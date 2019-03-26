@@ -1,20 +1,19 @@
-﻿// ReSharper disable InconsistentNaming
-
+﻿using Newtonsoft.Json;
 using SoundCloud.Api.Entities.Base;
 using SoundCloud.Api.Json;
-using SoundCloud.Api.Utils;
 
 namespace SoundCloud.Api.Entities
 {
     /// <summary>
-    /// Represents a product
+    ///     Represents a product
     /// </summary>
     public sealed class Products : Entity
     {
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
         /// </summary>
+        [JsonProperty("name")]
         [JsonIgnoreOnSerialize]
-        public string name { get; set; }
+        public string Name { get; set; }
     }
 }

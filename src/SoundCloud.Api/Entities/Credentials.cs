@@ -1,8 +1,6 @@
-// ReSharper disable InconsistentNaming
-
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-
+using Newtonsoft.Json;
 using SoundCloud.Api.Entities.Base;
 using SoundCloud.Api.Entities.Enums;
 using SoundCloud.Api.Login;
@@ -11,79 +9,89 @@ using SoundCloud.Api.Utils;
 namespace SoundCloud.Api.Entities
 {
     /// <summary>
-    /// Represents different the credentials used for authentication.
+    ///     Represents different the credentials used for authentication.
     /// </summary>
     public sealed class Credentials : Entity
     {
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
         /// </summary>
-        public string access_token { get; set; }
+        [JsonProperty("access_token")]
+        public string AccessToken { get; set; }
 
         /// <summary>
-        /// Available for POST requests
-        /// The client id belonging to your application
+        ///     Available for POST requests
+        ///     The client id belonging to your application
         /// </summary>
-        public string client_id { get; set; }
+        [JsonProperty("client_id")]
+        public string ClientId { get; set; }
 
         /// <summary>
-        /// Available for POST requests
-        /// The client secret belonging to your application
+        ///     Available for POST requests
+        ///     The client secret belonging to your application
         /// </summary>
-        public string client_secret { get; set; }
+        [JsonProperty("client_secret")]
+        public string ClientSecret { get; set; }
 
         /// <summary>
-        /// Available for POST requests
-        /// The authorization code obtained when user is sent to redirect_uri
+        ///     Available for POST requests
+        ///     The authorization code obtained when user is sent to redirect_uri
         /// </summary>
-        public string code { get; set; }
+        [JsonProperty("code")]
+        public string Code { get; set; }
 
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
         /// </summary>
-        public int? expires_in { get; set; }
+        [JsonProperty("expires_in")]
+        public int? ExpiresIn { get; set; }
 
         /// <summary>
-        /// Available for POST requests
+        ///     Available for POST requests
         /// </summary>
-        public string password { get; set; }
+        [JsonProperty("password")]
+        public string Password { get; set; }
 
         /// <summary>
-        /// Available for POST requests
-        /// The redirect uri you have configured for your application
+        ///     Available for POST requests
+        ///     The redirect uri you have configured for your application
         /// </summary>
-        public string redirect_uri { get; set; }
+        [JsonProperty("redirect_uri")]
+        public string RedirectUri { get; set; }
 
         /// <summary>
-        /// Available for POST requests
+        ///     Available for POST requests
         /// </summary>
-        public string refresh_token { get; set; }
+        [JsonProperty("refresh_token")]
+        public string RefreshToken { get; set; }
 
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
         /// </summary>
-        public Scope scope { get; set; }
+        [JsonProperty("scope")]
+        public Scope Scope { get; set; }
 
         /// <summary>
-        /// Available for POST requests
+        ///     Available for POST requests
         /// </summary>
-        public string username { get; set; }
+        [JsonProperty("username")]
+        public string Username { get; set; }
 
         public bool ValidateAuthorizationCode(ValidationMessages messages)
         {
-            if (string.IsNullOrEmpty(client_id))
+            if (string.IsNullOrEmpty(ClientId))
             {
                 messages.Add("ClientId missing. Use the client_id property to set the ClientId.");
                 return false;
             }
 
-            if (string.IsNullOrEmpty(client_secret))
+            if (string.IsNullOrEmpty(ClientSecret))
             {
                 messages.Add("ClientSecret missing. Use the client_secret property to set the ClientSecret.");
                 return false;
             }
 
-            if (string.IsNullOrEmpty(code))
+            if (string.IsNullOrEmpty(Code))
             {
                 messages.Add("Code missing. Use the code property to set the Code.");
                 return false;
@@ -94,13 +102,13 @@ namespace SoundCloud.Api.Entities
 
         public bool ValidateClientCredentials(ValidationMessages messages)
         {
-            if (string.IsNullOrEmpty(client_id))
+            if (string.IsNullOrEmpty(ClientId))
             {
                 messages.Add("ClientId missing. Use the client_id property to set the ClientId.");
                 return false;
             }
 
-            if (string.IsNullOrEmpty(client_secret))
+            if (string.IsNullOrEmpty(ClientSecret))
             {
                 messages.Add("ClientSecret missing. Use the client_secret property to set the ClientSecret.");
                 return false;
@@ -111,25 +119,25 @@ namespace SoundCloud.Api.Entities
 
         public bool ValidatePassword(ValidationMessages messages)
         {
-            if (string.IsNullOrEmpty(client_id))
+            if (string.IsNullOrEmpty(ClientId))
             {
                 messages.Add("ClientId missing. Use the client_id property to set the ClientId.");
                 return false;
             }
 
-            if (string.IsNullOrEmpty(client_secret))
+            if (string.IsNullOrEmpty(ClientSecret))
             {
                 messages.Add("ClientSecret missing. Use the client_secret property to set the ClientSecret.");
                 return false;
             }
 
-            if (string.IsNullOrEmpty(username))
+            if (string.IsNullOrEmpty(Username))
             {
                 messages.Add("Username missing. Use the username property to set the Username.");
                 return false;
             }
 
-            if (string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(Password))
             {
                 messages.Add("Password missing. Use the password property to set the Password.");
                 return false;
@@ -140,19 +148,19 @@ namespace SoundCloud.Api.Entities
 
         public bool ValidateRefreshToken(ValidationMessages messages)
         {
-            if (string.IsNullOrEmpty(client_id))
+            if (string.IsNullOrEmpty(ClientId))
             {
                 messages.Add("ClientId missing. Use the client_id property to set the ClientId.");
                 return false;
             }
 
-            if (string.IsNullOrEmpty(client_secret))
+            if (string.IsNullOrEmpty(ClientSecret))
             {
                 messages.Add("ClientSecret missing. Use the client_secret property to set the ClientSecret.");
                 return false;
             }
 
-            if (string.IsNullOrEmpty(refresh_token))
+            if (string.IsNullOrEmpty(RefreshToken))
             {
                 messages.Add("RefreshToken missing. Use the refresh_token property to set the RefreshToken.");
                 return false;
@@ -169,24 +177,24 @@ namespace SoundCloud.Api.Entities
             switch (type)
             {
                 case GrantType.RefreshToken:
-                    parameters.Add("client_id", client_id);
-                    parameters.Add("client_secret", client_secret);
-                    parameters.Add("refresh_token", refresh_token);
+                    parameters.Add("client_id", ClientId);
+                    parameters.Add("client_secret", ClientSecret);
+                    parameters.Add("refresh_token", RefreshToken);
                     break;
                 case GrantType.Password:
-                    parameters.Add("client_id", client_id);
-                    parameters.Add("client_secret", client_secret);
-                    parameters.Add("username", username);
-                    parameters.Add("password", password);
+                    parameters.Add("client_id", ClientId);
+                    parameters.Add("client_secret", ClientSecret);
+                    parameters.Add("username", Username);
+                    parameters.Add("password", Password);
                     break;
                 case GrantType.ClientCredentials:
-                    parameters.Add("client_id", client_id);
-                    parameters.Add("client_secret", client_secret);
+                    parameters.Add("client_id", ClientId);
+                    parameters.Add("client_secret", ClientSecret);
                     break;
                 case GrantType.AuthorizationCode:
-                    parameters.Add("client_id", client_id);
-                    parameters.Add("client_secret", client_secret);
-                    parameters.Add("code", code);
+                    parameters.Add("client_id", ClientId);
+                    parameters.Add("client_secret", ClientSecret);
+                    parameters.Add("code", Code);
                     break;
                 default:
                     return parameters;

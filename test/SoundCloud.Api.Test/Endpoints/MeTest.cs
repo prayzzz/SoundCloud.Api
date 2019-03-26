@@ -118,7 +118,7 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/me/activities?limit=200&linked_partitioning=1");
 
-            var activities = new PagedResult<Activity> { collection = new List<Activity> { new Activity(), new Activity() } };
+            var activities = new PagedResult<Activity> { Collection = new List<Activity> { new Activity(), new Activity() } };
             var response = new ApiResponse<PagedResult<Activity>>(HttpStatusCode.OK, activities);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
@@ -128,7 +128,7 @@ namespace SoundCloud.Api.Test.Endpoints
             var result = (await new Me(gatewayMock.Object).GetActivitiesAsync()).ToList();
 
             // Assert
-            Assert.That(result, Is.EqualTo(activities.collection));
+            Assert.That(result, Is.EqualTo(activities.Collection));
         }
 
         [Test]
@@ -136,7 +136,7 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/me/comments?limit=200&linked_partitioning=1");
 
-            var commentList = new PagedResult<Comment> { collection = new List<Comment> { new Comment(), new Comment() } };
+            var commentList = new PagedResult<Comment> { Collection = new List<Comment> { new Comment(), new Comment() } };
 
             var response = new ApiResponse<PagedResult<Comment>>(HttpStatusCode.OK, commentList);
 
@@ -147,7 +147,7 @@ namespace SoundCloud.Api.Test.Endpoints
             var result = (await new Me(gatewayMock.Object).GetCommentsAsync()).ToList();
 
             // Assert
-            Assert.That(result, Is.EqualTo(commentList.collection));
+            Assert.That(result, Is.EqualTo(commentList.Collection));
         }
 
         [Test]
@@ -155,7 +155,7 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/me/connections?limit=200&linked_partitioning=1");
 
-            var connections = new PagedResult<Connection> { collection = new List<Connection> { new Connection(), new Connection() } };
+            var connections = new PagedResult<Connection> { Collection = new List<Connection> { new Connection(), new Connection() } };
             var response = new ApiResponse<PagedResult<Connection>>(HttpStatusCode.OK, connections);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
@@ -165,7 +165,7 @@ namespace SoundCloud.Api.Test.Endpoints
             var result = (await new Me(gatewayMock.Object).GetConnectionsAsync()).ToList();
 
             // Assert
-            Assert.That(result, Is.EqualTo(connections.collection));
+            Assert.That(result, Is.EqualTo(connections.Collection));
         }
 
         [Test]
@@ -173,7 +173,7 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/me/favorites?limit=200&linked_partitioning=1");
 
-            var trackList = new PagedResult<Track> { collection = new List<Track> { new Track(), new Track() } };
+            var trackList = new PagedResult<Track> { Collection = new List<Track> { new Track(), new Track() } };
             var response = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK, trackList);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
@@ -183,7 +183,7 @@ namespace SoundCloud.Api.Test.Endpoints
             var result = (await new Me(gatewayMock.Object).GetFavoritesAsync()).ToList();
 
             // Assert
-            Assert.That(result, Is.EqualTo(trackList.collection));
+            Assert.That(result, Is.EqualTo(trackList.Collection));
         }
 
         [Test]
@@ -191,7 +191,7 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/me/followers?limit=200&linked_partitioning=1");
 
-            var followers = new PagedResult<User> { collection = new List<User> { new User(), new User() } };
+            var followers = new PagedResult<User> { Collection = new List<User> { new User(), new User() } };
             var response = new ApiResponse<PagedResult<User>>(HttpStatusCode.OK, followers);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
@@ -201,7 +201,7 @@ namespace SoundCloud.Api.Test.Endpoints
             var result = (await new Me(gatewayMock.Object).GetFollowersAsync()).ToList();
 
             // Assert
-            Assert.That(result, Is.EqualTo(followers.collection));
+            Assert.That(result, Is.EqualTo(followers.Collection));
         }
 
         [Test]
@@ -209,7 +209,7 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/me/followings?limit=200&linked_partitioning=1");
 
-            var followings = new PagedResult<User> { collection = new List<User> { new User(), new User() } };
+            var followings = new PagedResult<User> { Collection = new List<User> { new User(), new User() } };
             var response = new ApiResponse<PagedResult<User>>(HttpStatusCode.OK, followings);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
@@ -219,7 +219,7 @@ namespace SoundCloud.Api.Test.Endpoints
             var result = (await new Me(gatewayMock.Object).GetFollowingsAsync()).ToList();
 
             // Assert
-            Assert.That(result, Is.EqualTo(followings.collection));
+            Assert.That(result, Is.EqualTo(followings.Collection));
         }
 
         [Test]
@@ -227,7 +227,7 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/me/playlists?limit=200&linked_partitioning=1");
 
-            var playlists = new PagedResult<Playlist> { collection = new List<Playlist> { new Playlist(), new Playlist() } };
+            var playlists = new PagedResult<Playlist> { Collection = new List<Playlist> { new Playlist(), new Playlist() } };
             var response = new ApiResponse<PagedResult<Playlist>>(HttpStatusCode.OK, playlists);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
@@ -237,7 +237,7 @@ namespace SoundCloud.Api.Test.Endpoints
             var result = (await new Me(gatewayMock.Object).GetPlaylistsAsync()).ToList();
 
             // Assert
-            Assert.That(result, Is.EqualTo(playlists.collection));
+            Assert.That(result, Is.EqualTo(playlists.Collection));
         }
 
         [Test]
@@ -245,7 +245,7 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/me/tracks?limit=200&linked_partitioning=1");
 
-            var trackList = new PagedResult<Track> { collection = new List<Track> { new Track(), new Track() } };
+            var trackList = new PagedResult<Track> { Collection = new List<Track> { new Track(), new Track() } };
             var response = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK, trackList);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
@@ -255,7 +255,7 @@ namespace SoundCloud.Api.Test.Endpoints
             var result = (await new Me(gatewayMock.Object).GetTracksAsync()).ToList();
 
             // Assert
-            Assert.That(result, Is.EqualTo(trackList.collection));
+            Assert.That(result, Is.EqualTo(trackList.Collection));
         }
 
         [Test]
@@ -263,7 +263,7 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/me/web-profiles?limit=200&linked_partitioning=1");
 
-            var webProfiles = new PagedResult<WebProfile> { collection = new List<WebProfile> { new WebProfile(), new WebProfile() } };
+            var webProfiles = new PagedResult<WebProfile> { Collection = new List<WebProfile> { new WebProfile(), new WebProfile() } };
             var response = new ApiResponse<PagedResult<WebProfile>>(HttpStatusCode.OK, webProfiles);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
@@ -273,7 +273,7 @@ namespace SoundCloud.Api.Test.Endpoints
             var result = (await new Me(gatewayMock.Object).GetWebProfilesAsync()).ToList();
 
             // Assert
-            Assert.That(result, Is.EqualTo(webProfiles.collection));
+            Assert.That(result, Is.EqualTo(webProfiles.Collection));
         }
 
         [Test]
@@ -301,8 +301,8 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/me/web-profiles?");
 
-            var profile = new WebProfile { title = "title", url = "url" };
-            var postedProfile = new WebProfile { Id = 123, title = "title", url = "url" };
+            var profile = new WebProfile { Title = "title", Url = "url" };
+            var postedProfile = new WebProfile { Id = 123, Title = "title", Url = "url" };
             var response = new ApiResponse<WebProfile>(HttpStatusCode.OK, postedProfile);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);

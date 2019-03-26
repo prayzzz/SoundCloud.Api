@@ -1,11 +1,10 @@
-﻿using SoundCloud.Api.Entities;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
+using SoundCloud.Api.Entities;
 using SoundCloud.Api.Exceptions;
 using SoundCloud.Api.QueryBuilders;
 using SoundCloud.Api.Web;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using SoundCloud.Api.Utils;
 
 namespace SoundCloud.Api.Endpoints
 {
@@ -41,7 +40,7 @@ namespace SoundCloud.Api.Endpoints
         {
             return await GetAsync(new TrackQueryBuilder());
         }
-        
+
         public async Task<IEnumerable<Track>> GetAsync(SoundCloudQueryBuilder builder)
         {
             builder.Path = TrackPath;

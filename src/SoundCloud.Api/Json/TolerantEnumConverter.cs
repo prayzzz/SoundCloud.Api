@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-
 using Newtonsoft.Json;
-
 using SoundCloud.Api.Utils;
 
 namespace SoundCloud.Api.Json
 {
-    public sealed class TolerantEnumConverter : JsonConverter
+    internal sealed class TolerantEnumConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {
@@ -53,7 +51,7 @@ namespace SoundCloud.Api.Json
             else if (reader.TokenType == JsonToken.Integer)
             {
                 var enumVal = Convert.ToInt32(reader.Value);
-                var values = (int[])Enum.GetValues(enumType);
+                var values = (int[]) Enum.GetValues(enumType);
                 if (values.Contains(enumVal))
                 {
                     return Enum.Parse(enumType, enumVal.ToString());
@@ -94,7 +92,7 @@ namespace SoundCloud.Api.Json
 
         private bool IsNullableType(Type t)
         {
-            return (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>));
+            return t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
     }
 }

@@ -63,7 +63,7 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/playlists?limit=10&q=search&representation=compact&linked_partitioning=1");
 
-            var playlists = new PagedResult<Playlist> { collection = new List<Playlist> { new Playlist(), new Playlist() } };
+            var playlists = new PagedResult<Playlist> { Collection = new List<Playlist> { new Playlist(), new Playlist() } };
             var response = new ApiResponse<PagedResult<Playlist>>(HttpStatusCode.OK, playlists);
 
             var requestMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
@@ -74,7 +74,7 @@ namespace SoundCloud.Api.Test.Endpoints
             var result = (await new Playlists(requestMock.Object).GetAsync(builder)).ToList();
 
             // Assert
-            Assert.That(result, Is.EqualTo(playlists.collection));
+            Assert.That(result, Is.EqualTo(playlists.Collection));
         }
 
         [Test]
@@ -101,8 +101,8 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/playlists?");
 
-            var playlist = new Playlist { Id = PlaylistId, title = "title", playlist_type = PlaylistType.Compilation };
-            var postedPlaylist = new Playlist { Id = playlist.Id, title = playlist.title };
+            var playlist = new Playlist { Id = PlaylistId, Title = "title", PlaylistType = PlaylistType.Compilation };
+            var postedPlaylist = new Playlist { Id = playlist.Id, Title = playlist.Title };
             var response = new ApiResponse<Playlist>(HttpStatusCode.OK, postedPlaylist);
 
             var requestMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
@@ -123,8 +123,8 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/playlists/130208739?");
 
-            var playlist = new Playlist { Id = PlaylistId, title = "title" };
-            var updatedPlaylist = new Playlist { Id = playlist.Id, title = playlist.title };
+            var playlist = new Playlist { Id = PlaylistId, Title = "title" };
+            var updatedPlaylist = new Playlist { Id = playlist.Id, Title = playlist.Title };
             var response = new ApiResponse<Playlist>(HttpStatusCode.OK, updatedPlaylist);
 
             var requestMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
@@ -146,8 +146,8 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/playlists/130208739?");
 
-            var playlist = new Playlist { Id = PlaylistId, title = "title" };
-            var updatedPlaylist = new Playlist { Id = playlist.Id, title = playlist.title, artwork_url = "http://sampleurl.com" };
+            var playlist = new Playlist { Id = PlaylistId, Title = "title" };
+            var updatedPlaylist = new Playlist { Id = playlist.Id, Title = playlist.Title, ArtworkUrl = "http://sampleurl.com" };
             var response = new ApiResponse<Playlist>(HttpStatusCode.OK, updatedPlaylist);
 
             var artwork = TestDataProvider.GetArtwork();

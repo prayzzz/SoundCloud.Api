@@ -92,7 +92,8 @@ namespace SoundCloud.Api.QueryBuilders
             AddEscapedValue(query, key, string.Join(",", filters.Select(selector)));
         }
 
-        protected static void ApplyNullableDateTimeType(IDictionary<string, string> query, string key, DateTime? filter, Func<DateTime, string> selector)
+        protected static void ApplyNullableDateTimeType(IDictionary<string, string> query, string key, DateTime? filter,
+                                                        Func<DateTime, string> selector)
         {
             if (!filter.HasValue)
             {
@@ -102,7 +103,8 @@ namespace SoundCloud.Api.QueryBuilders
             AddEscapedValue(query, key, selector(filter.Value));
         }
 
-        protected static void ApplyNullableEnumType(IDictionary<string, string> query, string key, Enum filter, Enum defaulValue, Func<Enum, string> selector)
+        protected static void ApplyNullableEnumType(IDictionary<string, string> query, string key, Enum filter, Enum defaulValue,
+                                                    Func<Enum, string> selector)
         {
             if (filter.Equals(defaulValue))
             {
@@ -112,7 +114,8 @@ namespace SoundCloud.Api.QueryBuilders
             AddEscapedValue(query, key, selector(filter));
         }
 
-        protected static void ApplyNullablePrimitiveType<T>(IDictionary<string, string> query, string key, T? filter, Func<T, string> selector) where T : struct
+        protected static void ApplyNullablePrimitiveType<T>(IDictionary<string, string> query, string key, T? filter, Func<T, string> selector)
+            where T : struct
         {
             if (filter.HasValue)
             {

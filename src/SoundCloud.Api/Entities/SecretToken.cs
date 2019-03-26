@@ -1,34 +1,34 @@
-﻿// ReSharper disable InconsistentNaming
-
-using System;
-
+﻿using System;
+using Newtonsoft.Json;
 using SoundCloud.Api.Entities.Base;
 using SoundCloud.Api.Json;
-using SoundCloud.Api.Utils;
 
 namespace SoundCloud.Api.Entities
 {
     /// <summary>
-    /// Represents a secret token for a resource
+    ///     Represents a secret token for a resource
     /// </summary>
     public sealed class SecretToken : Entity
     {
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public string resource_uri { get; set; }
+        [JsonProperty("resource_uri")]
+        public string ResourceUri { get; set; }
 
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public string token { get; set; }
+        [JsonProperty("token")]
+        public string Token { get; set; }
 
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
         /// </summary>
+        [JsonProperty("uri")]
         [JsonIgnoreOnSerialize]
-        public Uri uri { get; set; }
+        public Uri Uri { get; set; }
     }
 }

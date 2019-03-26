@@ -1,5 +1,3 @@
-using System.Net;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using SoundCloud.Api;
@@ -26,10 +24,10 @@ namespace Microsoft.Extensions.DependencyInjection
             var userAgent = new ProductInfoHeaderValue("SoundCloud.Api", version);
 
             serviceCollection.TryAddSingleton(new SoundCloudCredentials(accessToken, clientId));
-            serviceCollection.TryAddTransient<AuthenticationHandler>();
+            serviceCollection.TryAddTransient<SoundCloudAuthenticationHandler>();
 
             var builder = serviceCollection.AddHttpClient(SoundCloudClient.HttpClientName);
-            builder.AddHttpMessageHandler<AuthenticationHandler>();
+            builder.AddHttpMessageHandler<SoundCloudAuthenticationHandler>();
             builder.ConfigureHttpClient(c => { c.DefaultRequestHeaders.UserAgent.Add(userAgent); });
 
             return builder;

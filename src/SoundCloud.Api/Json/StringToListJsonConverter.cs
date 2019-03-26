@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-
 using Newtonsoft.Json;
 
 namespace SoundCloud.Api.Json
 {
-    public sealed class StringToListJsonConverter : JsonConverter
+    internal sealed class StringToListJsonConverter : JsonConverter
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:SharpSound.SoundCloud.Json.StringToListConverter"/> class. 
-        /// Default values:
-        ///  Separator: ", "
-        ///  EscapeChar; '"'
+        ///     Initializes a new instance of the <see cref="T:SharpSound.SoundCloud.Json.StringToListConverter" /> class.
+        ///     Default values:
+        ///     Separator: ", "
+        ///     EscapeChar; '"'
         /// </summary>
         public StringToListJsonConverter()
             : this(',', '"')
@@ -21,7 +20,7 @@ namespace SoundCloud.Api.Json
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:SharpSound.SoundCloud.Json.StringToListConverter"/> class. 
+        ///     Initializes a new instance of the <see cref="T:SharpSound.SoundCloud.Json.StringToListConverter" /> class.
         /// </summary>
         public StringToListJsonConverter(char separator, char escapeChar)
         {
@@ -30,22 +29,22 @@ namespace SoundCloud.Api.Json
         }
 
         /// <summary>
-        /// Gets or sets the escape char.
-        /// This char is places around the string if it contains the separator.
-        /// </summary> 
+        ///     Gets or sets the escape char.
+        ///     This char is places around the string if it contains the separator.
+        /// </summary>
         public char EscapeChar { get; set; }
 
         /// <summary>
-        /// Gets or sets the string Separator.
-        /// </summary> 
+        ///     Gets or sets the string Separator.
+        /// </summary>
         public char Separator { get; set; }
 
         /// <summary>
-        /// Determines whether this instance can convert the specified object type.
+        ///     Determines whether this instance can convert the specified object type.
         /// </summary>
         /// <param name="objectType">Type of the object.</param>
         /// <returns>
-        /// <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
+        ///     <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
@@ -53,11 +52,14 @@ namespace SoundCloud.Api.Json
         }
 
         /// <summary>
-        /// Reads the JSON representation of the object.
+        ///     Reads the JSON representation of the object.
         /// </summary>
-        /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader"/> to read from.</param><param name="objectType">Type of the object.</param><param name="existingValue">The existing value of object being read.</param><param name="serializer">The calling serializer.</param>
+        /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
+        /// <param name="objectType">Type of the object.</param>
+        /// <param name="existingValue">The existing value of object being read.</param>
+        /// <param name="serializer">The calling serializer.</param>
         /// <returns>
-        /// The object value.
+        ///     The object value.
         /// </returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
@@ -93,9 +95,11 @@ namespace SoundCloud.Api.Json
         }
 
         /// <summary>
-        /// Writes the JSON representation of the object.
+        ///     Writes the JSON representation of the object.
         /// </summary>
-        /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.</param><param name="value">The value.</param><param name="serializer">The calling serializer.</param>
+        /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             if (!(value is IEnumerable<string>))
@@ -104,7 +108,7 @@ namespace SoundCloud.Api.Json
                 return;
             }
 
-            var list = (IEnumerable<string>)value;
+            var list = (IEnumerable<string>) value;
             var vals = list.Select(x => x.Contains(Separator) ? EscapeChar + x + EscapeChar : x);
 
             writer.WriteValue(string.Join(Separator.ToString(), vals));

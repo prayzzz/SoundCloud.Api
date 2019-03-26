@@ -5,10 +5,10 @@ namespace SoundCloud.Api.Entities
 {
     internal interface IPagedResult<T>
     {
-        List<T> collection { get; }
+        List<T> Collection { get; }
 
         bool HasNextPage { get; }
 
-        Uri next_href { get; }
+        Uri NextHref { get; }
     }
 }

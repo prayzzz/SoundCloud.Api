@@ -1,7 +1,7 @@
-using SoundCloud.Api.Entities.Base;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SoundCloud.Api.Entities.Base;
 
 namespace SoundCloud.Api.Web
 {
@@ -20,6 +20,5 @@ namespace SoundCloud.Api.Web
         Task<ApiResponse<TResult>> InvokeUpdateRequestAsync<TResult>(Uri uri, IDictionary<string, object> parameters);
 
         Task<ApiResponse<TResult>> InvokeUpdateRequestAsync<TResult>(Uri uri);
-
     }
 }

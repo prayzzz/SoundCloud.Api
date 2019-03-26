@@ -15,19 +15,19 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task Tracks_Get()
         {
-            var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
+            var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
 
             var tracks = await client.Tracks.GetAsync(TrackId);
 
             Assert.That(tracks, Is.Not.Null);
-            Assert.That(tracks.genre, Is.EqualTo("Sample"));
-            Assert.That(tracks.playback_count, Is.GreaterThan(0));
+            Assert.That(tracks.Genre, Is.EqualTo("Sample"));
+            Assert.That(tracks.PlaybackCount, Is.GreaterThan(0));
         }
 
         [Test]
         public async Task Tracks_GetComments()
         {
-            var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
+            var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
 
             var track = new Track();
             track.Id = Track2Id;
@@ -40,7 +40,7 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task Tracks_GetFavoriters()
         {
-            var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
+            var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
 
             var track = new Track();
             track.Id = Track2Id;
@@ -53,7 +53,7 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task Tracks_GetList()
         {
-            var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
+            var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
 
             var tracks = (await client.Tracks.GetAsync()).Take(150).ToList();
 
@@ -63,63 +63,63 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task Tracks_GetSecretToken()
         {
-            var client = SoundCloudClient.CreateAuthorized(_settings.Token);
+            var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
             var track = new Track { Id = TrackId };
 
             var secretToken = await client.Tracks.GetSecretTokenAsync(track);
 
-            Assert.That(string.IsNullOrEmpty(secretToken.token), Is.False);
+            Assert.That(string.IsNullOrEmpty(secretToken.Token), Is.False);
         }
 
         [Test]
         public async Task Tracks_Post_Delete()
         {
-            var client = SoundCloudClient.CreateAuthorized(_settings.Token);
+            var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
             var title = "SampleTitle at " + DateTime.Now.ToLocalTime();
             var postResult = await client.Tracks.UploadTrackAsync(title, TestDataProvider.GetSound());
 
-            Assert.That(postResult.Data.title, Is.EqualTo(title));
+            Assert.That(postResult.Data.Title, Is.EqualTo(title));
 
             var postedTrack = postResult.Data;
-            postedTrack.commentable = false;
-            postedTrack.description = "TestDescription";
-            postedTrack.download_url = new Uri("http://sampleurl.com");
-            postedTrack.downloadable = true;
-            postedTrack.genre = "SampleGenre";
-            postedTrack.label_name = "MySampleLabel";
-            postedTrack.license = License.CcBy;
-            postedTrack.purchase_url = new Uri("http://sampleurl.com");
-            postedTrack.release_day = 10;
-            postedTrack.release_month = 10;
-            postedTrack.release_year = 2010;
-            postedTrack.sharing = Sharing.Public;
-            postedTrack.tag_list = new List<string> { "Tag1", "Tag2" };
-            postedTrack.title = "NewTitle";
-            postedTrack.track_type = TrackType.Sample;
+            postedTrack.Commentable = false;
+            postedTrack.Description = "TestDescription";
+            postedTrack.DownloadUrl = new Uri("http://sampleurl.com");
+            postedTrack.Downloadable = true;
+            postedTrack.Genre = "SampleGenre";
+            postedTrack.LabelName = "MySampleLabel";
+            postedTrack.License = License.CcBy;
+            postedTrack.PurchaseUrl = new Uri("http://sampleurl.com");
+            postedTrack.ReleaseDay = 10;
+            postedTrack.ReleaseMonth = 10;
+            postedTrack.ReleaseYear = 2010;
+            postedTrack.Sharing = Sharing.Public;
+            postedTrack.TagList = new List<string> { "Tag1", "Tag2" };
+            postedTrack.Title = "NewTitle";
+            postedTrack.TrackType = TrackType.Sample;
 
             var updateResult = await client.Tracks.UploadArtworkAsync(postedTrack, TestDataProvider.GetArtwork());
 
-            Assert.That(updateResult.Data.artwork_url, Is.Not.Null);
+            Assert.That(updateResult.Data.ArtworkUrl, Is.Not.Null);
 
             updateResult = await client.Tracks.UpdateAsync(postedTrack);
 
-            Assert.That(updateResult.Data.description, Is.EqualTo(postedTrack.description));
-            Assert.That(updateResult.Data.download_url.ToString(), Does.Contain("https://api.soundcloud.com/tracks/" + postedTrack.Id + "/download"));
-            Assert.That(updateResult.Data.downloadable, Is.EqualTo(postedTrack.downloadable));
-            Assert.That(updateResult.Data.genre, Is.EqualTo(postedTrack.genre));
-            Assert.That(updateResult.Data.label_name, Is.EqualTo(postedTrack.label_name));
-            Assert.That(updateResult.Data.license, Is.EqualTo(postedTrack.license));
-            Assert.That(updateResult.Data.purchase_url, Is.EqualTo(postedTrack.purchase_url));
-            Assert.That(updateResult.Data.release_day, Is.EqualTo(postedTrack.release_day));
-            Assert.That(updateResult.Data.release_month, Is.EqualTo(postedTrack.release_month));
-            Assert.That(updateResult.Data.release_year, Is.EqualTo(postedTrack.release_year));
-            Assert.That(updateResult.Data.sharing, Is.EqualTo(postedTrack.sharing));
-            Assert.That(updateResult.Data.tag_list.Contains("Tag1"), Is.True);
-            Assert.That(updateResult.Data.tag_list.Contains("Tag2"), Is.True);
-            Assert.That(updateResult.Data.title, Is.EqualTo(postedTrack.title));
-            Assert.That(updateResult.Data.track_type, Is.EqualTo(postedTrack.track_type));
+            Assert.That(updateResult.Data.Description, Is.EqualTo(postedTrack.Description));
+            Assert.That(updateResult.Data.DownloadUrl.ToString(), Does.Contain("https://api.soundcloud.com/tracks/" + postedTrack.Id + "/download"));
+            Assert.That(updateResult.Data.Downloadable, Is.EqualTo(postedTrack.Downloadable));
+            Assert.That(updateResult.Data.Genre, Is.EqualTo(postedTrack.Genre));
+            Assert.That(updateResult.Data.LabelName, Is.EqualTo(postedTrack.LabelName));
+            Assert.That(updateResult.Data.License, Is.EqualTo(postedTrack.License));
+            Assert.That(updateResult.Data.PurchaseUrl, Is.EqualTo(postedTrack.PurchaseUrl));
+            Assert.That(updateResult.Data.ReleaseDay, Is.EqualTo(postedTrack.ReleaseDay));
+            Assert.That(updateResult.Data.ReleaseMonth, Is.EqualTo(postedTrack.ReleaseMonth));
+            Assert.That(updateResult.Data.ReleaseYear, Is.EqualTo(postedTrack.ReleaseYear));
+            Assert.That(updateResult.Data.Sharing, Is.EqualTo(postedTrack.Sharing));
+            Assert.That(updateResult.Data.TagList.Contains("Tag1"), Is.True);
+            Assert.That(updateResult.Data.TagList.Contains("Tag2"), Is.True);
+            Assert.That(updateResult.Data.Title, Is.EqualTo(postedTrack.Title));
+            Assert.That(updateResult.Data.TrackType, Is.EqualTo(postedTrack.TrackType));
 
             await client.Tracks.DeleteAsync(postedTrack);
 

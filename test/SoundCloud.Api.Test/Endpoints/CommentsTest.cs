@@ -8,7 +8,6 @@ using NUnit.Framework;
 using SoundCloud.Api.Endpoints;
 using SoundCloud.Api.Entities;
 using SoundCloud.Api.Exceptions;
-using SoundCloud.Api.Utils;
 using SoundCloud.Api.Web;
 
 namespace SoundCloud.Api.Test.Endpoints
@@ -90,7 +89,7 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/comments?limit=200&linked_partitioning=1");
 
-            var comments = new PagedResult<Comment> { collection = new List<Comment> { new Comment(), new Comment() } };
+            var comments = new PagedResult<Comment> { Collection = new List<Comment> { new Comment(), new Comment() } };
 
             var response = new ApiResponse<PagedResult<Comment>>(HttpStatusCode.OK, comments);
 
@@ -102,7 +101,7 @@ namespace SoundCloud.Api.Test.Endpoints
             var result = (await commentEndpoint.GetAsync()).ToList();
 
             // Assert
-            Assert.That(result, Is.EqualTo(comments.collection));
+            Assert.That(result, Is.EqualTo(comments.Collection));
 
             gatewayMock.VerifyAll();
         }
@@ -112,7 +111,7 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/comments?");
 
-            var comment = new Comment { body = "SampleComment", timestamp = 1000 };
+            var comment = new Comment { Body = "SampleComment", Timestamp = 1000 };
 
             var response = new ApiResponse<Comment>(HttpStatusCode.Created, comment);
 

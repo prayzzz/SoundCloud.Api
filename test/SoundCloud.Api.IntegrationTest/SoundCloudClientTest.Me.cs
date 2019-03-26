@@ -14,7 +14,7 @@ namespace SoundCloud.Api.IntegrationTest
         {
             const int userId = 66852985;
 
-            var client = SoundCloudClient.CreateAuthorized(_settings.Token);
+            var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
             var user = new User { Id = userId };
 
@@ -36,7 +36,7 @@ namespace SoundCloud.Api.IntegrationTest
         {
             const int userId = 999999999;
 
-            var client = SoundCloudClient.CreateAuthorized(_settings.Token);
+            var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
             var user = new User { Id = userId };
 
@@ -48,7 +48,7 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task Me_Get()
         {
-            var client = SoundCloudClient.CreateAuthorized(_settings.Token);
+            var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
             var user = await client.Me.GetAsync();
 
@@ -59,7 +59,7 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task Me_GetActivity()
         {
-            var client = SoundCloudClient.CreateAuthorized(_settings.Token);
+            var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
             var activities = (await client.Me.GetActivitiesAsync()).Take(100).ToList();
 
@@ -69,7 +69,7 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task Me_GetComments()
         {
-            var client = SoundCloudClient.CreateAuthorized(_settings.Token);
+            var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
             var comments = await client.Me.GetCommentsAsync();
 
@@ -80,7 +80,7 @@ namespace SoundCloud.Api.IntegrationTest
         [Ignore("Is this API broken? Always returns empty list.")]
         public async Task Me_GetConnections()
         {
-            var client = SoundCloudClient.CreateAuthorized(_settings.Token);
+            var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
             var connections = (await client.Me.GetConnectionsAsync()).ToList();
 
@@ -90,7 +90,7 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task Me_GetFavorites()
         {
-            var client = SoundCloudClient.CreateAuthorized(_settings.Token);
+            var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
             var favorites = await client.Me.GetFavoritesAsync();
 
@@ -100,7 +100,7 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task Me_GetFollowers()
         {
-            var client = SoundCloudClient.CreateAuthorized(_settings.Token);
+            var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
             var followers = await client.Me.GetFollowersAsync();
 
@@ -110,7 +110,7 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task Me_GetFollowings()
         {
-            var client = SoundCloudClient.CreateAuthorized(_settings.Token);
+            var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
             var followings = await client.Me.GetFollowingsAsync();
 
@@ -120,7 +120,7 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task Me_GetPlaylists()
         {
-            var client = SoundCloudClient.CreateAuthorized(_settings.Token);
+            var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
             var playlists = (await client.Me.GetPlaylistsAsync()).ToList();
 
@@ -130,7 +130,7 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task Me_GetTracks()
         {
-            var client = SoundCloudClient.CreateAuthorized(_settings.Token);
+            var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
             var tracks = await client.Me.GetTracksAsync();
 
@@ -140,7 +140,7 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task Me_GetWebProfiles()
         {
-            var client = SoundCloudClient.CreateAuthorized(_settings.Token);
+            var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
             var groups = (await client.Me.GetWebProfilesAsync()).ToList();
 
@@ -152,7 +152,7 @@ namespace SoundCloud.Api.IntegrationTest
         {
             const int trackId = 211433527;
 
-            var client = SoundCloudClient.CreateAuthorized(_settings.Token);
+            var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
             var track = new Track { Id = trackId };
 
@@ -173,15 +173,15 @@ namespace SoundCloud.Api.IntegrationTest
         [Ignore("There's some huge delay in posting web profile")]
         public async Task Me_WebProfile_Post_Delete()
         {
-            var client = SoundCloudClient.CreateAuthorized(_settings.Token);
+            var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
-            var profile = new WebProfile { url = "http://facebook.com", title = "Facebook", service = WebService.Facebook };
+            var profile = new WebProfile { Url = "http://facebook.com", Title = "Facebook", Service = WebService.Facebook };
 
             var postResult = await client.Me.PostWebProfileAsync(profile);
 
             Assert.That(postResult.IsSuccess, Is.True);
-            Assert.That(postResult.Data.url, Is.EqualTo(profile.url));
-            Assert.That(postResult.Data.title, Is.EqualTo(profile.title));
+            Assert.That(postResult.Data.Url, Is.EqualTo(profile.Url));
+            Assert.That(postResult.Data.Title, Is.EqualTo(profile.Title));
 
             var profiles = await client.Me.GetWebProfilesAsync();
             Assert.That(profiles.Any(x => x.Id == postResult.Data.Id), Is.True);

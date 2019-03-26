@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -14,9 +12,9 @@ namespace SoundCloud.Api.Web
 {
     internal sealed class SoundCloudApiGateway : ISoundCloudApiGateway
     {
+        private readonly IHttpClientFactory _clientFactory;
         private readonly JsonSerializerSettings _jsonDeserializeSettings;
         private readonly JsonSerializerSettings _jsonSerializeSettings;
-        private readonly IHttpClientFactory _clientFactory;
 
         public SoundCloudApiGateway(IHttpClientFactory clientFactory)
         {

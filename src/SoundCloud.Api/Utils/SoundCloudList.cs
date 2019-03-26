@@ -1,16 +1,16 @@
-﻿using SoundCloud.Api.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SoundCloud.Api.Entities;
 
 namespace SoundCloud.Api.Utils
 {
     /// <summary>
-    /// Custom list implementation for SoundCloud.
-    /// <para>
-    /// It lazy loads the needed items from SoundCloud using <see cref="_acquireNextPageAsync"/> and caches them.
-    /// </para>
+    ///     Custom list implementation for SoundCloud.
+    ///     <para>
+    ///         It lazy loads the needed items from SoundCloud using <see cref="_acquireNextPageAsync" /> and caches them.
+    ///     </para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     internal class SoundCloudList<T>
@@ -31,7 +31,7 @@ namespace SoundCloud.Api.Utils
 
         public IEnumerable<T> Get()
         {
-            for (var i = 0; ; i++)
+            for (var i = 0;; i++)
             {
                 // new _items needed
                 if (i >= _items.Count)
@@ -55,17 +55,17 @@ namespace SoundCloud.Api.Utils
 
             var pagedResult = await _acquireNextPageAsync(_nextPage);
 
-            if (pagedResult == null || !pagedResult.collection.Any())
+            if (pagedResult == null || !pagedResult.Collection.Any())
             {
                 _enumerationFinished = true;
                 return false;
             }
 
-            _items.AddRange(pagedResult.collection);
+            _items.AddRange(pagedResult.Collection);
 
             if (pagedResult.HasNextPage)
             {
-                _nextPage = pagedResult.next_href;
+                _nextPage = pagedResult.NextHref;
                 return true;
             }
 

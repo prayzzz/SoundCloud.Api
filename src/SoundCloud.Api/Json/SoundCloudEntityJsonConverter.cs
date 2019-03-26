@@ -1,8 +1,6 @@
 ﻿using System;
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
 using SoundCloud.Api.Entities;
 using SoundCloud.Api.Entities.Base;
 using SoundCloud.Api.Entities.Enums;
@@ -10,7 +8,7 @@ using SoundCloud.Api.Utils;
 
 namespace SoundCloud.Api.Json
 {
-    internal class SoundCloudEntityJsonConverter : JsonConverter
+    internal sealed class SoundCloudEntityJsonConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {
@@ -19,7 +17,7 @@ namespace SoundCloud.Api.Json
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            var jsonObject = (JObject)serializer.Deserialize(reader);
+            var jsonObject = (JObject) serializer.Deserialize(reader);
 
             if (jsonObject == null)
             {
@@ -56,7 +54,8 @@ namespace SoundCloud.Api.Json
                 case Kind.WebProfile:
                     return jsonObject.ToObject<WebProfile>();
                 default:
-                    throw new ArgumentOutOfRangeException("kind", kind, "Not supported.");
+                    // ReSharper disable once NotResolvedInText
+                    throw new ArgumentOutOfRangeException("kind", kind, $"{kind} Not supported.");
             }
         }
 

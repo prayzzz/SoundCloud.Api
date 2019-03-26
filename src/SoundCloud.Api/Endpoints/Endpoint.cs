@@ -1,12 +1,12 @@
-﻿using SoundCloud.Api.Entities;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+using SoundCloud.Api.Entities;
 using SoundCloud.Api.Entities.Base;
 using SoundCloud.Api.Exceptions;
 using SoundCloud.Api.Utils;
 using SoundCloud.Api.Web;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SoundCloud.Api.Endpoints
 {
@@ -20,7 +20,7 @@ namespace SoundCloud.Api.Endpoints
         }
 
         /// <summary>
-        /// Performs a POST request with <paramref name="entity"/> using <paramref name="uri"/>.
+        ///     Performs a POST request with <paramref name="entity" /> using <paramref name="uri" />.
         /// </summary>
         /// <typeparam name="T">Type of the response entity</typeparam>
         /// <param name="uri">Target of the POST request</param>
@@ -44,7 +44,7 @@ namespace SoundCloud.Api.Endpoints
         }
 
         /// <summary>
-        /// Performs a POST request with <paramref name="parameters"/> using <paramref name="uri"/>.
+        ///     Performs a POST request with <paramref name="parameters" /> using <paramref name="uri" />.
         /// </summary>
         /// <typeparam name="T">Type of the response entity</typeparam>
         /// <param name="uri">Target of the POST request</param>
@@ -68,7 +68,7 @@ namespace SoundCloud.Api.Endpoints
         }
 
         /// <summary>
-        /// Performs a DELETE request using <paramref name="uri"/>.
+        ///     Performs a DELETE request using <paramref name="uri" />.
         /// </summary>
         /// <param name="uri">Target of the DELETE request</param>
         /// <returns>The response entity of the request</returns>
@@ -85,9 +85,9 @@ namespace SoundCloud.Api.Endpoints
             if (apiResponse.ContainsData)
             {
                 errorMessage.AppendLineIfNotEmpty(apiResponse.Data.Error);
-                foreach (var message in apiResponse.Data.Errors)
+                foreach (var error in apiResponse.Data.Errors)
                 {
-                    errorMessage.AppendLineIfNotEmpty(message.error_message);
+                    errorMessage.AppendLineIfNotEmpty(error.Message);
                 }
             }
             else
@@ -117,7 +117,7 @@ namespace SoundCloud.Api.Endpoints
 //        }
 
         /// <summary>
-        /// Performs a GET request using <paramref name="uri"/>.
+        ///     Performs a GET request using <paramref name="uri" />.
         /// </summary>
         /// <typeparam name="T">Type of the response entity</typeparam>
         /// <param name="uri">Target of the GET request</param>
@@ -135,7 +135,7 @@ namespace SoundCloud.Api.Endpoints
         }
 
         /// <summary>
-        /// Performs a GET request using <paramref name="uri"/>.
+        ///     Performs a GET request using <paramref name="uri" />.
         /// </summary>
         /// <typeparam name="T">Type of the response entity</typeparam>
         /// <param name="uri">Target of the GET request</param>
@@ -157,7 +157,7 @@ namespace SoundCloud.Api.Endpoints
         }
 
         /// <summary>
-        /// Performs a PUT request using <paramref name="uri"/>.
+        ///     Performs a PUT request using <paramref name="uri" />.
         /// </summary>
         /// <param name="uri">Target of the PUT request</param>
         /// <returns>The response entity of the request</returns>
@@ -174,9 +174,9 @@ namespace SoundCloud.Api.Endpoints
             if (apiResponse.ContainsData)
             {
                 errorMessage.AppendLineIfNotEmpty(apiResponse.Data.Error);
-                foreach (var message in apiResponse.Data.Errors)
+                foreach (var error in apiResponse.Data.Errors)
                 {
-                    errorMessage.AppendLineIfNotEmpty(message.error_message);
+                    errorMessage.AppendLineIfNotEmpty(error.Message);
                 }
             }
             else
@@ -188,7 +188,7 @@ namespace SoundCloud.Api.Endpoints
         }
 
         /// <summary>
-        /// Performs a PUT request with <paramref name="entity"/> using <paramref name="uri"/>.
+        ///     Performs a PUT request with <paramref name="entity" /> using <paramref name="uri" />.
         /// </summary>
         /// <typeparam name="T">Type of the response entity</typeparam>
         /// <param name="uri">Target of the PUT request</param>
@@ -212,7 +212,7 @@ namespace SoundCloud.Api.Endpoints
         }
 
         /// <summary>
-        /// Performs a PUT request with <paramref name="parameters"/> using <paramref name="uri"/>.
+        ///     Performs a PUT request with <paramref name="parameters" /> using <paramref name="uri" />.
         /// </summary>
         /// <typeparam name="T">Type of the response entity</typeparam>
         /// <param name="uri">Target of the PUT request</param>
@@ -236,8 +236,8 @@ namespace SoundCloud.Api.Endpoints
         }
 
         /// <summary>
-        /// Calls the passed method for validation.
-        /// Throws <see cref="SoundCloudValidationException" />, if validation fails.
+        ///     Calls the passed method for validation.
+        ///     Throws <see cref="SoundCloudValidationException" />, if validation fails.
         /// </summary>
         /// <exception cref="SoundCloudValidationException">Thrown, if validation fails.</exception>
         protected void Validate(Func<ValidationMessages, bool> validateMethod)

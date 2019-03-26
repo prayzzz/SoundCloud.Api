@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text;
-
 using SoundCloud.Api.Utils;
 
 namespace SoundCloud.Api.Exceptions

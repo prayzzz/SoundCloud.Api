@@ -8,7 +8,6 @@ using NUnit.Framework;
 using SoundCloud.Api.Endpoints;
 using SoundCloud.Api.Entities;
 using SoundCloud.Api.Entities.Base;
-using SoundCloud.Api.Utils;
 using SoundCloud.Api.Web;
 
 namespace SoundCloud.Api.Test.Endpoints
@@ -170,7 +169,7 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://test.com/delete");
 
-            var status = new StatusResponse { Error = "Foo", Errors = new List<ErrorMessage> { new ErrorMessage { error_message = "Bar" } } };
+            var status = new StatusResponse { Error = "Foo", Errors = new List<ErrorMessage> { new ErrorMessage { Message = "Bar" } } };
             var response = new ApiResponse<StatusResponse>(HttpStatusCode.NotFound, status);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
@@ -276,7 +275,7 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://test.com/get");
 
-            var testEntities = new PagedResult<TestEntity> { collection = new List<TestEntity> { new TestEntity() } };
+            var testEntities = new PagedResult<TestEntity> { Collection = new List<TestEntity> { new TestEntity() } };
             var response = new ApiResponse<PagedResult<TestEntity>>(HttpStatusCode.OK, testEntities);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
@@ -287,7 +286,7 @@ namespace SoundCloud.Api.Test.Endpoints
             var result = (await endpoint.GetListAsync<TestEntity>(expectedUri)).ToList();
 
             // Assert
-            Assert.That(result[0], Is.EqualTo(testEntities.collection[0]));
+            Assert.That(result[0], Is.EqualTo(testEntities.Collection[0]));
 
             gatewayMock.VerifyAll();
         }
@@ -369,7 +368,7 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://test.com/update");
 
-            var status = new StatusResponse { Error = "Foo", Errors = new List<ErrorMessage> { new ErrorMessage { error_message = "Bar" } } };
+            var status = new StatusResponse { Error = "Foo", Errors = new List<ErrorMessage> { new ErrorMessage { Message = "Bar" } } };
 
             var response = new ApiResponse<StatusResponse>(HttpStatusCode.NotFound, status);
 

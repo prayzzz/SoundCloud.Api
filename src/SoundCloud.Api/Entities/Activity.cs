@@ -1,43 +1,43 @@
-// ReSharper disable InconsistentNaming
-
 using Newtonsoft.Json;
-
 using SoundCloud.Api.Entities.Base;
 using SoundCloud.Api.Entities.Enums;
 using SoundCloud.Api.Json;
-using SoundCloud.Api.Utils;
 
 namespace SoundCloud.Api.Entities
 {
     /// <summary>
-    /// Represents a activity which is displayed in the activity stream.
-    /// The affected entity is stored in the <see cref="origin"/> property.
+    ///     Represents a activity which is displayed in the activity stream.
+    ///     The affected entity is stored in the <see cref="Origin" /> property.
     /// </summary>
     public sealed class Activity : Entity
     {
         /// <summary>
-        /// Available for GET requets
+        ///     Available for GET requests
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public string created_at { get; set; }
+        [JsonProperty("created_at")]
+        public string CreatedAt { get; set; }
 
         /// <summary>
-        /// Available for GET requets
+        ///     Available for GET requests
         /// </summary>
         [JsonIgnoreOnSerialize]
+        [JsonProperty("origin")]
         [JsonConverter(typeof(SoundCloudEntityJsonConverter))]
-        public Entity origin { get; set; }
+        public Entity Origin { get; set; }
 
         /// <summary>
-        /// Available for GET requets
+        ///     Available for GET requests
         /// </summary>
+        [JsonProperty("tags")]
         [JsonIgnoreOnSerialize]
-        public object tags { get; set; }
+        public object Tags { get; set; }
 
         /// <summary>
-        /// Available for GET requets
+        ///     Available for GET requests
         /// </summary>
+        [JsonProperty("type")]
         [JsonIgnoreOnSerialize]
-        public ActivityType type { get; set; }
+        public ActivityType Type { get; set; }
     }
 }

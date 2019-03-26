@@ -1,34 +1,34 @@
-//ReSharper disable All
-
 using System;
-
+using Newtonsoft.Json;
 using SoundCloud.Api.Entities.Base;
 using SoundCloud.Api.Json;
-using SoundCloud.Api.Utils;
 
 namespace SoundCloud.Api.Entities
 {
     /// <summary>
-    /// Represents an registered application
+    ///     Represents an registered application
     /// </summary>
     public sealed class AppClient : Entity
     {
         /// <summary>
-        /// Available for GET requets
+        ///     Available for GET requests
         /// </summary>
+        [JsonProperty("name")]
         [JsonIgnoreOnSerialize]
-        public string name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
-        /// Available for GET requets
+        ///     Available for GET requests
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public string permalink_url { get; set; }
+        [JsonProperty("permalink_url")]
+        public string PermalinkUrl { get; set; }
 
         /// <summary>
-        /// Available for GET requets
+        ///     Available for GET requests
         /// </summary>
+        [JsonProperty("uri")]
         [JsonIgnoreOnSerialize]
-        public Uri uri { get; set; }
+        public Uri Uri { get; set; }
     }
 }

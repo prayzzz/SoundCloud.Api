@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-
 using SoundCloud.Api.Entities.Enums;
 using SoundCloud.Api.Utils;
 
@@ -38,9 +37,9 @@ namespace SoundCloud.Api.QueryBuilders
 
         public int? DurationTo { get; set; }
 
-        public List<string> Genres { get; private set; }
+        public List<string> Genres { get; }
 
-        public List<int> Ids { get; private set; }
+        public List<int> Ids { get; }
 
         public License License { get; set; }
 
@@ -48,9 +47,9 @@ namespace SoundCloud.Api.QueryBuilders
 
         public Sharing Sharing { get; set; }
 
-        public List<string> Tags { get; private set; }
+        public List<string> Tags { get; }
 
-        public List<TrackType> TrackTypes { get; private set; }
+        public List<TrackType> TrackTypes { get; }
 
         protected override void AddArguments(IDictionary<string, string> queryArguments)
         {

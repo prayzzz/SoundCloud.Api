@@ -64,7 +64,7 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/tracks?limit=200&bpm[from]=100&tags=house&linked_partitioning=1");
 
-            var trackList = new PagedResult<Track> { collection = { new Track(), new Track() } };
+            var trackList = new PagedResult<Track> { Collection = { new Track(), new Track() } };
             var response = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK, trackList);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
@@ -75,7 +75,7 @@ namespace SoundCloud.Api.Test.Endpoints
             var result = (await new Tracks(gatewayMock.Object).GetAsync(query)).ToList();
 
             // Assert
-            Assert.That(result, Is.EqualTo(trackList.collection));
+            Assert.That(result, Is.EqualTo(trackList.Collection));
         }
 
         [Test]
@@ -83,7 +83,7 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/tracks?limit=200&ids=101%2C202%2C303&linked_partitioning=1");
 
-            var trackList = new PagedResult<Track> { collection = { new Track(), new Track() } };
+            var trackList = new PagedResult<Track> { Collection = { new Track(), new Track() } };
             var response = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK, trackList);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
@@ -94,7 +94,7 @@ namespace SoundCloud.Api.Test.Endpoints
             var result = (await new Tracks(gatewayMock.Object).GetAsync(query)).ToList();
 
             // Assert
-            Assert.That(result, Is.EqualTo(trackList.collection));
+            Assert.That(result, Is.EqualTo(trackList.Collection));
         }
 
         [Test]
@@ -102,7 +102,7 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/tracks?limit=200&license=cc-by&linked_partitioning=1");
 
-            var trackList = new PagedResult<Track> { collection = { new Track(), new Track() } };
+            var trackList = new PagedResult<Track> { Collection = { new Track(), new Track() } };
             var response = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK, trackList);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
@@ -113,7 +113,7 @@ namespace SoundCloud.Api.Test.Endpoints
             var result = (await new Tracks(gatewayMock.Object).GetAsync(query)).ToList();
 
             // Assert
-            Assert.That(result, Is.EqualTo(trackList.collection));
+            Assert.That(result, Is.EqualTo(trackList.Collection));
         }
 
         [Test]
@@ -121,7 +121,7 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/tracks?limit=200&types=original&genres=Rap&linked_partitioning=1");
 
-            var trackList = new PagedResult<Track> { collection = { new Track(), new Track() } };
+            var trackList = new PagedResult<Track> { Collection = { new Track(), new Track() } };
             var response = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK, trackList);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
@@ -132,7 +132,7 @@ namespace SoundCloud.Api.Test.Endpoints
             var result = (await new Tracks(gatewayMock.Object).GetAsync(query)).ToList();
 
             // Assert
-            Assert.That(result, Is.EqualTo(trackList.collection));
+            Assert.That(result, Is.EqualTo(trackList.Collection));
         }
 
         [Test]
@@ -140,7 +140,7 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/tracks/215850263/comments?limit=200&linked_partitioning=1");
 
-            var commentList = new PagedResult<Comment> { collection = new List<Comment> { new Comment(), new Comment() } };
+            var commentList = new PagedResult<Comment> { Collection = new List<Comment> { new Comment(), new Comment() } };
             var response = new ApiResponse<PagedResult<Comment>>(HttpStatusCode.OK, commentList);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
@@ -151,7 +151,7 @@ namespace SoundCloud.Api.Test.Endpoints
             var result = (await new Tracks(gatewayMock.Object).GetCommentsAsync(track)).ToList();
 
             // Assert
-            Assert.That(result, Is.EqualTo(commentList.collection));
+            Assert.That(result, Is.EqualTo(commentList.Collection));
         }
 
         [Test]
@@ -159,7 +159,7 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/tracks/215850263/favoriters?limit=200&linked_partitioning=1");
 
-            var userList = new PagedResult<User> { collection = new List<User> { new User(), new User() } };
+            var userList = new PagedResult<User> { Collection = new List<User> { new User(), new User() } };
             var response = new ApiResponse<PagedResult<User>>(HttpStatusCode.OK, userList);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
@@ -170,7 +170,7 @@ namespace SoundCloud.Api.Test.Endpoints
             var result = (await new Tracks(gatewayMock.Object).GetFavoritersAsync(track)).ToList();
 
             // Assert
-            Assert.That(result, Is.EqualTo(userList.collection));
+            Assert.That(result, Is.EqualTo(userList.Collection));
         }
 
         [Test]
@@ -178,7 +178,7 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/tracks?limit=200&linked_partitioning=1");
 
-            var trackList = new PagedResult<Track> { collection = { new Track(), new Track() } };
+            var trackList = new PagedResult<Track> { Collection = { new Track(), new Track() } };
             var response = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK, trackList);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
@@ -188,7 +188,7 @@ namespace SoundCloud.Api.Test.Endpoints
             var result = (await new Tracks(gatewayMock.Object).GetAsync()).ToList();
 
             // Assert
-            Assert.That(result, Is.EqualTo(trackList.collection));
+            Assert.That(result, Is.EqualTo(trackList.Collection));
         }
 
         [Test]
@@ -196,7 +196,7 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/tracks/215850263/secret-token?");
 
-            var track = new Track { Id = TrackId, title = "title" };
+            var track = new Track { Id = TrackId, Title = "title" };
             var token = new SecretToken();
 
             var response = new ApiResponse<SecretToken>(HttpStatusCode.OK, token);
@@ -220,24 +220,24 @@ namespace SoundCloud.Api.Test.Endpoints
             const string thirdPageUri = @"https://api.soundcloud.com/tracks?linked_partitioning=1&limit=200&offset=100";
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            var firstPage = new PagedResult<Track> { collection = new List<Track>() };
-            firstPage.next_href = new Uri("https://api.soundcloud.com/tracks?linked_partitioning=1&limit=200&offset=50");
+            var firstPage = new PagedResult<Track> { Collection = new List<Track>() };
+            firstPage.NextHref = new Uri("https://api.soundcloud.com/tracks?linked_partitioning=1&limit=200&offset=50");
             for (var i = 0; i < 50; i++)
             {
-                firstPage.collection.Add(new Track());
+                firstPage.Collection.Add(new Track());
             }
 
-            var secondPage = new PagedResult<Track> { collection = new List<Track>() };
-            secondPage.next_href = new Uri("https://api.soundcloud.com/tracks?linked_partitioning=1&limit=200&offset=100");
+            var secondPage = new PagedResult<Track> { Collection = new List<Track>() };
+            secondPage.NextHref = new Uri("https://api.soundcloud.com/tracks?linked_partitioning=1&limit=200&offset=100");
             for (var i = 0; i < 50; i++)
             {
-                secondPage.collection.Add(new Track());
+                secondPage.Collection.Add(new Track());
             }
 
-            var thirdPage = new PagedResult<Track> { collection = new List<Track>() };
+            var thirdPage = new PagedResult<Track> { Collection = new List<Track>() };
             for (var i = 0; i < 50; i++)
             {
-                thirdPage.collection.Add(new Track());
+                thirdPage.Collection.Add(new Track());
             }
 
             var firstReponse = new ApiResponse<PagedResult<Track>>(HttpStatusCode.OK);
@@ -264,9 +264,9 @@ namespace SoundCloud.Api.Test.Endpoints
             var res2 = result.Skip(50).Take(50).ToList();
             var res3 = result.Skip(100).Take(50).ToList();
 
-            Assert.That(res1, Is.EqualTo(firstPage.collection));
-            Assert.That(res2, Is.EqualTo(secondPage.collection));
-            Assert.That(res3, Is.EqualTo(thirdPage.collection));
+            Assert.That(res1, Is.EqualTo(firstPage.Collection));
+            Assert.That(res2, Is.EqualTo(secondPage.Collection));
+            Assert.That(res3, Is.EqualTo(thirdPage.Collection));
         }
 
         [Test]
@@ -274,8 +274,8 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/tracks/215850263?");
 
-            var track = new Track { Id = TrackId, title = "title" };
-            var updatedTrack = new Track { Id = track.Id, title = track.title };
+            var track = new Track { Id = TrackId, Title = "title" };
+            var updatedTrack = new Track { Id = track.Id, Title = track.Title };
 
             var response = new ApiResponse<Track>(HttpStatusCode.OK, updatedTrack);
 
@@ -298,8 +298,8 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/tracks/215850263?");
 
-            var track = new Track { Id = TrackId, title = "title" };
-            var updatedTrack = new Track { Id = track.Id, title = track.title, artwork_url = new Uri("http://sampleurl.com") };
+            var track = new Track { Id = TrackId, Title = "title" };
+            var updatedTrack = new Track { Id = track.Id, Title = track.Title, ArtworkUrl = new Uri("http://sampleurl.com") };
             var artwork = TestDataProvider.GetArtwork();
 
             var response = new ApiResponse<Track>(HttpStatusCode.OK, updatedTrack);
@@ -329,7 +329,7 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/tracks?");
 
-            var postedTrack = new Track { Id = TrackId, title = "title" };
+            var postedTrack = new Track { Id = TrackId, Title = "title" };
             var response = new ApiResponse<Track>(HttpStatusCode.OK, postedTrack);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
@@ -337,8 +337,7 @@ namespace SoundCloud.Api.Test.Endpoints
                 .ReturnsAsync(response)
                 .Callback((Uri u, IDictionary<string, object> p) =>
                 {
-                    Assert.That(p.Count, Is.EqualTo(3));
-                    Assert.That(p["oauth_token"], Is.EqualTo("123"));
+                    Assert.That(p.Count, Is.EqualTo(2));
                     Assert.That(p["track[title]"], Is.EqualTo("title"));
                 });
 

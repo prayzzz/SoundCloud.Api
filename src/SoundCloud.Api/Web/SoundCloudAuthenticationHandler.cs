@@ -7,11 +7,11 @@ using SoundCloud.Api.Utils;
 
 namespace SoundCloud.Api.Web
 {
-    internal class AuthenticationHandler : DelegatingHandler
+    public class SoundCloudAuthenticationHandler : DelegatingHandler
     {
         private readonly SoundCloudCredentials _credentials;
 
-        public AuthenticationHandler(SoundCloudCredentials credentials)
+        public SoundCloudAuthenticationHandler(SoundCloudCredentials credentials)
         {
             _credentials = credentials;
         }
@@ -21,7 +21,7 @@ namespace SoundCloud.Api.Web
             request.RequestUri = AppendCredentials(request.RequestUri, _credentials);
             return await base.SendAsync(request, cancellationToken);
         }
-        
+
         private static Uri AppendCredentials(Uri uri, SoundCloudCredentials credentials)
         {
             if (uri == null)

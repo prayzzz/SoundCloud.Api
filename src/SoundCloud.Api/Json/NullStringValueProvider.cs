@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-
 using Newtonsoft.Json.Serialization;
 
 namespace SoundCloud.Api.Json

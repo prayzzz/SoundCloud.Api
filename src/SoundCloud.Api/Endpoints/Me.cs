@@ -1,9 +1,8 @@
-﻿using SoundCloud.Api.Entities;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using SoundCloud.Api.Entities;
 using SoundCloud.Api.QueryBuilders;
 using SoundCloud.Api.Web;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using SoundCloud.Api.Utils;
 
 namespace SoundCloud.Api.Endpoints
 {
@@ -17,7 +16,6 @@ namespace SoundCloud.Api.Endpoints
         private const string MeFollowersPath = "me/followers?";
         private const string MeFollowingsPath = "me/followings?";
         private const string MeFollowPath = "me/followings/{0}?";
-        private const string MeGroupsPath = "me/groups?";
         private const string MePath = "me?";
         private const string MePlaylistsPath = "me/playlists?";
         private const string MeTracksPath = "me/tracks?";

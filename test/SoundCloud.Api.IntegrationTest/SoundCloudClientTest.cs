@@ -24,12 +24,12 @@ namespace SoundCloud.Api.IntegrationTest
         protected const int Track3Id = 234707391;
         protected const int TrackId = 219359541;
         protected const int UserId = 164386753;
-        protected Settings _settings;
+        protected Settings Settings;
         
         [SetUp]
         public void Setup()
         {
-            if (_settings == null)
+            if (Settings == null)
             {
                 Assert.Inconclusive("No settings loaded. ClientId and AccessToken not available");
             }
@@ -48,7 +48,7 @@ namespace SoundCloud.Api.IntegrationTest
 
             using (var reader = new StreamReader(File.Open(path, FileMode.Open)))
             {
-                _settings = JsonConvert.DeserializeObject<Settings>(reader.ReadToEnd());
+                Settings = JsonConvert.DeserializeObject<Settings>(reader.ReadToEnd());
             }
         }
     }

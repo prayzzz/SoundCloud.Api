@@ -1,59 +1,63 @@
-﻿// ReSharper disable InconsistentNaming
-
-using System;
-
+﻿using System;
+using Newtonsoft.Json;
 using SoundCloud.Api.Entities.Base;
 using SoundCloud.Api.Entities.Enums;
 using SoundCloud.Api.Json;
-using SoundCloud.Api.Utils;
 
 namespace SoundCloud.Api.Entities
 {
     /// <summary>
-    /// Represents a connection to a other social media platform
+    ///     Represents a connection to a other social media platform
     /// </summary>
     public sealed class Connection : Entity
     {
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public string created_at { get; set; }
+        [JsonProperty("created_at")]
+        public string CreatedAt { get; set; }
 
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public string display_name { get; set; }
+        [JsonProperty("display_name")]
+        public string DisplayName { get; set; }
 
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public bool post_favorite { get; set; }
+        [JsonProperty("post_favorite")]
+        public bool PostFavorite { get; set; }
 
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public bool post_publish { get; set; }
+        [JsonProperty("post_publish")]
+        public bool PostPublish { get; set; }
 
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public ConnectionService service { get; set; }
+        [JsonProperty("service")]
+        public ConnectionService Service { get; set; }
 
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
         /// </summary>
+        [JsonProperty("type")]
         [JsonIgnoreOnSerialize]
-        public ConnectionService type { get; set; }
+        public ConnectionService Type { get; set; }
 
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
         /// </summary>
+        [JsonProperty("uri")]
         [JsonIgnoreOnSerialize]
-        public Uri uri { get; set; }
+        public Uri Uri { get; set; }
     }
 }

@@ -18,7 +18,7 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/oauth2/token?");
 
-            var accessRequest = new Credentials { client_id = "my client id", client_secret = "my client secret", code = "my code" };
+            var accessRequest = new Credentials { ClientId = "my client id", ClientSecret = "my client secret", Code = "my code" };
             var response = new ApiResponse<Credentials>(HttpStatusCode.OK, accessRequest);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
@@ -48,7 +48,7 @@ namespace SoundCloud.Api.Test.Endpoints
 
             var accessRequest = new Credentials
             {
-                client_id = "my client id", client_secret = "my client secret", username = "my username", password = "my password"
+                ClientId = "my client id", ClientSecret = "my client secret", Username = "my username", Password = "my password"
             };
             var response = new ApiResponse<Credentials>(HttpStatusCode.OK, accessRequest);
 
@@ -78,7 +78,7 @@ namespace SoundCloud.Api.Test.Endpoints
         {
             var expectedUri = new Uri("https://api.soundcloud.com/oauth2/token?");
 
-            var accessRequest = new Credentials { client_id = "my client id", client_secret = "my client secret" };
+            var accessRequest = new Credentials { ClientId = "my client id", ClientSecret = "my client secret" };
             var response = new ApiResponse<Credentials>(HttpStatusCode.OK, accessRequest);
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
@@ -107,7 +107,7 @@ namespace SoundCloud.Api.Test.Endpoints
 
             var accessRequest = new Credentials
             {
-                client_id = "my client id", client_secret = "my client secret", refresh_token = "my refresh token"
+                ClientId = "my client id", ClientSecret = "my client secret", RefreshToken = "my refresh token"
             };
             var response = new ApiResponse<Credentials>(HttpStatusCode.OK, accessRequest);
 

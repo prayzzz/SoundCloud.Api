@@ -1,5 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
-
+﻿using Newtonsoft.Json;
 using SoundCloud.Api.Entities.Base;
 using SoundCloud.Api.Entities.Enums;
 using SoundCloud.Api.Json;
@@ -8,46 +7,52 @@ using SoundCloud.Api.Utils;
 namespace SoundCloud.Api.Entities
 {
     /// <summary>
-    /// Represents a web profile
+    ///     Represents a web profile
     /// </summary>
     public sealed class WebProfile : Entity
     {
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public string created_at { get; set; }
+        [JsonProperty("created_at")]
+        public string CreatedAt { get; set; }
 
         /// <summary>
-        /// Available for GET, POST requests
+        ///     Available for GET, POST requests
         /// </summary>
-        public WebService network { get; set; }
+        [JsonProperty("network")]
+        public WebService Network { get; set; }
 
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public WebService service
+        [JsonProperty("service")]
+        public WebService Service
         {
-            get { return network; }
-            set { network = value; }
+            get => Network;
+            set => Network = value;
         }
 
         /// <summary>
-        /// Available for GET, POST requests
+        ///     Available for GET, POST requests
         /// </summary>
-        public string title { get; set; }
+        [JsonProperty("title")]
+        public string Title { get; set; }
 
         /// <summary>
-        /// Available for GET, POST requests
+        ///     Available for GET, POST requests
         /// </summary>
-        public string url { get; set; }
+        [JsonProperty("url")]
+        public string Url { get; set; }
 
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public string username { get; set; }
+        [JsonProperty("username")]
+        public string Username { get; set; }
 
         public bool ValidateDelete(ValidationMessages messages)
         {
@@ -62,13 +67,13 @@ namespace SoundCloud.Api.Entities
 
         public bool ValidatePost(ValidationMessages messages)
         {
-            if (string.IsNullOrEmpty(title))
+            if (string.IsNullOrEmpty(Title))
             {
                 messages.Add("WebProfile title missing. Use the title property to set the title of this WebProfile.");
                 return false;
             }
 
-            if (string.IsNullOrEmpty(url))
+            if (string.IsNullOrEmpty(Url))
             {
                 messages.Add("WebProfile url missing. Use the url property to set the url of this WebProfile.");
                 return false;
@@ -86,10 +91,13 @@ namespace SoundCloud.Api.Entities
         {
             public WebProfileBox(WebProfile wb)
             {
-                web_profile = wb;
+                WebProfile = wb;
             }
 
-            public WebProfile web_profile { get; set; }
+            // ReSharper disable once UnusedAutoPropertyAccessor.Local
+            // ReSharper disable once MemberCanBePrivate.Local
+            [JsonProperty("web_profile")]
+            public WebProfile WebProfile { get; }
         }
     }
 }

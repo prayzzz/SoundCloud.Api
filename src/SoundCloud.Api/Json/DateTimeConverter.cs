@@ -1,13 +1,12 @@
 ﻿using System;
-
 using Newtonsoft.Json;
 
 namespace SoundCloud.Api.Json
 {
-    public sealed class DateTimeConverter : JsonConverter
+    internal sealed class DateTimeConverter : JsonConverter
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:SoundCloud.Api.Json.DateTimeConverter"/> class. 
+        ///     Initializes a new instance of the <see cref="T:SoundCloud.Api.Json.DateTimeConverter" /> class.
         /// </summary>
         public DateTimeConverter(string pattern)
         {
@@ -15,12 +14,12 @@ namespace SoundCloud.Api.Json
         }
 
         /// <summary>
-        ///  Gets or sets the DateTime pattern. 
-        /// </summary> 
+        ///     Gets or sets the DateTime pattern.
+        /// </summary>
         public string Pattern { get; set; }
 
         /// <summary>
-        /// Determines whether this instance can convert the specified object type. 
+        ///     Determines whether this instance can convert the specified object type.
         /// </summary>
         /// <param name="objectType">Type of the object.</param>
         public override bool CanConvert(Type objectType)
@@ -29,9 +28,12 @@ namespace SoundCloud.Api.Json
         }
 
         /// <summary>
-        /// Reads the JSON representation of the object. 
+        ///     Reads the JSON representation of the object.
         /// </summary>
-        /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader"/> to read from.</param><param name="objectType">Type of the object.</param><param name="existingValue">The existing value of object being read.</param><param name="serializer">The calling serializer.</param>
+        /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
+        /// <param name="objectType">Type of the object.</param>
+        /// <param name="existingValue">The existing value of object being read.</param>
+        /// <param name="serializer">The calling serializer.</param>
         /// <returns>The object value.</returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
@@ -55,9 +57,11 @@ namespace SoundCloud.Api.Json
         }
 
         /// <summary>
-        /// Writes the JSON representation of the object. 
+        ///     Writes the JSON representation of the object.
         /// </summary>
-        /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.</param><param name="value">The value.</param><param name="serializer">The calling serializer.</param>
+        /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             if (!(value is DateTime))
@@ -65,7 +69,7 @@ namespace SoundCloud.Api.Json
                 writer.WriteNull();
             }
 
-            var dateTime = (DateTime)value;
+            var dateTime = (DateTime) value;
             writer.WriteValue(dateTime.ToString(Pattern));
         }
     }

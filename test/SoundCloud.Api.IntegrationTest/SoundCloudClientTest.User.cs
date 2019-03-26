@@ -11,7 +11,7 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task Users_Get()
         {
-            var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
+            var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
 
             var user = await client.Users.GetAsync(UserId);
 
@@ -22,7 +22,7 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task Users_GetComments()
         {
-            var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
+            var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
 
             var user = new User { Id = UserId };
 
@@ -34,7 +34,7 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task Users_GetFavorites()
         {
-            var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
+            var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
 
             var user = new User { Id = UserId };
 
@@ -46,7 +46,7 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task Users_GetFollowers()
         {
-            var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
+            var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
 
             var user = new User { Id = UserId };
 
@@ -58,7 +58,7 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task Users_GetFollowings()
         {
-            var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
+            var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
 
             var user = new User { Id = UserId };
 
@@ -70,7 +70,7 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task Users_GetList()
         {
-            var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
+            var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
 
             var users = (await client.Users.GetAsync()).Take(150).ToList();
 
@@ -80,7 +80,7 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task Users_GetPlaylists()
         {
-            var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
+            var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
 
             var user = new User { Id = UserId };
 
@@ -92,7 +92,7 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task Users_GetTracks()
         {
-            var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
+            var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
 
             var user = new User { Id = UserId };
 
@@ -104,7 +104,7 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task Users_GetWebProfiles()
         {
-            var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
+            var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
 
             var user = new User { Id = UserId };
 

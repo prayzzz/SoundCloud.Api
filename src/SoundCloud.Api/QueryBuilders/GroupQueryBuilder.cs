@@ -3,7 +3,7 @@
 namespace SoundCloud.Api.QueryBuilders
 {
     /// <summary>
-    /// Results are limited to 50 per request
+    ///     Results are limited to 50 per request
     /// </summary>
     public class GroupQueryBuilder : SoundCloudQueryBuilder
     {

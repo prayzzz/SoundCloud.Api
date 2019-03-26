@@ -1,9 +1,8 @@
-﻿using SoundCloud.Api.Entities;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using SoundCloud.Api.Entities;
 using SoundCloud.Api.QueryBuilders;
 using SoundCloud.Api.Web;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using SoundCloud.Api.Utils;
 
 namespace SoundCloud.Api.Endpoints
 {

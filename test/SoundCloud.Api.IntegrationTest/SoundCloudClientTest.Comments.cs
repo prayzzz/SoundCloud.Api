@@ -12,14 +12,14 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task Test_Comment_Post_Delete()
         {
-            var client = SoundCloudClient.CreateAuthorized(_settings.Token);
+            var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
-            var comment = new Comment { body = "TestComment at " + DateTime.Now.ToLocalTime(), track_id = TrackId };
+            var comment = new Comment { Body = "TestComment at " + DateTime.Now.ToLocalTime(), TrackId = TrackId };
 
             var result = await client.Comments.PostAsync(comment);
 
             Assert.That(result.IsSuccess, Is.True);
-            Assert.That(result.Data.body, Is.EqualTo(comment.body));
+            Assert.That(result.Data.Body, Is.EqualTo(comment.Body));
 
             await client.Comments.DeleteAsync(result.Data);
 
@@ -29,17 +29,17 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task Test_Comment_Get()
         {
-            var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
+            var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
 
             var result = await client.Comments.GetAsync(256985338);
 
-            Assert.That(result.body, Does.Contain("TestComment"));
+            Assert.That(result.Body, Does.Contain("TestComment"));
         }
         
         [Test]
         public async Task Test_Comment_GetList()
         {
-            var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
+            var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
 
             var result = await client.Comments.GetAsync();
 

@@ -1,10 +1,9 @@
 ﻿using System.Reflection;
-
 using Newtonsoft.Json.Serialization;
 
 namespace SoundCloud.Api.Json
 {
-    public class NullIntValueProvider : IValueProvider
+    internal sealed class NullIntValueProvider : IValueProvider
     {
         private readonly IValueProvider _underlyingValueProvider;
 

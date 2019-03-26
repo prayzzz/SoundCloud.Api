@@ -11,7 +11,7 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task Resolve_GetUrl()
         {
-            var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
+            var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
 
             var result = await client.Resolve.GetEntityAsync("https://soundcloud.com/sharpsound-2");
 
@@ -22,7 +22,7 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task Resolve_GetUrl_Wrong_Url()
         {
-            var client = SoundCloudClient.CreateUnauthorized(_settings.ClientId);
+            var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
 
             var result = await client.Resolve.GetEntityAsync("https://soundcloud.com/sharpsound-12345");
 

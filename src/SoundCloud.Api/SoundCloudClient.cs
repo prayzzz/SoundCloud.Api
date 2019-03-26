@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Net;
 using System.Net.Http;
-using System.Runtime.CompilerServices;
 using Microsoft.Extensions.DependencyInjection;
 using SoundCloud.Api.Endpoints;
 using SoundCloud.Api.Web;
@@ -53,7 +51,10 @@ namespace SoundCloud.Api
 
         public static ISoundCloudClient CreateAuthorized(string accessToken)
         {
-            if (string.IsNullOrEmpty(accessToken)) throw new ArgumentException(ArgumentMustNotBeNullOrEmpty, nameof(accessToken));
+            if (string.IsNullOrEmpty(accessToken))
+            {
+                throw new ArgumentException(ArgumentMustNotBeNullOrEmpty, nameof(accessToken));
+            }
 
             var httpClientFactory = GetDefaultHttpClientFactory(accessToken, null);
             return new SoundCloudClient(httpClientFactory);
@@ -61,7 +62,10 @@ namespace SoundCloud.Api
 
         public static ISoundCloudClient CreateUnauthorized(string clientId)
         {
-            if (string.IsNullOrEmpty(clientId)) throw new ArgumentException(ArgumentMustNotBeNullOrEmpty, nameof(clientId));
+            if (string.IsNullOrEmpty(clientId))
+            {
+                throw new ArgumentException(ArgumentMustNotBeNullOrEmpty, nameof(clientId));
+            }
 
             var httpClientFactory = GetDefaultHttpClientFactory(null, clientId);
             return new SoundCloudClient(httpClientFactory);

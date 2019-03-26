@@ -1,7 +1,5 @@
 ﻿using System.Runtime.Serialization;
-
 using Newtonsoft.Json;
-
 using SoundCloud.Api.Json;
 
 namespace SoundCloud.Api.Login

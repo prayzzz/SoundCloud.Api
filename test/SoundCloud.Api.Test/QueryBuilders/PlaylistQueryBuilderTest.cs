@@ -13,7 +13,7 @@ namespace SoundCloud.Api.Test.QueryBuilders
         [Test]
         public void Test_Empty_SearchString_In_Constructor()
         {
-            Assert.Throws<ArgumentException>(() => new PlaylistQueryBuilder(""));
+            Assert.Throws<ArgumentException>(() => { new PlaylistQueryBuilder(""); });
         }
 
         [Test]

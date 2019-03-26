@@ -8,7 +8,7 @@ namespace SoundCloud.Api.Utils
     internal class EnumHelper
     {
         /// <summary>
-        /// Gets an attribute on an enum field value
+        ///     Gets an attribute on an enum field value
         /// </summary>
         /// <typeparam name="T">The type of the attribute you want to retrieve</typeparam>
         /// <param name="value">The enum value</param>
@@ -44,18 +44,18 @@ namespace SoundCloud.Api.Utils
 
                 if (!string.IsNullOrEmpty(key))
                 {
-                    return (T)(object)attributeValues[key];
+                    return (T) (object) attributeValues[key];
                 }
             }
 
             var names = Enum.GetNames(type);
             var defaultName = names.FirstOrDefault(n => string.Equals(n, "None", StringComparison.OrdinalIgnoreCase)) ?? names.First();
 
-            return (T)Enum.Parse(type, defaultName);
+            return (T) Enum.Parse(type, defaultName);
         }
 
         /// <summary>
-        /// Gets an attribute on an enum field value
+        ///     Gets an attribute on an enum field value
         /// </summary>
         /// <typeparam name="T">The type of the attribute you want to retrieve</typeparam>
         /// <param name="value">The enum value</param>
@@ -64,16 +64,16 @@ namespace SoundCloud.Api.Utils
         {
             var type = typeof(T);
 
-            var values = (int[])Enum.GetValues(type);
+            var values = (int[]) Enum.GetValues(type);
             if (values.Contains(value))
             {
-                return (T)Enum.Parse(type, value.ToString());
+                return (T) Enum.Parse(type, value.ToString());
             }
 
             var names = Enum.GetNames(type);
             var defaultName = names.FirstOrDefault(n => string.Equals(n, "None", StringComparison.OrdinalIgnoreCase)) ?? names.First();
 
-            return (T)Enum.Parse(type, defaultName);
+            return (T) Enum.Parse(type, defaultName);
         }
     }
 }

@@ -1,10 +1,6 @@
-﻿// ReSharper disable InconsistentNaming
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-
 using Newtonsoft.Json;
-
 using SoundCloud.Api.Entities.Base;
 using SoundCloud.Api.Entities.Enums;
 using SoundCloud.Api.Json;
@@ -13,425 +9,486 @@ using SoundCloud.Api.Utils;
 namespace SoundCloud.Api.Entities
 {
     /// <summary>
-    /// Represents a track
+    ///     Represents a track
     /// </summary>
     public sealed class Track : Entity
     {
         /// <summary>
-        /// Constructs a new <see cref="Track"/> object
+        ///     Constructs a new <see cref="Track" /> object
         /// </summary>
         public Track()
         {
-            tag_list = new List<string>();
+            TagList = new List<string>();
         }
 
         /// <summary>
-        /// Available for GET requests
-        /// URL to a JPEG image
+        ///     Available for GET requests
+        ///     URL to a JPEG image
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public Uri artwork_url { get; set; }
+        [JsonProperty("artwork_url")]
+        public Uri ArtworkUrl { get; set; }
 
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public Uri attachments_uri { get; set; }
+        [JsonProperty("attachments_uri")]
+        public Uri AttachmentsUri { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// beats per minute
+        ///     Available for GET requests
+        ///     beats per minute
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public double? bpm { get; set; }
+        [JsonProperty("bpm")]
+        public double? Bpm { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// track comment count
+        ///     Available for GET requests
+        ///     track comment count
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public int comment_count { get; set; }
+        [JsonProperty("comment_count")]
+        public int CommentCount { get; set; }
 
         /// <summary>
-        /// Available for GET, PUT, POST requests
-        /// track commentable, only for Pro users
-        /// Default value is true
+        ///     Available for GET, PUT, POST requests
+        ///     track commentable, only for Pro users
+        ///     Default value is true
         /// </summary>
-        public bool commentable { get; set; }
+        [JsonProperty("commentable")]
+        public bool Commentable { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// timestamp of creation
+        ///     Available for GET requests
+        ///     timestamp of creation
         /// </summary>
         [JsonIgnoreOnSerialize]
+        [JsonProperty("created_at")]
         [JsonConverter(typeof(DateTimeConverter), Settings.SoundCloudDateTimeWithTimezonePattern)]
-        public DateTime created_at { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// the app that the track created
+        ///     Available for GET requests
+        ///     the app that the track created
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public AppClient created_with { get; set; }
+        [JsonProperty("created_with")]
+        public AppClient CreatedWith { get; set; }
 
         /// <summary>
-        /// Available for GET, PUT, POST requests
-        /// HTML description
+        ///     Available for GET, PUT, POST requests
+        ///     HTML description
         /// </summary>
-        public string description { get; set; }
+        [JsonProperty("description")]
+        public string Description { get; set; }
 
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
         /// </summary>
         [JsonIgnoreOnSerialize]
+        [JsonProperty("disabled_at")]
         [JsonConverter(typeof(DateTimeConverter), Settings.SoundCloudDateTimeWithTimezonePattern)]
-        public DateTime disabled_at { get; set; }
+        public DateTime DisabledAt { get; set; }
 
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public string disabled_reason { get; set; }
+        [JsonProperty("disabled_reason")]
+        public string DisabledReason { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// track download count
+        ///     Available for GET requests
+        ///     track download count
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public int download_count { get; set; }
+        [JsonProperty("download_count")]
+        public int DownloadCount { get; set; }
 
         /// <summary>
-        /// Available for GET, PUT, POST requests
-        /// URL to original file
+        ///     Available for GET, PUT, POST requests
+        ///     URL to original file
         /// </summary>
-        public Uri download_url { get; set; }
+        [JsonProperty("download_url")]
+        public Uri DownloadUrl { get; set; }
 
         /// <summary>
-        /// Available for GET, PUT, POST requests
-        /// downloadable 
-        /// Default value is false
+        ///     Available for GET, PUT, POST requests
+        ///     downloadable
+        ///     Default value is false
         /// </summary>
-        public bool? downloadable { get; set; }
+        [JsonProperty("downloadable")]
+        public bool? Downloadable { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// duration in milliseconds
-        /// </summary>
-        [JsonIgnoreOnSerialize]
-        public int duration { get; set; }
-
-        /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
+        ///     duration in milliseconds
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public bool? embeddable { get; set; }
+        [JsonProperty("duration")]
+        public int Duration { get; set; }
 
         /// <summary>
-        /// Available for GET, PUT, POST requests
-        /// who can embed this track or playlist
-        /// Default value is <see cref="EmbeddableBy.All"/>
-        /// </summary>
-        public EmbeddableBy embeddable_by { get; set; }
-
-        /// <summary>
-        /// Available for GET requests
-        /// track favoriting count
+        ///     Available for GET requests
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public int favoritings_count { get; set; }
+        [JsonProperty("embeddable")]
+        public bool? Embeddable { get; set; }
 
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET, PUT, POST requests
+        ///     who can embed this track or playlist
+        ///     Default value is <see cref="Enums.EmbeddableBy.All" />
+        /// </summary>
+        [JsonProperty("embeddable_by")]
+        public EmbeddableBy EmbeddableBy { get; set; }
+
+        /// <summary>
+        ///     Available for GET requests
+        ///     track favoritings count
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public bool? feedable { get; set; }
+        [JsonProperty("favoritings_count")]
+        public int FavoritingsCount { get; set; }
 
         /// <summary>
-        /// Available for GET, PUT, POST requests
-        /// genre
-        /// </summary>
-        public string genre { get; set; }
-
-        /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public bool? geo_blocking { get; set; }
+        [JsonProperty("feedable")]
+        public bool? Feedable { get; set; }
 
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET, PUT, POST requests
+        ///     genre
+        /// </summary>
+        [JsonProperty("genre")]
+        public string Genre { get; set; }
+
+        /// <summary>
+        ///     Available for GET requests
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public bool? has_downloads_left { get; set; }
+        [JsonProperty("geo_blocking")]
+        public bool? GeoBlocking { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// track ISRC
+        ///     Available for GET requests
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public string isrc { get; set; }
+        [JsonProperty("has_downloads_left")]
+        public bool? HasDownloadsLeft { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// track key
+        ///     Available for GET requests
+        ///     track ISRC
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public string key_signature { get; set; }
+        [JsonProperty("isrc")]
+        public string Isrc { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// label mini user object
+        ///     Available for GET requests
+        ///     track key
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public User label { get; set; }
+        [JsonProperty("key_signature")]
+        public string KeySignature { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// id of the label user
+        ///     Available for GET requests
+        ///     label mini user object
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public int? label_id { get; set; }
+        [JsonProperty("label")]
+        public User Label { get; set; }
 
         /// <summary>
-        /// Available for GET, PUT, POST requests
-        /// label name
-        /// </summary>]
-        public string label_name { get; set; }
-
-        /// <summary>
-        /// Available for GET requests
-        /// timestamp of last modification
+        ///     Available for GET requests
+        ///     id of the label user
         /// </summary>
         [JsonIgnoreOnSerialize]
+        [JsonProperty("label_id")]
+        public int? LabelId { get; set; }
+
+        /// <summary>
+        ///     Available for GET, PUT, POST requests
+        ///     label name
+        /// </summary>
+        [JsonProperty("label_name")]
+        public string LabelName { get; set; }
+
+        /// <summary>
+        ///     Available for GET requests
+        ///     timestamp of last modification
+        /// </summary>
+        [JsonIgnoreOnSerialize]
+        [JsonProperty("last_modified")]
         [JsonConverter(typeof(DateTimeConverter), Settings.SoundCloudDateTimeWithTimezonePattern)]
-        public DateTime last_modified { get; set; }
+        public DateTime LastModified { get; set; }
 
         /// <summary>
-        /// Available for GET, PUT, POST requests
-        /// creative common license
-        /// Default value is <see cref="Enums.License.AllRightsReserved"/>
+        ///     Available for GET, PUT, POST requests
+        ///     creative common license
+        ///     Default value is <see cref="Enums.License.AllRightsReserved" />
         /// </summary>
-        public License license { get; set; }
+        [JsonProperty("license")]
+        public License License { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// track repost count
-        /// </summary>
-        [JsonIgnoreOnSerialize]
-        public int likes_count { get; set; }
-
-        /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
+        ///     track repost count
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public string monetization_model { get; set; }
+        [JsonProperty("likes_count")]
+        public int LikesCount { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// size in bytes of the original file
+        ///     Available for GET requests
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public int? original_content_size { get; set; }
+        [JsonProperty("monetization_model")]
+        public string MonetizationModel { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// file format of the original file
+        ///     Available for GET requests
+        ///     size in bytes of the original file
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public string original_format { get; set; }
+        [JsonProperty("original_content_size")]
+        public int? OriginalContentSize { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// permalink of the resource
+        ///     Available for GET requests
+        ///     file format of the original file
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public string permalink { get; set; }
+        [JsonProperty("original_format")]
+        public string OriginalFormat { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// URL to the SoundCloud.com page
+        ///     Available for GET requests
+        ///     permalink of the resource
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public Uri permalink_url { get; set; }
+        [JsonProperty("permalink")]
+        public string Permalink { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// track play count
+        ///     Available for GET requests
+        ///     URL to the SoundCloud.com page
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public int playback_count { get; set; }
+        [JsonProperty("permalink_url")]
+        public Uri PermalinkUrl { get; set; }
 
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
+        ///     track play count
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public string policy { get; set; }
+        [JsonProperty("playback_count")]
+        public int PlaybackCount { get; set; }
 
         /// <summary>
-        /// Available for GET, PUT, POST requests
-        /// external purchase link
-        /// </summary>
-        public string purchase_title { get; set; }
-
-        /// <summary>
-        /// Available for GET, PUT, POST requests
-        /// external purchase link
-        /// </summary>
-        public Uri purchase_url { get; set; }
-
-        /// <summary>
-        /// Available for GET requests
-        /// release number
+        ///     Available for GET requests
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public string release { get; set; }
+        [JsonProperty("policy")]
+        public string Policy { get; set; }
 
         /// <summary>
-        /// Available for GET, PUT, POST requests
-        /// day of the release
+        ///     Available for GET, PUT, POST requests
+        ///     external purchase link
         /// </summary>
-        public int? release_day { get; set; }
+        [JsonProperty("purchase_title")]
+        public string PurchaseTitle { get; set; }
 
         /// <summary>
-        /// Available for GET, PUT, POST requests
-        /// month of the release
+        ///     Available for GET, PUT, POST requests
+        ///     external purchase link
         /// </summary>
-        public int? release_month { get; set; }
+        [JsonProperty("purchase_url")]
+        public Uri PurchaseUrl { get; set; }
 
         /// <summary>
-        /// Available for GET, PUT, POST requests
-        /// year of the release
-        /// </summary>
-        public int? release_year { get; set; }
-
-        /// <summary>
-        /// Available for GET requests
-        /// track repost count
+        ///     Available for GET requests
+        ///     release number
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public int reposts_count { get; set; }
+        [JsonProperty("release")]
+        public string Release { get; set; }
 
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET, PUT, POST requests
+        ///     day of the release
+        /// </summary>
+        [JsonProperty("release_day")]
+        public int? ReleaseDay { get; set; }
+
+        /// <summary>
+        ///     Available for GET, PUT, POST requests
+        ///     month of the release
+        /// </summary>
+        [JsonProperty("release_month")]
+        public int? ReleaseMonth { get; set; }
+
+        /// <summary>
+        ///     Available for GET, PUT, POST requests
+        ///     year of the release
+        /// </summary>
+        [JsonProperty("release_year")]
+        public int? ReleaseYear { get; set; }
+
+        /// <summary>
+        ///     Available for GET requests
+        ///     track repost count
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public bool? reveal_comments { get; set; }
+        [JsonProperty("reposts_count")]
+        public int RepostsCount { get; set; }
 
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public bool? reveal_stats { get; set; }
+        [JsonProperty("reveal_comments")]
+        public bool? RevealComments { get; set; }
 
         /// <summary>
-        /// Available for GET, PUT, POST requests
-        /// public/private sharing
-        /// Default value is <see cref="Sharing.Private"/>
-        /// </summary>
-        public Sharing sharing { get; set; }
-
-        /// <summary>
-        /// Available for GET requests
-        /// encoding state
+        ///     Available for GET requests
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public EncodingStateEnum state { get; set; }
+        [JsonProperty("reveal_stats")]
+        public bool? RevealStats { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// link to 128kbs mp3 stream
+        ///     Available for GET, PUT, POST requests
+        ///     public/private sharing
+        ///     Default value is <see cref="Enums.Sharing.Private" />
+        /// </summary>
+        [JsonProperty("sharing")]
+        public Sharing Sharing { get; set; }
+
+        /// <summary>
+        ///     Available for GET requests
+        ///     encoding state
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public Uri stream_url { get; set; }
+        [JsonProperty("state")]
+        public EncodingStateEnum State { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// streamable via API 
+        ///     Available for GET requests
+        ///     link to 128kbs mp3 stream
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public bool? streamable { get; set; }
+        [JsonProperty("stream_url")]
+        public Uri StreamUrl { get; set; }
 
         /// <summary>
-        /// Available for GET, PUT, POST requests
-        /// list of tags
+        ///     Available for GET requests
+        ///     streamable via API
         /// </summary>
+        [JsonIgnoreOnSerialize]
+        [JsonProperty("streamable")]
+        public bool? Streamable { get; set; }
+
+        /// <summary>
+        ///     Available for GET, PUT, POST requests
+        ///     list of tags
+        /// </summary>
+        [JsonProperty("tag_list")]
         [JsonConverter(typeof(StringToListJsonConverter), ' ', '"')]
-        public List<string> tag_list { get; set; }
+        public List<string> TagList { get; set; }
 
         /// <summary>
-        /// Available for GET, PUT, POST requests
-        /// track title
+        ///     Available for GET, PUT, POST requests
+        ///     track title
         /// </summary>
-        public string title { get; set; }
+        [JsonProperty("title")]
+        public string Title { get; set; }
 
         /// <summary>
-        /// Available for GET, PUT, POST requests
-        /// track type
-        /// Default value is <see cref="TrackType.None"/>
+        ///     Available for GET, PUT, POST requests
+        ///     track type
+        ///     Default value is <see cref="Enums.TrackType.None" />
         /// </summary>
-        public TrackType track_type { get; set; }
+        [JsonProperty("track_type")]
+        public TrackType TrackType { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// API resource URL
+        ///     Available for GET requests
+        ///     API resource URL
+        /// </summary>
+        [JsonProperty("uri")]
+        [JsonIgnoreOnSerialize]
+        public Uri Uri { get; set; }
+
+        /// <summary>
+        ///     Available for GET requests
+        /// </summary>
+        [JsonProperty("urn")]
+        [JsonIgnoreOnSerialize]
+        public string Urn { get; set; }
+
+        /// <summary>
+        ///     Available for GET requests
+        ///     mini user representation of the owner
+        /// </summary>
+        [JsonProperty("user")]
+        [JsonIgnoreOnSerialize]
+        public User User { get; set; }
+
+        /// <summary>
+        ///     Available for GET requests (authenticated)
+        ///     track favorite of current user
+        /// </summary>
+        [JsonProperty("user_favorite")]
+        [JsonIgnoreOnSerialize]
+        public bool? UserFavorite { get; set; }
+
+        /// <summary>
+        ///     Available for GET requests
+        ///     user-id of the owner
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public Uri uri { get; set; }
+        [JsonProperty("user_id")]
+        public int UserId { get; set; }
 
         /// <summary>
-        /// Available for GET requests
+        ///     Available for GET requests (authenticated)
+        ///     track play count of current user
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public string urn { get; set; }
+        [JsonProperty("user_playback_count")]
+        public int? UserPlaybackCount { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// mini user representation of the owner
+        ///     Available for GET requests
+        ///     user-uri of the owner
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public User user { get; set; }
+        [JsonProperty("user_uri")]
+        public Uri UserUri { get; set; }
 
         /// <summary>
-        /// Available for GET requests (authenticated)
-        /// track favorite of current user
+        ///     Available for GET requests
+        ///     a link to a video page
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public bool? user_favorite { get; set; }
+        [JsonProperty("video_url")]
+        public string VideoUrl { get; set; }
 
         /// <summary>
-        /// Available for GET requests
-        /// user-id of the owner
+        ///     Available for GET requests
+        ///     URL to PNG waveform image
         /// </summary>
         [JsonIgnoreOnSerialize]
-        public int user_id { get; set; }
-
-        /// <summary>
-        /// Available for GET requests (authenticated)
-        /// track play count of current user
-        /// </summary>
-        [JsonIgnoreOnSerialize]
-        public int? user_playback_count { get; set; }
-
-        /// <summary>
-        /// Available for GET requests
-        /// user-uri of the owner
-        /// </summary>
-        [JsonIgnoreOnSerialize]
-        public Uri user_uri { get; set; }
-
-        /// <summary>
-        /// Available for GET requests
-        /// a link to a video page
-        /// </summary>
-        [JsonIgnoreOnSerialize]
-        public string video_url { get; set; }
-
-        /// <summary>
-        /// Available for GET requests
-        /// URL to PNG waveform image
-        /// </summary>
-        [JsonIgnoreOnSerialize]
-        public string waveform_url { get; set; }
+        [JsonProperty("waveform_url")]
+        public string WaveformUrl { get; set; }
 
         public bool ValidateDelete(ValidationMessages messages)
         {
@@ -474,7 +531,7 @@ namespace SoundCloud.Api.Entities
                 return false;
             }
 
-            if (string.IsNullOrEmpty(title))
+            if (string.IsNullOrEmpty(Title))
             {
                 messages.Add("Title missing. Use the title property to set your track title.");
                 return false;
@@ -503,10 +560,13 @@ namespace SoundCloud.Api.Entities
         {
             public TrackBox(Track t)
             {
-                track = t;
+                Track = t;
             }
 
-            public Track track { get; set; }
+            // ReSharper disable once UnusedAutoPropertyAccessor.Local
+            // ReSharper disable once MemberCanBePrivate.Local
+            [JsonProperty("track")]
+            public Track Track { get; }
         }
     }
 }

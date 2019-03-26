@@ -1,7 +1,5 @@
 using System.Runtime.Serialization;
-
 using Newtonsoft.Json;
-
 using SoundCloud.Api.Json;
 
 namespace SoundCloud.Api.Entities.Enums
@@ -12,6 +10,7 @@ namespace SoundCloud.Api.Entities.Enums
         [EnumMember(Value = "other")]
         Other = 0,
 
+        // ReSharper disable once InconsistentNaming
         [EnumMember(Value = "ep single")]
         EPSingle,
 

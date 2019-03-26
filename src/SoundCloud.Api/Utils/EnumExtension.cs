@@ -5,7 +5,7 @@ namespace SoundCloud.Api.Utils
     internal static class EnumExtension
     {
         /// <summary>
-        /// Gets an attribute on an enum field value
+        ///     Gets an attribute on an enum field value
         /// </summary>
         /// <typeparam name="T">The type of the attribute you want to retrieve</typeparam>
         /// <param name="enumVal">The enum value</param>
@@ -14,7 +14,7 @@ namespace SoundCloud.Api.Utils
         {
             var memInfo = enumVal.GetType().GetMember(enumVal.ToString());
             var attributes = memInfo[0].GetCustomAttributes(typeof(T), false);
-            return (attributes.Length > 0) ? (T)attributes[0] : null;
+            return attributes.Length > 0 ? (T) attributes[0] : null;
         }
     }
 }

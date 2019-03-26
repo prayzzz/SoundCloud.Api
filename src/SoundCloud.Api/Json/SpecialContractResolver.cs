@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -13,7 +12,7 @@ namespace SoundCloud.Api.Json
         {
             if (member.MemberType == MemberTypes.Property)
             {
-                var pi = (PropertyInfo)member;
+                var pi = (PropertyInfo) member;
 
                 if (pi.PropertyType == typeof(string))
                 {
