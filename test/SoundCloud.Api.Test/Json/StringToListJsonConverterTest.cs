@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
-
 using Newtonsoft.Json;
-
 using NUnit.Framework;
-
 using SoundCloud.Api.Json;
 
 namespace SoundCloud.Api.Test.Json
@@ -14,7 +11,7 @@ namespace SoundCloud.Api.Test.Json
         [Test]
         public void Test_Read()
         {
-            var json = "{ \"StringList\" : \"Item1 \\\"Item with spaces\\\" \\\"Item with, comma\\\" Item2 Item3\"}";
+            const string json = "{ \"StringList\" : \"Item1 \\\"Item with spaces\\\" \\\"Item with, comma\\\" Item2 Item3\"}";
 
             var testObject = JsonConvert.DeserializeObject<TestClass>(json);
 
@@ -28,7 +25,7 @@ namespace SoundCloud.Api.Test.Json
         [Test]
         public void Test_Read_Default_Ctor()
         {
-            var json = "{ \"StringList\" : \"Item1,\\\"Item with spaces\\\",\\\"Item with, comma\\\",Item2,Item3\"}";
+            const string json = "{ \"StringList\" : \"Item1,\\\"Item with spaces\\\",\\\"Item with, comma\\\",Item2,Item3\"}";
 
             var testObject = JsonConvert.DeserializeObject<TestClass2>(json);
 
@@ -42,7 +39,7 @@ namespace SoundCloud.Api.Test.Json
         [Test]
         public void Test_Read_Wrong_Type()
         {
-            var json = "{ \"StringList\" : \"Item1,\\\"Item with spaces\\\",\\\"Item with, comma\\\",Item2,Item3\"}";
+            const string json = "{ \"StringList\" : \"Item1,\\\"Item with spaces\\\",\\\"Item with, comma\\\",Item2,Item3\"}";
 
             var ex = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<WrongPropertyTypeClass>(json));
             Assert.That(ex.Message, Is.EqualTo("Expected type is not List<string>"));
@@ -51,8 +48,7 @@ namespace SoundCloud.Api.Test.Json
         [Test]
         public void Test_Write()
         {
-            var testObject = new TestClass();
-            testObject.StringList = new List<string> {"Item1", "Item with spaces", "Item with, comma", "Item2", "Item3"};
+            var testObject = new TestClass { StringList = new List<string> { "Item1", "Item with spaces", "Item with, comma", "Item2", "Item3" } };
 
             var json = JsonConvert.SerializeObject(testObject);
 
@@ -62,8 +58,7 @@ namespace SoundCloud.Api.Test.Json
         [Test]
         public void Test_Write_Default_Ctor()
         {
-            var testObject = new TestClass2();
-            testObject.StringList = new List<string> {"Item1", "Item with spaces", "Item with, comma", "Item2", "Item3"};
+            var testObject = new TestClass2 { StringList = new List<string> { "Item1", "Item with spaces", "Item with, comma", "Item2", "Item3" } };
 
             var json = JsonConvert.SerializeObject(testObject);
 
@@ -73,8 +68,7 @@ namespace SoundCloud.Api.Test.Json
         [Test]
         public void Test_Write_Wrong_Type()
         {
-            var testObject = new WrongPropertyTypeClass();
-            testObject.StringList = "I'm a String";
+            var testObject = new WrongPropertyTypeClass { StringList = "I'm a String" };
 
             var json = JsonConvert.SerializeObject(testObject);
 
@@ -93,6 +87,7 @@ namespace SoundCloud.Api.Test.Json
             public List<string> StringList { get; set; }
         }
 
+        // ReSharper disable UnusedAutoPropertyAccessor.Local
         private class WrongPropertyTypeClass
         {
             [JsonConverter(typeof(StringToListJsonConverter))]

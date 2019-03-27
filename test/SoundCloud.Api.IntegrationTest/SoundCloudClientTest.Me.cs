@@ -53,7 +53,7 @@ namespace SoundCloud.Api.IntegrationTest
             var user = await client.Me.GetAsync();
 
             Assert.That(user, Is.Not.Null);
-            Assert.That(user.username, Is.EqualTo("sharpsound"));
+            Assert.That(user.Username, Is.EqualTo("sharpsound"));
         }
 
         [Test]

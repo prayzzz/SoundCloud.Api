@@ -1,7 +1,5 @@
 ﻿using System;
-
 using NUnit.Framework;
-
 using SoundCloud.Api.Entities.Enums;
 using SoundCloud.Api.QueryBuilders;
 
@@ -11,9 +9,10 @@ namespace SoundCloud.Api.Test.QueryBuilders
     public class PlaylistQueryBuilderTest
     {
         [Test]
+        // ReSharper disable ObjectCreationAsStatement
         public void Test_Empty_SearchString_In_Constructor()
         {
-            Assert.Throws<ArgumentException>(() => { new PlaylistQueryBuilder(""); });
+            Assert.Throws<ArgumentException>(() => new PlaylistQueryBuilder(""));
         }
 
         [Test]

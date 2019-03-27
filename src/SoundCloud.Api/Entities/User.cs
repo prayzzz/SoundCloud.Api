@@ -17,7 +17,7 @@ namespace SoundCloud.Api.Entities
         /// </summary>
         public User()
         {
-            subscriptions = new List<Products>();
+            Subscriptions = new List<Products>();
             Kind = Kind.User;
         }
 
@@ -25,157 +25,183 @@ namespace SoundCloud.Api.Entities
         ///     Available for GET requests
         ///     URL to a JPEG image
         /// </summary>
-        public string avatar_url { get; set; }
+        [JsonProperty("avatar_url")]
+        public string AvatarUrl { get; set; }
 
         /// <summary>
         ///     Available for GET requests
         ///     city
         /// </summary>
-        public string city { get; set; }
+        [JsonProperty("city")]
+        public string City { get; set; }
 
         /// <summary>
         ///     Available for GET requests
         ///     country
         /// </summary>
-        public string country { get; set; }
+        [JsonProperty("country")]
+        public string Country { get; set; }
 
         /// <summary>
         ///     Available for GET requests
         ///     description
         /// </summary>
-        public string description { get; set; }
+        [JsonProperty("description")]
+        public string Description { get; set; }
 
         /// <summary>
         ///     Available for GET requests
         ///     Discogs name
         /// </summary>
-        public string discogs_name { get; set; }
+        [JsonProperty("discogs_name")]
+        public string DiscogsName { get; set; }
 
         /// <summary>
         ///     Available for GET requests
         ///     first name
         /// </summary>
-        public string first_name { get; set; }
+        [JsonProperty("first_name")]
+        public string FirstName { get; set; }
 
         /// <summary>
         ///     Available for GET requests
         ///     number of followers
         /// </summary>
-        public int followers_count { get; set; }
+        [JsonProperty("followers_count")]
+        public int FollowersCount { get; set; }
 
         /// <summary>
         ///     Available for GET requests
         ///     number of followed users
         /// </summary>
-        public int followings_count { get; set; }
+        [JsonProperty("followings_count")]
+        public int FollowingsCount { get; set; }
 
         /// <summary>
         ///     Available for GET requests
         ///     first and last name
         /// </summary>
-        public string full_name { get; set; }
+        [JsonProperty("full_name")]
+        public string FullName { get; set; }
 
         /// <summary>
         ///     Available for GET requests
         /// </summary>
-        public string last_modified { get; set; }
+        [JsonProperty("last_modified")]
+        public string LastModified { get; set; }
 
         /// <summary>
         ///     Available for GET requests
         ///     last name
         /// </summary>
-        public string last_name { get; set; }
+        [JsonProperty("last_name")]
+        public string LastName { get; set; }
 
         /// <summary>
         ///     Available for GET requests
         ///     MySpace name
         /// </summary>
-        public string myspace_name { get; set; }
+        [JsonProperty("myspace_name")]
+        public string MyspaceName { get; set; }
 
         /// <summary>
         ///     Available for GET requests
         ///     online status
         /// </summary>
-        public bool online { get; set; }
+        [JsonProperty("online")]
+        public bool Online { get; set; }
 
         /// <summary>
         ///     Available for GET requests
         ///     permalink of the resource
         /// </summary>
-        public string permalink { get; set; }
+        [JsonProperty("permalink")]
+        public string Permalink { get; set; }
 
         /// <summary>
         ///     Available for GET requests
         ///     URL to the SoundCloud.com page
         /// </summary>
-        public string permalink_url { get; set; }
+        [JsonProperty("permalink_url")]
+        public string PermalinkUrl { get; set; }
 
         /// <summary>
         ///     Available for GET requests
         /// </summary>
-        public string plan { get; set; }
+        [JsonProperty("plan")]
+        public string Plan { get; set; }
 
         /// <summary>
         ///     Available for GET requests
         ///     number of public playlists
         /// </summary>
         [JsonProperty("playlist_count", NullValueHandling = NullValueHandling.Ignore)]
-        public int playlist_count { get; set; }
+        public int PlaylistCount { get; set; }
 
         /// <summary>
         ///     Available for GET requests
         /// </summary>
-        public bool primary_email_confirmed { get; set; }
+        [JsonProperty("primary_email_confirmed")]
+        public bool PrimaryEmailConfirmed { get; set; }
 
         /// <summary>
         ///     Available for GET requests
         /// </summary>
-        public int private_playlists_count { get; set; }
+        [JsonProperty("private_playlists_count")]
+        public int PrivatePlaylistsCount { get; set; }
 
         /// <summary>
         ///     Available for GET requests
         /// </summary>
-        public int private_tracks_count { get; set; }
+        [JsonProperty("private_tracks_count")]
+        public int PrivateTracksCount { get; set; }
 
         /// <summary>
         ///     Available for GET requests
         ///     number of favorited public tracks
         /// </summary>
-        public int public_favorites_count { get; set; }
+        [JsonProperty("public_favorites_count")]
+        public int PublicFavoritesCount { get; set; }
 
         /// <summary>
         ///     Available for GET requests
         /// </summary>
-        public List<Products> subscriptions { get; set; }
+        [JsonProperty("subscriptions")]
+        public List<Products> Subscriptions { get; set; }
 
         /// <summary>
         ///     Available for GET requests
         ///     number of public tracks
         /// </summary>
-        public int track_count { get; set; }
+        [JsonProperty("track_count")]
+        public int TrackCount { get; set; }
 
         /// <summary>
         ///     Available for GET requests
         /// </summary>
-        public Uri uri { get; set; }
+        [JsonProperty("uri")]
+        public Uri Uri { get; set; }
 
         /// <summary>
         ///     Available for GET requests
         ///     username
         /// </summary>
-        public string username { get; set; }
+        [JsonProperty("username")]
+        public string Username { get; set; }
 
         /// <summary>
         ///     Available for GET requests
         ///     a URL to the website
         /// </summary>
-        public string website { get; set; }
+        [JsonProperty("website")]
+        public string Website { get; set; }
 
         /// <summary>
         ///     Available for GET requests
         ///     a custom title for the website
         /// </summary>
-        public string website_title { get; set; }
+        [JsonProperty("website_title")]
+        public string WebsiteTitle { get; set; }
 
         public bool ValidateFollowUnfollow(ValidationMessages messages)
         {
