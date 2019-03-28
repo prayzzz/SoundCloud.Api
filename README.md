@@ -1,10 +1,6 @@
 # SoundCloud.Api
-Full C# API wrapper for SoundCloud
 
- Config        | Status
----------------|---
-CI             | [![Build status](https://ci.appveyor.com/api/projects/status/32lb7fq7dstdelt9?svg=true)](https://ci.appveyor.com/project/prayzzz/soundcloud-api)
-Release (v1.1) | [![Build status](https://ci.appveyor.com/api/projects/status/8u3670f0fg38i4nw?svg=true)](https://ci.appveyor.com/project/prayzzz/soundcloud-api-sow3r)
+Full featured SoundCloud API wrapper written in C# using .NET Standard 2.0
 
 ## Installation
 
@@ -30,7 +26,13 @@ string clientId = "your client id here";
 ISoundCloudClient client = SoundCloudClient.CreateUnauthorized(clientId);
 ```
 
-Please read the [wiki](https://github.com/prayzzz/SoundCloud.Api/wiki) for additional informations.
+### How to obtain a ClientId and OAuth Token
+
+As of March 2019 it's not possible to register new apps on soundcloud.com.
+Due to that, there's no offical way to obtain a `clientId` or OAuth `token`.
+
+But you can get the `clientId` of your Browser using the DevTools (F12) and investigate the XHR requests.
+If you're logged in, you can get an OAuth `token` from your cookie. 
 
 ## Contributing
 

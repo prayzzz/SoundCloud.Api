@@ -5,28 +5,6 @@
         <InformationalVersion>$(Version)</InformationalVersion>
     </PropertyGroup>
     
-    <PropertyGroup>      
-        <Product>SoundCloud.Api</Product>
-        <Description>Full featured SoundCloud API wrapper</Description>
-        <Copyright>Copyright (c) prayzzz &amp; Contributors</Copyright>
-    </PropertyGroup>
-    
-    <!-- NuGet -->
-    <PropertyGroup>
-        <PackageId>$(Product)</PackageId>
-        <Title>$(Product)</Title>
-        <Authors>prayzzz &amp; Contributors</Authors>
-        <PackageDescription>$(Description)</PackageDescription>
-        <PackageVersion>$(Version)</PackageVersion>
-        <PackageTags>SoundCloud API Sound Music Cloud</PackageTags>
-        <IncludeSymbols>true</IncludeSymbols>
-        <IncludeSource>true</IncludeSource>
-        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-        
-        <PackageProjectUrl>https://github.com/prayzzz/SoundCloud.Api</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/prayzzz/SoundCloud.Api</RepositoryUrl>
-    </PropertyGroup>
-    
     <PropertyGroup Condition="$(AssemblyName.EndsWith('.Test'))">
         <IsPackable>false</IsPackable>
     </PropertyGroup>
