@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using SoundCloud.Api.Entities.Base;
 using SoundCloud.Api.Entities.Enums;
+using SoundCloud.Api.Exceptions;
 using SoundCloud.Api.Json;
 using SoundCloud.Api.Utils;
 
@@ -490,65 +491,84 @@ namespace SoundCloud.Api.Entities
         [JsonProperty("waveform_url")]
         public string WaveformUrl { get; set; }
 
-        public bool ValidateDelete(ValidationMessages messages)
+        public void ValidateDelete()
         {
+            var messages = new ValidationMessages();
+
             if (Id < 1)
             {
                 messages.Add("TrackId missing. Use the id property to set the id of this track.");
-                return false;
             }
 
-            return true;
+            if (messages.HasErrors)
+            {
+                throw new SoundCloudValidationException(messages);
+            }
         }
 
-        public bool ValidateGet(ValidationMessages messages)
+        public void ValidateGet()
         {
+            var messages = new ValidationMessages();
+
             if (Id < 1)
             {
                 messages.Add("TrackId missing. Use the id property to set the id of this track.");
-                return false;
             }
 
-            return true;
+            if (messages.HasErrors)
+            {
+                throw new SoundCloudValidationException(messages);
+            }
         }
 
-        public bool ValidateLikeUnlike(ValidationMessages messages)
+        public void ValidateLikeUnlike()
         {
+            var messages = new ValidationMessages();
+
             if (Id < 1)
             {
                 messages.Add("TrackId missing. Use the id property to set the id of this track.");
-                return false;
             }
 
-            return true;
+            if (messages.HasErrors)
+            {
+                throw new SoundCloudValidationException(messages);
+            }
         }
 
-        public bool ValidateUpdate(ValidationMessages messages)
+        public void ValidateUpdate()
         {
+            var messages = new ValidationMessages();
+
             if (Id < 1)
             {
                 messages.Add("TrackId missing. Use the id property to set the id of this track.");
-                return false;
             }
 
             if (string.IsNullOrEmpty(Title))
             {
                 messages.Add("Title missing. Use the title property to set your track title.");
-                return false;
             }
 
-            return true;
+            if (messages.HasErrors)
+            {
+                throw new SoundCloudValidationException(messages);
+            }
         }
 
-        public bool ValidateUploadArtwork(ValidationMessages messages)
+        public void ValidateUploadArtwork()
         {
+            var messages = new ValidationMessages();
+
             if (Id < 1)
             {
                 messages.Add("TrackId missing. Use the id property to set the id of this track.");
-                return false;
             }
 
-            return true;
+            if (messages.HasErrors)
+            {
+                throw new SoundCloudValidationException(messages);
+            }
         }
 
         internal override BoxedEntity ToBoxedEntity()

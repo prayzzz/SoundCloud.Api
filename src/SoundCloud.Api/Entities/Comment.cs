@@ -1,6 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 using SoundCloud.Api.Entities.Base;
+using SoundCloud.Api.Exceptions;
 using SoundCloud.Api.Json;
 using SoundCloud.Api.Utils;
 
@@ -58,37 +59,44 @@ namespace SoundCloud.Api.Entities
         [JsonProperty("user_id")]
         public int? UserId { get; set; }
 
-        public bool ValidateDelete(ValidationMessages messages)
+        public void ValidateDelete()
         {
+            var messages = new ValidationMessages();
+
             if (TrackId < 1)
             {
                 messages.Add("TrackId missing. Use the track_id property to set the TrackId of this comment.");
-                return false;
             }
 
-            return true;
+            if (messages.HasErrors)
+            {
+                throw new SoundCloudValidationException(messages);
+            }
         }
 
-        internal override BoxedEntity ToBoxedEntity()
+        internal void ValidatePost()
         {
-            return new CommentsBox(this);
-        }
+            var messages = new ValidationMessages();
 
-        internal bool ValidatePost(ValidationMessages messages)
-        {
             if (TrackId < 1)
             {
                 messages.Add("TrackId missing. Use the track_id property to set the TrackId of this comment.");
-                return false;
             }
 
             if (string.IsNullOrEmpty(Body))
             {
                 messages.Add("Message missing. Use the body property to set your message.");
-                return false;
             }
 
-            return true;
+            if (messages.HasErrors)
+            {
+                throw new SoundCloudValidationException(messages);
+            }
+        }
+
+        internal override BoxedEntity ToBoxedEntity()
+        {
+            return new CommentsBox(this);
         }
 
         internal sealed class CommentsBox : BoxedEntity

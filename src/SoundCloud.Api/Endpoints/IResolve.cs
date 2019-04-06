@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using SoundCloud.Api.Entities.Base;
-using SoundCloud.Api.Exceptions;
 
 namespace SoundCloud.Api.Endpoints
 {
@@ -14,7 +13,6 @@ namespace SoundCloud.Api.Endpoints
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no ClientId or OAuth token is set.</exception>
         Task<Entity> GetEntityAsync(string url);
     }
 }

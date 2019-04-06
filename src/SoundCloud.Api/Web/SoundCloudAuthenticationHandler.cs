@@ -29,6 +29,12 @@ namespace SoundCloud.Api.Web
                 return null;
             }
 
+
+            if (uri.Query.Contains("oauth_token") || uri.Query.Contains("client_id"))
+            {
+                return uri;
+            }
+
             var delimiter = "&";
             if (string.IsNullOrEmpty(uri.Query))
             {

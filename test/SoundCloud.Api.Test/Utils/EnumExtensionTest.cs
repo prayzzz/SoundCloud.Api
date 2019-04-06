@@ -1,7 +1,5 @@
 ﻿using System;
-
 using NUnit.Framework;
-
 using SoundCloud.Api.Utils;
 
 namespace SoundCloud.Api.Test.Utils
@@ -9,6 +7,18 @@ namespace SoundCloud.Api.Test.Utils
     [TestFixture]
     public class EnumExtensionTest
     {
+        private enum TestEnum
+        {
+            [Baz(Value = "FooBar")]
+            Foo,
+            Bar
+        }
+
+        private class BazAttribute : Attribute
+        {
+            public string Value { get; set; }
+        }
+
         [Test]
         public void Test_GetAttributeOfType_Available()
         {
@@ -24,18 +34,6 @@ namespace SoundCloud.Api.Test.Utils
             var attribute = TestEnum.Bar.GetAttributeOfType<BazAttribute>();
 
             Assert.That(attribute, Is.Null);
-        }
-
-        private enum TestEnum
-        {
-            [Baz(Value = "FooBar")]
-            Foo,
-            Bar
-        }
-
-        private class BazAttribute : Attribute
-        {
-            public string Value { get; set; }
         }
     }
 }

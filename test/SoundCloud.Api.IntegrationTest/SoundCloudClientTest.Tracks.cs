@@ -79,51 +79,47 @@ namespace SoundCloud.Api.IntegrationTest
 
             var title = "SampleTitle at " + DateTime.Now.ToLocalTime();
             var postResult = await client.Tracks.UploadTrackAsync(title, TestDataProvider.GetSound());
+            Assert.That(postResult.Title, Is.EqualTo(title));
 
-            Assert.That(postResult.Data.Title, Is.EqualTo(title));
+            postResult.Commentable = false;
+            postResult.Description = "TestDescription";
+            postResult.DownloadUrl = new Uri("http://sampleurl.com");
+            postResult.Downloadable = true;
+            postResult.Genre = "SampleGenre";
+            postResult.LabelName = "MySampleLabel";
+            postResult.License = License.CcBy;
+            postResult.PurchaseUrl = new Uri("http://sampleurl.com");
+            postResult.ReleaseDay = 10;
+            postResult.ReleaseMonth = 10;
+            postResult.ReleaseYear = 2010;
+            postResult.Sharing = Sharing.Public;
+            postResult.TagList = new List<string> { "Tag1", "Tag2" };
+            postResult.Title = "NewTitle";
+            postResult.TrackType = TrackType.Sample;
 
-            var postedTrack = postResult.Data;
-            postedTrack.Commentable = false;
-            postedTrack.Description = "TestDescription";
-            postedTrack.DownloadUrl = new Uri("http://sampleurl.com");
-            postedTrack.Downloadable = true;
-            postedTrack.Genre = "SampleGenre";
-            postedTrack.LabelName = "MySampleLabel";
-            postedTrack.License = License.CcBy;
-            postedTrack.PurchaseUrl = new Uri("http://sampleurl.com");
-            postedTrack.ReleaseDay = 10;
-            postedTrack.ReleaseMonth = 10;
-            postedTrack.ReleaseYear = 2010;
-            postedTrack.Sharing = Sharing.Public;
-            postedTrack.TagList = new List<string> { "Tag1", "Tag2" };
-            postedTrack.Title = "NewTitle";
-            postedTrack.TrackType = TrackType.Sample;
+            var uploadArtworkResult = await client.Tracks.UploadArtworkAsync(postResult, TestDataProvider.GetArtwork());
+            Assert.That(uploadArtworkResult.ArtworkUrl, Is.Not.Null);
 
-            var updateResult = await client.Tracks.UploadArtworkAsync(postedTrack, TestDataProvider.GetArtwork());
+            var updateResult = await client.Tracks.UpdateAsync(postResult);
+            Assert.That(updateResult.Description, Is.EqualTo(postResult.Description));
+            Assert.That(updateResult.DownloadUrl.ToString(), Does.Contain("https://api.soundcloud.com/tracks/" + postResult.Id + "/download"));
+            Assert.That(updateResult.Downloadable, Is.EqualTo(postResult.Downloadable));
+            Assert.That(updateResult.Genre, Is.EqualTo(postResult.Genre));
+            Assert.That(updateResult.LabelName, Is.EqualTo(postResult.LabelName));
+            Assert.That(updateResult.License, Is.EqualTo(postResult.License));
+            Assert.That(updateResult.PurchaseUrl, Is.EqualTo(postResult.PurchaseUrl));
+            Assert.That(updateResult.ReleaseDay, Is.EqualTo(postResult.ReleaseDay));
+            Assert.That(updateResult.ReleaseMonth, Is.EqualTo(postResult.ReleaseMonth));
+            Assert.That(updateResult.ReleaseYear, Is.EqualTo(postResult.ReleaseYear));
+            Assert.That(updateResult.Sharing, Is.EqualTo(postResult.Sharing));
+            Assert.That(updateResult.TagList, Has.Member("Tag1"));
+            Assert.That(updateResult.TagList, Has.Member("Tag2"));
+            Assert.That(updateResult.Title, Is.EqualTo(postResult.Title));
+            Assert.That(updateResult.TrackType, Is.EqualTo(postResult.TrackType));
 
-            Assert.That(updateResult.Data.ArtworkUrl, Is.Not.Null);
-
-            updateResult = await client.Tracks.UpdateAsync(postedTrack);
-
-            Assert.That(updateResult.Data.Description, Is.EqualTo(postedTrack.Description));
-            Assert.That(updateResult.Data.DownloadUrl.ToString(), Does.Contain("https://api.soundcloud.com/tracks/" + postedTrack.Id + "/download"));
-            Assert.That(updateResult.Data.Downloadable, Is.EqualTo(postedTrack.Downloadable));
-            Assert.That(updateResult.Data.Genre, Is.EqualTo(postedTrack.Genre));
-            Assert.That(updateResult.Data.LabelName, Is.EqualTo(postedTrack.LabelName));
-            Assert.That(updateResult.Data.License, Is.EqualTo(postedTrack.License));
-            Assert.That(updateResult.Data.PurchaseUrl, Is.EqualTo(postedTrack.PurchaseUrl));
-            Assert.That(updateResult.Data.ReleaseDay, Is.EqualTo(postedTrack.ReleaseDay));
-            Assert.That(updateResult.Data.ReleaseMonth, Is.EqualTo(postedTrack.ReleaseMonth));
-            Assert.That(updateResult.Data.ReleaseYear, Is.EqualTo(postedTrack.ReleaseYear));
-            Assert.That(updateResult.Data.Sharing, Is.EqualTo(postedTrack.Sharing));
-            Assert.That(updateResult.Data.TagList.Contains("Tag1"), Is.True);
-            Assert.That(updateResult.Data.TagList.Contains("Tag2"), Is.True);
-            Assert.That(updateResult.Data.Title, Is.EqualTo(postedTrack.Title));
-            Assert.That(updateResult.Data.TrackType, Is.EqualTo(postedTrack.TrackType));
-
-            await client.Tracks.DeleteAsync(postedTrack);
-
-            Assert.Pass();
+            var deleteResult = await client.Tracks.DeleteAsync(updateResult);
+            Assert.That(deleteResult.Error, Is.Null.Or.Empty);
+            Assert.That(deleteResult.Errors, Is.Empty);
         }
     }
 }

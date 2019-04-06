@@ -6,26 +6,28 @@ using SoundCloud.Api.Web;
 
 namespace SoundCloud.Api.Endpoints
 {
-    internal class Apps : Endpoint, IApps
+    internal class Apps : IApps
     {
         private const string AppPath = "apps/{0}?";
         private const string AppsPath = "apps?";
 
+        private readonly ISoundCloudApiGateway _gateway;
+
         public Apps(ISoundCloudApiGateway gateway)
-            : base(gateway)
         {
+            _gateway = gateway;
         }
 
         public async Task<AppClient> GetAsync(int appId)
         {
             var builder = new AppsQueryBuilder { Path = string.Format(AppPath, appId) };
-            return await GetByIdAsync<AppClient>(builder.BuildUri());
+            return await _gateway.SendGetRequestAsync<AppClient>(builder.BuildUri());
         }
 
-        public async Task<IEnumerable<AppClient>> GetAsync()
+        public async Task<IEnumerable<AppClient>> GetAllAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0)
         {
-            var builder = new AppsQueryBuilder { Path = AppsPath, Paged = true };
-            return await GetListAsync<AppClient>(builder.BuildUri());
+            var builder = new AppsQueryBuilder { Path = AppsPath, Paged = true, Limit = limit, Offset = offset };
+            return (await _gateway.SendGetRequestAsync<PagedResult<AppClient>>(builder.BuildUri())).Collection;
         }
     }
 }

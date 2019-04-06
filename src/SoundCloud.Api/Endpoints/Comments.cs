@@ -6,42 +6,44 @@ using SoundCloud.Api.Web;
 
 namespace SoundCloud.Api.Endpoints
 {
-    internal sealed class Comments : Endpoint, IComments
+    internal sealed class Comments : IComments
     {
         private const string CommentPath = "comments/{0}?";
         private const string CommentsPath = "comments/?";
 
+        private readonly ISoundCloudApiGateway _gateway;
+
         internal Comments(ISoundCloudApiGateway gateway)
-            : base(gateway)
         {
+            _gateway = gateway;
         }
 
-        public async Task<IWebResult> DeleteAsync(Comment comment)
+        public async Task<StatusResponse> DeleteAsync(Comment comment)
         {
-            Validate(comment.ValidateDelete);
+            comment.ValidateDelete();
 
             var builder = new CommentsQueryBuilder { Path = string.Format(CommentPath, comment.Id) };
-            return await DeleteAsync(builder.BuildUri());
+            return await _gateway.SendDeleteRequestAsync<StatusResponse>(builder.BuildUri());
         }
 
         public async Task<Comment> GetAsync(int commentId)
         {
             var builder = new CommentsQueryBuilder { Path = string.Format(CommentPath, commentId) };
-            return await GetByIdAsync<Comment>(builder.BuildUri());
+            return await _gateway.SendGetRequestAsync<Comment>(builder.BuildUri());
         }
 
         public async Task<IEnumerable<Comment>> GetAsync()
         {
             var builder = new CommentsQueryBuilder { Path = CommentsPath, Paged = true };
-            return await GetListAsync<Comment>(builder.BuildUri());
+            return (await _gateway.SendGetRequestAsync<PagedResult<Comment>>(builder.BuildUri())).Collection;
         }
 
-        public async Task<IWebResult<Comment>> PostAsync(Comment comment)
+        public async Task<Comment> PostAsync(Comment comment)
         {
-            Validate(comment.ValidatePost);
+            comment.ValidatePost();
 
             var builder = new CommentsQueryBuilder { Path = CommentsPath };
-            return await CreateAsync<Comment>(builder.BuildUri(), comment);
+            return await _gateway.SendPostRequestAsync<Comment>(builder.BuildUri(), comment);
         }
     }
 }

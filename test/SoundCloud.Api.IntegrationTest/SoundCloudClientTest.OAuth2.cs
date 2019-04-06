@@ -18,10 +18,9 @@ namespace SoundCloud.Api.IntegrationTest
             var client = SoundCloudClient.CreateUnauthorized("ClientId");
             var postedCredentials = await client.OAuth2.ClientCredentialsAsync(credentials);
 
-            Assert.That(postedCredentials.IsSuccess, Is.True);
-            Assert.That(string.IsNullOrEmpty(postedCredentials.Data.AccessToken), Is.False);
-            Assert.That(string.IsNullOrEmpty(postedCredentials.Data.RefreshToken), Is.False);
-            Assert.That(postedCredentials.Data.ExpiresIn, Is.Not.Null);
+            Assert.That(postedCredentials.AccessToken, Is.False);
+            Assert.That(postedCredentials.RefreshToken, Is.False);
+            Assert.That(postedCredentials.ExpiresIn, Is.Not.Null);
         }
 
         [Test]
@@ -36,10 +35,9 @@ namespace SoundCloud.Api.IntegrationTest
             var client = SoundCloudClient.CreateUnauthorized("ClientId");
             var postedCredentials = await client.OAuth2.LoginAsync(credentials);
 
-            Assert.That(postedCredentials.IsSuccess, Is.True);
-            Assert.That(string.IsNullOrEmpty(postedCredentials.Data.AccessToken), Is.False);
-            Assert.That(string.IsNullOrEmpty(postedCredentials.Data.RefreshToken), Is.False);
-            Assert.That(postedCredentials.Data.ExpiresIn, Is.Not.Null);
+            Assert.That(postedCredentials.AccessToken, Is.Not.Empty);
+            Assert.That(postedCredentials.RefreshToken, Is.Not.Empty);
+            Assert.That(postedCredentials.ExpiresIn, Is.Not.Null);
         }
 
         [Test]
@@ -54,20 +52,17 @@ namespace SoundCloud.Api.IntegrationTest
             loginCredentials.Password = Settings.Password;
 
             var loginResult = await client.OAuth2.LoginAsync(loginCredentials);
-
-            Assert.That(loginResult.IsSuccess, Is.True);
+            Assert.That(loginResult.AccessToken, Is.Not.Empty);
 
             var credentials = new Credentials();
             credentials.ClientId = Settings.ClientId;
             credentials.ClientSecret = Settings.ClientSecret;
-            credentials.RefreshToken = loginResult.Data.RefreshToken;
+            credentials.RefreshToken = loginResult.RefreshToken;
 
             var refreshResult = await client.OAuth2.RefreshTokenAsync(credentials);
-
-            Assert.That(refreshResult.IsSuccess, Is.True);
-            Assert.That(string.IsNullOrEmpty(refreshResult.Data.AccessToken), Is.False);
-            Assert.That(string.IsNullOrEmpty(refreshResult.Data.RefreshToken), Is.False);
-            Assert.That(refreshResult.Data.ExpiresIn, Is.Not.Null);
+            Assert.That(refreshResult.AccessToken, Is.Not.Empty);
+            Assert.That(refreshResult.RefreshToken, Is.Not.Empty);
+            Assert.That(refreshResult.ExpiresIn, Is.Not.Null);
         }
     }
 }

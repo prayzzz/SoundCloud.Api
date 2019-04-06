@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using SoundCloud.Api.Entities;
 using SoundCloud.Api.Exceptions;
 using SoundCloud.Api.QueryBuilders;
-using SoundCloud.Api.Web;
 
 namespace SoundCloud.Api.Endpoints
 {
@@ -15,15 +14,13 @@ namespace SoundCloud.Api.Endpoints
         /// </summary>
         /// <param name="playlist"></param>
         /// <exception cref="System.Net.Http.HttpRequestException">Thrown if the WebRequest failed.</exception>
-        /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no OAuth token is set.</exception>
-        Task<IWebResult> DeleteAsync(Playlist playlist);
+        Task<StatusResponse> DeleteAsync(Playlist playlist);
 
         /// <summary>
         ///     Gets a playlist
         /// </summary>
         /// <param name="playlistId"></param>
         /// <returns></returns>
-        /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no ClientId or OAuth token is set.</exception>
         Task<Playlist> GetAsync(int playlistId);
 
         /// <summary>
@@ -31,7 +28,6 @@ namespace SoundCloud.Api.Endpoints
         /// </summary>
         /// <param name="queryBuilder"></param>
         /// <returns></returns>
-        /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no ClientId or OAuth token is set.</exception>
         Task<IEnumerable<Playlist>> GetAsync(PlaylistQueryBuilder queryBuilder);
 
         /// <summary>
@@ -39,7 +35,6 @@ namespace SoundCloud.Api.Endpoints
         /// </summary>
         /// <param name="playlist"></param>
         /// <returns></returns>
-        /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no OAuth token is set.</exception>
         Task<SecretToken> GetSecretTokenAsync(Playlist playlist);
 
         /// <summary>
@@ -47,18 +42,16 @@ namespace SoundCloud.Api.Endpoints
         /// </summary>
         /// <param name="playlist"></param>
         /// <returns></returns>
-        /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no OAuth token is set.</exception>
         /// <exception cref="SoundCloudValidationException">Thrown if validation of <paramref name="playlist" /> failed.</exception>
-        Task<IWebResult<Playlist>> PostAsync(Playlist playlist);
+        Task<Playlist> PostAsync(Playlist playlist);
 
         /// <summary>
         ///     Updates the playlist
         /// </summary>
         /// <param name="playlist"></param>
         /// <returns></returns>
-        /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no OAuth token is set.</exception>
         /// <exception cref="SoundCloudValidationException">Thrown if validation of <paramref name="playlist" /> failed.</exception>
-        Task<IWebResult<Playlist>> UpdateAsync(Playlist playlist);
+        Task<Playlist> UpdateAsync(Playlist playlist);
 
         /// <summary>
         ///     Uploads the given file as artwork to the given playlist
@@ -66,8 +59,7 @@ namespace SoundCloud.Api.Endpoints
         /// <param name="playlist"></param>
         /// <param name="file"></param>
         /// <returns></returns>
-        /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no OAuth token is set.</exception>
         /// <exception cref="SoundCloudValidationException">Thrown if validation of <paramref name="playlist" /> failed.</exception>
-        Task<IWebResult<Playlist>> UploadArtworkAsync(Playlist playlist, Stream file);
+        Task<Playlist> UploadArtworkAsync(Playlist playlist, Stream file);
     }
 }

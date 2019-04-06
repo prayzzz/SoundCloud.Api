@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-
 using SoundCloud.Api.Login;
 
 namespace SoundCloud.Api.Test.Login
@@ -20,7 +19,9 @@ namespace SoundCloud.Api.Test.Login
 
             var uri = builder.Create();
 
-            Assert.That(uri.ToString(), Is.EqualTo("https://soundcloud.com/connect?client_id=ClientId&response_type=code&display=popup&scope=non-expiring&redirect_uri=RedirectUri"));
+            Assert.That(uri.ToString(),
+                Is.EqualTo(
+                    "https://soundcloud.com/connect?client_id=ClientId&response_type=code&display=popup&scope=non-expiring&redirect_uri=RedirectUri"));
         }
 
         [Test]
@@ -29,7 +30,8 @@ namespace SoundCloud.Api.Test.Login
             var builder = new LoginFormUriBuilder(ClientId, RedirectUri);
             var uri = builder.Create();
 
-            Assert.That(uri.ToString(), Is.EqualTo("https://soundcloud.com/connect?client_id=ClientId&response_type=token&display=&scope=&redirect_uri=RedirectUri"));
+            Assert.That(uri.ToString(),
+                Is.EqualTo("https://soundcloud.com/connect?client_id=ClientId&response_type=token&display=&scope=&redirect_uri=RedirectUri"));
         }
 
         [Test]

@@ -1,7 +1,5 @@
 ﻿using System;
-
 using NUnit.Framework;
-
 using SoundCloud.Api.Utils;
 
 namespace SoundCloud.Api.Test.Utils

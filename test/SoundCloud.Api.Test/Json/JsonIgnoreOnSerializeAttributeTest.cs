@@ -18,9 +18,7 @@ namespace SoundCloud.Api.Test.Json
 
             Assert.That(json, Does.Not.Contain("IgnoredProperty"));
             Assert.That(json, Does.Contain("Property"));
-        }
-
-        // ReSharper disable UnusedAutoPropertyAccessor.Local
+        } // ReSharper disable UnusedAutoPropertyAccessor.Local
         private class TestClass
         {
             [JsonIgnoreOnSerialize]

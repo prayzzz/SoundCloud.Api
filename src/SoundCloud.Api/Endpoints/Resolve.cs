@@ -5,19 +5,21 @@ using SoundCloud.Api.Web;
 
 namespace SoundCloud.Api.Endpoints
 {
-    internal class Resolve : Endpoint, IResolve
+    internal class Resolve : IResolve
     {
         private const string ResolvePath = "resolve?url={0}";
 
+        private readonly ISoundCloudApiGateway _gateway;
+
         public Resolve(ISoundCloudApiGateway gateway)
-            : base(gateway)
         {
+            _gateway = gateway;
         }
 
         public async Task<Entity> GetEntityAsync(string url)
         {
             var builder = new ResolveQueryBuilder { Path = string.Format(ResolvePath, url) };
-            return await GetByIdAsync<Entity>(builder.BuildUri());
+            return await _gateway.SendGetRequestAsync<Entity>(builder.BuildUri());
         }
     }
 }

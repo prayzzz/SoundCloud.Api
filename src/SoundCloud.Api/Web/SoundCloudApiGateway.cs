@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SoundCloud.Api.Entities.Base;
+using SoundCloud.Api.Exceptions;
 using SoundCloud.Api.Json;
 
 namespace SoundCloud.Api.Web
@@ -31,18 +32,21 @@ namespace SoundCloud.Api.Web
             };
         }
 
-        public Task<ApiResponse<TResult>> InvokeCreateRequestAsync<TResult>(Uri uri, Entity data)
+        public Task<TResult> SendPostRequestAsync<TResult>(Uri uri, Entity data)
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, uri)
             {
-                Content = new StringContent(JsonConvert.SerializeObject(data.ToBoxedEntity(), _jsonSerializeSettings), Encoding.Default,
-                    "application/json")
+                Content = new StringContent(
+                    JsonConvert.SerializeObject(data.ToBoxedEntity(), _jsonSerializeSettings),
+                    Encoding.Default,
+                    "application/json"
+                )
             };
 
-            return SendAsync<TResult>(httpRequestMessage);
+            return SendRequestAsync<TResult>(httpRequestMessage);
         }
 
-        public async Task<ApiResponse<TResult>> InvokeCreateRequestAsync<TResult>(Uri uri, IDictionary<string, object> parameters)
+        public async Task<TResult> SendPostRequestAsync<TResult>(Uri uri, IDictionary<string, object> parameters)
         {
             var multipartFormDataContent = CreateMultipartFormDataContent(parameters);
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, uri)
@@ -50,33 +54,36 @@ namespace SoundCloud.Api.Web
                 Content = multipartFormDataContent
             };
 
-            return await SendAsync<TResult>(httpRequestMessage);
+            return await SendRequestAsync<TResult>(httpRequestMessage);
         }
 
-        public Task<ApiResponse<TResult>> InvokeDeleteRequestAsync<TResult>(Uri uri)
+        public Task<TResult> SendDeleteRequestAsync<TResult>(Uri uri)
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Delete, uri);
-            return SendAsync<TResult>(httpRequestMessage);
+            return SendRequestAsync<TResult>(httpRequestMessage);
         }
 
-        public Task<ApiResponse<TResult>> InvokeGetRequestAsync<TResult>(Uri uri)
+        public Task<TResult> SendGetRequestAsync<TResult>(Uri uri)
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
-            return SendAsync<TResult>(httpRequestMessage);
+            return SendRequestAsync<TResult>(httpRequestMessage);
         }
 
-        public Task<ApiResponse<TResult>> InvokeUpdateRequestAsync<TResult>(Uri uri, Entity data)
+        public Task<TResult> SendPutRequestAsync<TResult>(Uri uri, Entity data)
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, uri)
             {
-                Content = new StringContent(JsonConvert.SerializeObject(data.ToBoxedEntity(), _jsonSerializeSettings), Encoding.Default,
-                    "application/json")
+                Content = new StringContent(
+                    JsonConvert.SerializeObject(data.ToBoxedEntity(), _jsonSerializeSettings),
+                    Encoding.Default,
+                    "application/json"
+                )
             };
 
-            return SendAsync<TResult>(httpRequestMessage);
+            return SendRequestAsync<TResult>(httpRequestMessage);
         }
 
-        public Task<ApiResponse<TResult>> InvokeUpdateRequestAsync<TResult>(Uri uri, IDictionary<string, object> parameters)
+        public Task<TResult> SendPutRequestAsync<TResult>(Uri uri, IDictionary<string, object> parameters)
         {
             var multipartFormDataContent = CreateMultipartFormDataContent(parameters);
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, uri)
@@ -84,13 +91,13 @@ namespace SoundCloud.Api.Web
                 Content = multipartFormDataContent
             };
 
-            return SendAsync<TResult>(httpRequestMessage);
+            return SendRequestAsync<TResult>(httpRequestMessage);
         }
 
-        public Task<ApiResponse<TResult>> InvokeUpdateRequestAsync<TResult>(Uri uri)
+        public Task<TResult> SendPutRequestAsync<TResult>(Uri uri)
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, uri);
-            return SendAsync<TResult>(httpRequestMessage);
+            return SendRequestAsync<TResult>(httpRequestMessage);
         }
 
         private static MultipartFormDataContent CreateMultipartFormDataContent(IDictionary<string, object> parameters)
@@ -131,19 +138,18 @@ namespace SoundCloud.Api.Web
             return multipartFormDataContent;
         }
 
-        private async Task<ApiResponse<TResult>> SendAsync<TResult>(HttpRequestMessage httpRequestMessage)
+        private async Task<TResult> SendRequestAsync<TResult>(HttpRequestMessage httpRequestMessage)
         {
             var httpClient = _clientFactory.CreateClient(SoundCloudClient.HttpClientName);
             var response = await httpClient.SendAsync(httpRequestMessage);
 
             if (!response.IsSuccessStatusCode)
             {
-                return new ApiResponse<TResult>(response.StatusCode);
+                throw new SoundCloudApiException(response.StatusCode, response.Content);
             }
 
             var responseContent = await response.Content.ReadAsStringAsync();
-            var resultData = JsonConvert.DeserializeObject<TResult>(responseContent, _jsonDeserializeSettings);
-            return new ApiResponse<TResult>(response.StatusCode, resultData);
+            return JsonConvert.DeserializeObject<TResult>(responseContent, _jsonDeserializeSettings);
         }
     }
 }

@@ -1,9 +1,6 @@
 ﻿using System;
-
 using Newtonsoft.Json;
-
 using NUnit.Framework;
-
 using SoundCloud.Api.Json;
 
 namespace SoundCloud.Api.Test.Json
@@ -12,6 +9,12 @@ namespace SoundCloud.Api.Test.Json
     public class DateTimeConverterTest
     {
         private const string DateTimeFormat = "yyyy/MM/dd HH:mm:ss zzz";
+
+        private class TestClass
+        {
+            [JsonConverter(typeof(DateTimeConverter), DateTimeFormat)]
+            public DateTime DateTime { get; set; }
+        }
 
         [Test]
         public void Test_Read()
@@ -43,12 +46,6 @@ namespace SoundCloud.Api.Test.Json
             var json = JsonConvert.SerializeObject(testObject);
 
             Assert.That(json, Does.Contain(dateTimeString));
-        }
-
-        private class TestClass
-        {
-            [JsonConverter(typeof(DateTimeConverter), DateTimeFormat)]
-            public DateTime DateTime { get; set; }
         }
     }
 }

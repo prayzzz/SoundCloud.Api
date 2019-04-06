@@ -7,30 +7,32 @@ using SoundCloud.Api.Web;
 
 namespace SoundCloud.Api.Endpoints
 {
-    internal class Playlists : Endpoint, IPlaylists
+    internal class Playlists : IPlaylists
     {
         private const string PlaylistArtworkDataKey = "playlist[artwork_data]";
         private const string PlaylistPath = "playlists/{0}?";
         private const string PlaylistSecretTokenPath = "playlists/{0}/secret-token?";
         private const string PlaylistsPath = "playlists?";
 
+        private readonly ISoundCloudApiGateway _gateway;
+
         public Playlists(ISoundCloudApiGateway gateway)
-            : base(gateway)
         {
+            _gateway = gateway;
         }
 
-        public async Task<IWebResult> DeleteAsync(Playlist playlist)
+        public async Task<StatusResponse> DeleteAsync(Playlist playlist)
         {
-            Validate(playlist.ValidateDelete);
+            playlist.ValidateDelete();
 
             var builder = new PlaylistQueryBuilder { Path = string.Format(PlaylistPath, playlist.Id) };
-            return await DeleteAsync(builder.BuildUri());
+            return await _gateway.SendDeleteRequestAsync<StatusResponse>(builder.BuildUri());
         }
 
         public async Task<Playlist> GetAsync(int playlistId)
         {
             var builder = new PlaylistQueryBuilder { Path = string.Format(PlaylistPath, playlistId) };
-            return await GetByIdAsync<Playlist>(builder.BuildUri());
+            return await _gateway.SendGetRequestAsync<Playlist>(builder.BuildUri());
         }
 
         public async Task<IEnumerable<Playlist>> GetAsync(PlaylistQueryBuilder queryBuilder)
@@ -38,40 +40,40 @@ namespace SoundCloud.Api.Endpoints
             queryBuilder.Path = PlaylistsPath;
             queryBuilder.Paged = true;
 
-            return await GetListAsync<Playlist>(queryBuilder.BuildUri());
+            return (await _gateway.SendGetRequestAsync<PagedResult<Playlist>>(queryBuilder.BuildUri())).Collection;
         }
 
         public async Task<SecretToken> GetSecretTokenAsync(Playlist playlist)
         {
-            Validate(playlist.ValidateGet);
+            playlist.ValidateGet();
 
             var builder = new PlaylistQueryBuilder { Path = string.Format(PlaylistSecretTokenPath, playlist.Id) };
-            return await GetByIdAsync<SecretToken>(builder.BuildUri());
+            return await _gateway.SendGetRequestAsync<SecretToken>(builder.BuildUri());
         }
 
-        public async Task<IWebResult<Playlist>> PostAsync(Playlist playlist)
+        public async Task<Playlist> PostAsync(Playlist playlist)
         {
-            Validate(playlist.ValidatePost);
+            playlist.ValidatePost();
 
             var builder = new PlaylistQueryBuilder { Path = PlaylistsPath };
-            return await CreateAsync<Playlist>(builder.BuildUri(), playlist);
+            return await _gateway.SendPostRequestAsync<Playlist>(builder.BuildUri(), playlist);
         }
 
-        public async Task<IWebResult<Playlist>> UpdateAsync(Playlist playlist)
+        public async Task<Playlist> UpdateAsync(Playlist playlist)
         {
-            Validate(playlist.ValidateGet);
+            playlist.ValidateGet();
 
             var builder = new PlaylistQueryBuilder { Path = string.Format(PlaylistPath, playlist.Id) };
-            return await UpdateAsync<Playlist>(builder.BuildUri(), playlist);
+            return await _gateway.SendPutRequestAsync<Playlist>(builder.BuildUri(), playlist);
         }
 
-        public async Task<IWebResult<Playlist>> UploadArtworkAsync(Playlist playlist, Stream file)
+        public async Task<Playlist> UploadArtworkAsync(Playlist playlist, Stream file)
         {
-            Validate(playlist.ValidateUploadArtwork);
+            playlist.ValidateUploadArtwork();
 
             var parameters = new Dictionary<string, object> { { PlaylistArtworkDataKey, file } };
             var builder = new PlaylistQueryBuilder { Path = string.Format(PlaylistPath, playlist.Id) };
-            return await UpdateAsync<Playlist>(builder.BuildUri(), parameters);
+            return await _gateway.SendPutRequestAsync<Playlist>(builder.BuildUri(), parameters);
         }
     }
 }

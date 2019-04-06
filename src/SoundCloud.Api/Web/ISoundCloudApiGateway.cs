@@ -7,18 +7,18 @@ namespace SoundCloud.Api.Web
 {
     internal interface ISoundCloudApiGateway
     {
-        Task<ApiResponse<TResult>> InvokeCreateRequestAsync<TResult>(Uri uri, Entity data);
+        Task<TResult> SendPostRequestAsync<TResult>(Uri uri, Entity data);
 
-        Task<ApiResponse<TResult>> InvokeCreateRequestAsync<TResult>(Uri uri, IDictionary<string, object> parameters);
+        Task<TResult> SendPostRequestAsync<TResult>(Uri uri, IDictionary<string, object> parameters);
 
-        Task<ApiResponse<TResult>> InvokeDeleteRequestAsync<TResult>(Uri uri);
+        Task<TResult> SendDeleteRequestAsync<TResult>(Uri uri);
 
-        Task<ApiResponse<TResult>> InvokeGetRequestAsync<TResult>(Uri uri);
+        Task<TResult> SendGetRequestAsync<TResult>(Uri uri);
 
-        Task<ApiResponse<TResult>> InvokeUpdateRequestAsync<TResult>(Uri uri, Entity data);
+        Task<TResult> SendPutRequestAsync<TResult>(Uri uri, Entity data);
 
-        Task<ApiResponse<TResult>> InvokeUpdateRequestAsync<TResult>(Uri uri, IDictionary<string, object> parameters);
+        Task<TResult> SendPutRequestAsync<TResult>(Uri uri, IDictionary<string, object> parameters);
 
-        Task<ApiResponse<TResult>> InvokeUpdateRequestAsync<TResult>(Uri uri);
+        Task<TResult> SendPutRequestAsync<TResult>(Uri uri);
     }
 }

@@ -1,7 +1,5 @@
 ﻿using System.Runtime.Serialization;
-
 using NUnit.Framework;
-
 using SoundCloud.Api.Utils;
 
 namespace SoundCloud.Api.Test.Utils
@@ -9,6 +7,16 @@ namespace SoundCloud.Api.Test.Utils
     [TestFixture]
     public class EnumHelperTest
     {
+        private enum TestEnum
+        {
+            [EnumMember(Value = "None")]
+            None = 0,
+
+            [EnumMember(Value = "barValue")]
+            Bar,
+            Baz
+        }
+
         [Test]
         public void Test_ParseTolerant_Int()
         {
@@ -26,7 +34,8 @@ namespace SoundCloud.Api.Test.Utils
         }
 
         [Test]
-        public void Test_ParseTolerant_String_Not_Nullable([Values("bar", "Bar", "barvalue", "barValue", "BaRvAlUe")] string value)
+        public void Test_ParseTolerant_String_Not_Nullable([Values("bar", "Bar", "barvalue", "barValue", "BaRvAlUe")]
+                                                           string value)
         {
             var enumMember = EnumHelper.ParseTolerant<TestEnum>(value);
 
@@ -47,16 +56,6 @@ namespace SoundCloud.Api.Test.Utils
             var enumMember = EnumHelper.ParseTolerant<TestEnum>("foobar");
 
             Assert.That(enumMember, Is.EqualTo(TestEnum.None));
-        }
-
-        private enum TestEnum
-        {
-            [EnumMember(Value = "None")]
-            None = 0,
-
-            [EnumMember(Value = "barValue")]
-            Bar,
-            Baz
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
@@ -19,17 +18,16 @@ namespace SoundCloud.Api.Test.Endpoints
             const string requestedUrl = "https://soundcloud.com/sharpsound-2";
             var expectedUri = new Uri("https://api.soundcloud.com/resolve?url=https://soundcloud.com/sharpsound-2");
 
-            var user = new User();
-            var response = new ApiResponse<Entity>(HttpStatusCode.OK, user);
-
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
-            gatewayMock.Setup(x => x.InvokeGetRequestAsync<Entity>(expectedUri)).ReturnsAsync(response);
+
+            var user = new User();
+            gatewayMock.Setup(x => x.SendGetRequestAsync<Entity>(expectedUri)).ReturnsAsync(user);
 
             // Act
             var result = await new Resolve(gatewayMock.Object).GetEntityAsync(requestedUrl);
 
             // Assert
-            Assert.That(result, Is.EqualTo(user));
+            Assert.That(result, Is.SameAs(user));
         }
     }
 }

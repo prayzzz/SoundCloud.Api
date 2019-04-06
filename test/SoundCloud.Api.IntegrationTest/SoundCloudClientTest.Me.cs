@@ -1,8 +1,10 @@
 ﻿using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using SoundCloud.Api.Entities;
 using SoundCloud.Api.Entities.Enums;
+using SoundCloud.Api.Exceptions;
 
 namespace SoundCloud.Api.IntegrationTest
 {
@@ -18,21 +20,21 @@ namespace SoundCloud.Api.IntegrationTest
 
             var user = new User { Id = userId };
 
-            var result = await client.Me.FollowAsync(user);
-            Assert.That(result.IsSuccess, Is.True);
+            var followResult = await client.Me.FollowAsync(user);
+            Assert.That(followResult.Errors, Is.Empty);
 
-            var followings = await client.Me.GetFollowingsAsync();
-            Assert.That(followings.Any(x => x.Id == user.Id), Is.True);
+            var followingsResult1 = await client.Me.GetFollowingsAsync();
+            Assert.That(followingsResult1, Has.One.Matches<User>(x => x.Id == user.Id));
 
-            result = await client.Me.UnfollowAsync(user);
-            Assert.That(result.IsSuccess, Is.True);
+            var unfollowResult = await client.Me.UnfollowAsync(user);
+            Assert.That(unfollowResult.Errors, Is.Empty);
 
-            followings = await client.Me.GetFollowingsAsync();
-            Assert.That(followings.Any(x => x.Id == user.Id), Is.False);
+            var followingsResult2 = await client.Me.GetFollowingsAsync();
+            Assert.That(followingsResult2, Has.None.Matches<User>(x => x.Id == user.Id));
         }
 
         [Test]
-        public async Task Me_Follow_Unknown_User()
+        public void Me_Follow_Unknown_User()
         {
             const int userId = 999999999;
 
@@ -40,9 +42,8 @@ namespace SoundCloud.Api.IntegrationTest
 
             var user = new User { Id = userId };
 
-            var result = await client.Me.FollowAsync(user);
-            Assert.That(result.IsSuccess, Is.False);
-            Assert.That(result.ErrorMessage, Is.EqualTo("NotFound"));
+            var exception = Assert.ThrowsAsync<SoundCloudApiException>(async () => await client.Me.FollowAsync(user));
+            Assert.That(exception.HttpStatusCode, Is.EqualTo(HttpStatusCode.NotFound));
         }
 
         [Test]
@@ -156,17 +157,17 @@ namespace SoundCloud.Api.IntegrationTest
 
             var track = new Track { Id = trackId };
 
-            var result = await client.Me.LikeAsync(track);
-            Assert.That(result.IsSuccess, Is.True);
+            var likeResult = await client.Me.LikeAsync(track);
+            Assert.That(likeResult.Errors, Is.Empty);
 
-            var favorites = await client.Me.GetFavoritesAsync();
-            Assert.That(favorites.Any(x => x.Id == track.Id), Is.True);
+            var favoritesResult1 = await client.Me.GetFavoritesAsync();
+            Assert.That(favoritesResult1, Has.One.Matches<Track>(x => x.Id == track.Id));
 
-            result = await client.Me.UnlikeAsync(track);
-            Assert.That(result.IsSuccess, Is.True);
+            var unlikeResult = await client.Me.UnlikeAsync(track);
+            Assert.That(unlikeResult.Errors, Is.Empty);
 
-            favorites = await client.Me.GetFavoritesAsync();
-            Assert.That(favorites.Any(x => x.Id == track.Id), Is.False);
+            var favoritesResult2 = await client.Me.GetFavoritesAsync();
+            Assert.That(favoritesResult2, Has.None.Matches<Track>(x => x.Id == track.Id));
         }
 
         [Test]
@@ -178,19 +179,18 @@ namespace SoundCloud.Api.IntegrationTest
             var profile = new WebProfile { Url = "http://facebook.com", Title = "Facebook", Service = WebService.Facebook };
 
             var postResult = await client.Me.PostWebProfileAsync(profile);
+            Assert.That(postResult.Url, Is.EqualTo(profile.Url));
+            Assert.That(postResult.Title, Is.EqualTo(profile.Title));
 
-            Assert.That(postResult.IsSuccess, Is.True);
-            Assert.That(postResult.Data.Url, Is.EqualTo(profile.Url));
-            Assert.That(postResult.Data.Title, Is.EqualTo(profile.Title));
+            var profilesResult1 = await client.Me.GetWebProfilesAsync();
+            Assert.That(profilesResult1, Has.One.Matches<Track>(x => x.Id == postResult.Id));
 
-            var profiles = await client.Me.GetWebProfilesAsync();
-            Assert.That(profiles.Any(x => x.Id == postResult.Data.Id), Is.True);
+            var deleteResult = await client.Me.DeleteWebProfileAsync(postResult);
+            Assert.That(deleteResult.Error, Is.Null.Or.Empty);
+            Assert.That(deleteResult.Errors, Is.Empty);
 
-            var deleteResult = await client.Me.DeleteWebProfileAsync(postResult.Data);
-            Assert.That(deleteResult.IsSuccess, Is.True);
-
-            profiles = await client.Me.GetWebProfilesAsync();
-            Assert.That(profiles.All(x => x.Id != postResult.Data.Id), Is.True);
+            var profilesResult2 = await client.Me.GetWebProfilesAsync();
+            Assert.That(profilesResult2, Has.None.Matches<Track>(x => x.Id == postResult.Id));
         }
     }
 }

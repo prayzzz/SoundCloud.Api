@@ -10,23 +10,6 @@ namespace SoundCloud.Api.IntegrationTest
     public class CommentsTest : SoundCloudClientTest
     {
         [Test]
-        public async Task Test_Comment_Post_Delete()
-        {
-            var client = SoundCloudClient.CreateAuthorized(Settings.Token);
-
-            var comment = new Comment { Body = "TestComment at " + DateTime.Now.ToLocalTime(), TrackId = TrackId };
-
-            var result = await client.Comments.PostAsync(comment);
-
-            Assert.That(result.IsSuccess, Is.True);
-            Assert.That(result.Data.Body, Is.EqualTo(comment.Body));
-
-            await client.Comments.DeleteAsync(result.Data);
-
-            Assert.Pass();
-        }
-        
-        [Test]
         public async Task Test_Comment_Get()
         {
             var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
@@ -35,7 +18,7 @@ namespace SoundCloud.Api.IntegrationTest
 
             Assert.That(result.Body, Does.Contain("TestComment"));
         }
-        
+
         [Test]
         public async Task Test_Comment_GetList()
         {
@@ -45,6 +28,20 @@ namespace SoundCloud.Api.IntegrationTest
 
             var someComments = result.Take(100).ToList();
             Assert.That(someComments.Count, Is.EqualTo(100));
+        }
+
+        [Test]
+        public async Task Test_Comment_Post_Delete()
+        {
+            var client = SoundCloudClient.CreateAuthorized(Settings.Token);
+
+            var comment = new Comment { Body = "TestComment at " + DateTime.Now.ToLocalTime(), TrackId = TrackId };
+
+            var postResult = await client.Comments.PostAsync(comment);
+            Assert.That(postResult.Body, Is.EqualTo(comment.Body));
+
+            var deleteResult = await client.Comments.DeleteAsync(postResult);
+            Assert.That(deleteResult.Errors, Is.Empty);
         }
     }
 }

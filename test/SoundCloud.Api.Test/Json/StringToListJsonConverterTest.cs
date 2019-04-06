@@ -8,6 +8,18 @@ namespace SoundCloud.Api.Test.Json
     [TestFixture]
     public class StringToListJsonConverterTest
     {
+        private class TestClass
+        {
+            [JsonConverter(typeof(StringToListJsonConverter), ' ', '"')]
+            public List<string> StringList { get; set; }
+        }
+
+        private class TestClass2
+        {
+            [JsonConverter(typeof(StringToListJsonConverter))]
+            public List<string> StringList { get; set; }
+        }
+
         [Test]
         public void Test_Read()
         {
@@ -73,21 +85,7 @@ namespace SoundCloud.Api.Test.Json
             var json = JsonConvert.SerializeObject(testObject);
 
             Assert.That(json, Is.EqualTo("{\"StringList\":null}"));
-        }
-
-        private class TestClass
-        {
-            [JsonConverter(typeof(StringToListJsonConverter), ' ', '"')]
-            public List<string> StringList { get; set; }
-        }
-
-        private class TestClass2
-        {
-            [JsonConverter(typeof(StringToListJsonConverter))]
-            public List<string> StringList { get; set; }
-        }
-
-        // ReSharper disable UnusedAutoPropertyAccessor.Local
+        } // ReSharper disable UnusedAutoPropertyAccessor.Local
         private class WrongPropertyTypeClass
         {
             [JsonConverter(typeof(StringToListJsonConverter))]

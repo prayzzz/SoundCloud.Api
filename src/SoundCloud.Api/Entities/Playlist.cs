@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using SoundCloud.Api.Entities.Base;
 using SoundCloud.Api.Entities.Enums;
+using SoundCloud.Api.Exceptions;
 using SoundCloud.Api.Json;
 using SoundCloud.Api.Utils;
 
@@ -287,72 +288,89 @@ namespace SoundCloud.Api.Entities
         [JsonProperty("user_id")]
         public int UserId { get; set; }
 
-        public bool ValidateDelete(ValidationMessages messages)
+        public void ValidateDelete()
         {
-            if (Id >= 1)
-            {
-                return true;
-            }
+            var messages = new ValidationMessages();
 
-            messages.Add("PlaylistId missing. Use the id property to set the id of this playlist.");
-            return false;
-
-        }
-
-        public bool ValidateGet(ValidationMessages messages)
-        {
             if (Id < 1)
             {
                 messages.Add("PlaylistId missing. Use the id property to set the id of this playlist.");
-                return false;
             }
 
-            return true;
+            if (messages.HasErrors)
+            {
+                throw new SoundCloudValidationException(messages);
+            }
         }
 
-        public bool ValidatePost(ValidationMessages messages)
+        public void ValidateGet()
         {
+            var messages = new ValidationMessages();
+
+            if (Id < 1)
+            {
+                messages.Add("PlaylistId missing. Use the id property to set the id of this playlist.");
+            }
+
+            if (messages.HasErrors)
+            {
+                throw new SoundCloudValidationException(messages);
+            }
+        }
+
+        public void ValidatePost()
+        {
+            var messages = new ValidationMessages();
+
             if (string.IsNullOrEmpty(Title))
             {
                 messages.Add("Title missing. Use the title property to set your track title.");
-                return false;
             }
 
             if (PlaylistType == PlaylistType.Other)
             {
                 messages.Add("Playlist type must not be 'other'.");
-                return false;
             }
 
-            return true;
+            if (messages.HasErrors)
+            {
+                throw new SoundCloudValidationException(messages);
+            }
         }
 
-        public bool ValidateUpdate(ValidationMessages messages)
+        public void ValidateUpdate()
         {
+            var messages = new ValidationMessages();
+
             if (Id < 1)
             {
                 messages.Add("PlaylistId missing. Use the id property to set the id of this playlist.");
-                return false;
             }
 
             if (string.IsNullOrEmpty(Title))
             {
                 messages.Add("Title missing. Use the title property to set your track title.");
-                return false;
             }
 
-            return true;
+            if (messages.HasErrors)
+            {
+                throw new SoundCloudValidationException(messages);
+            }
         }
 
-        public bool ValidateUploadArtwork(ValidationMessages messages)
+        public void ValidateUploadArtwork()
         {
+            var messages = new ValidationMessages();
+
             if (Id < 1)
             {
                 messages.Add("PlaylistId missing. Use the id property to set the id of this playlist.");
-                return false;
             }
 
-            return true;
+            if (messages.HasErrors)
+            {
+                throw new SoundCloudValidationException(messages);
+            }
         }
 
         internal override BoxedEntity ToBoxedEntity()

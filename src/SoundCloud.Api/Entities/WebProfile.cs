@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SoundCloud.Api.Entities.Base;
 using SoundCloud.Api.Entities.Enums;
+using SoundCloud.Api.Exceptions;
 using SoundCloud.Api.Json;
 using SoundCloud.Api.Utils;
 
@@ -54,32 +55,39 @@ namespace SoundCloud.Api.Entities
         [JsonProperty("username")]
         public string Username { get; set; }
 
-        public bool ValidateDelete(ValidationMessages messages)
+        public void ValidateDelete()
         {
+            var messages = new ValidationMessages();
+
             if (Id < 1)
             {
                 messages.Add("WebProfile id missing. Use the id property to set the id of this WebProfile.");
-                return false;
             }
 
-            return true;
+            if (messages.HasErrors)
+            {
+                throw new SoundCloudValidationException(messages);
+            }
         }
 
-        public bool ValidatePost(ValidationMessages messages)
+        public void ValidatePost()
         {
+            var messages = new ValidationMessages();
+
             if (string.IsNullOrEmpty(Title))
             {
                 messages.Add("WebProfile title missing. Use the title property to set the title of this WebProfile.");
-                return false;
             }
 
             if (string.IsNullOrEmpty(Url))
             {
                 messages.Add("WebProfile url missing. Use the url property to set the url of this WebProfile.");
-                return false;
             }
 
-            return true;
+            if (messages.HasErrors)
+            {
+                throw new SoundCloudValidationException(messages);
+            }
         }
 
         internal override BoxedEntity ToBoxedEntity()

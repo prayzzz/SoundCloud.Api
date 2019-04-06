@@ -1,7 +1,5 @@
 ﻿using System;
-
 using NUnit.Framework;
-
 using SoundCloud.Api.Entities.Enums;
 using SoundCloud.Api.QueryBuilders;
 
@@ -31,7 +29,8 @@ namespace SoundCloud.Api.Test.QueryBuilders
 
             var query = builder.BuildUri();
 
-            Assert.That(query.ToString(), Is.EqualTo("https://api.soundcloud.com/?created_at[from]=2015-01-02 03:04:05&created_at[to]=2015-06-07 08:09:10"));
+            Assert.That(query.ToString(),
+                Is.EqualTo("https://api.soundcloud.com/?created_at[from]=2015-01-02 03:04:05&created_at[to]=2015-06-07 08:09:10"));
         }
 
         [Test]

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using SoundCloud.Api.Entities;
-using SoundCloud.Api.Web;
 
 namespace SoundCloud.Api.Endpoints
 {
@@ -19,14 +18,14 @@ namespace SoundCloud.Api.Endpoints
         /// </summary>
         /// <param name="profile"></param>
         /// <returns></returns>
-        Task<IWebResult> DeleteWebProfileAsync(WebProfile profile);
+        Task<StatusResponse> DeleteWebProfileAsync(WebProfile profile);
 
         /// <summary>
         ///     Follows the given user
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        Task<IWebResult> FollowAsync(User user);
+        Task<StatusResponse> FollowAsync(User user);
 
         /// <summary>
         ///     Gets the current user
@@ -93,27 +92,27 @@ namespace SoundCloud.Api.Endpoints
         /// </summary>
         /// <param name="track"></param>
         /// <returns></returns>
-        Task<IWebResult> LikeAsync(Track track);
+        Task<StatusResponse> LikeAsync(Track track);
 
         /// <summary>
         ///     Creates a web profile
         /// </summary>
         /// <param name="profile"></param>
         /// <returns></returns>
-        Task<IWebResult<WebProfile>> PostWebProfileAsync(WebProfile profile);
+        Task<WebProfile> PostWebProfileAsync(WebProfile profile);
 
         /// <summary>
         ///     Unfollows a user
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        Task<IWebResult> UnfollowAsync(User user);
+        Task<StatusResponse> UnfollowAsync(User user);
 
         /// <summary>
         ///     Unlikes a track
         /// </summary>
         /// <param name="track"></param>
         /// <returns></returns>
-        Task<IWebResult> UnlikeAsync(Track track);
+        Task<StatusResponse> UnlikeAsync(Track track);
     }
 }

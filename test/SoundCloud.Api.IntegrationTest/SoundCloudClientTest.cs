@@ -14,6 +14,15 @@ namespace SoundCloud.Api.IntegrationTest
     [TestFixture]
     public abstract class SoundCloudClientTest
     {
+        [SetUp]
+        public void Setup()
+        {
+            if (Settings == null)
+            {
+                Assert.Inconclusive("No settings loaded. ClientId and AccessToken not available");
+            }
+        }
+
         // Taken from https://soundcloud.com/sharpsound-2
         protected const int CommentId = 240653022;
         protected const int GroupId = 216171;
@@ -25,15 +34,6 @@ namespace SoundCloud.Api.IntegrationTest
         protected const int TrackId = 219359541;
         protected const int UserId = 164386753;
         protected Settings Settings;
-        
-        [SetUp]
-        public void Setup()
-        {
-            if (Settings == null)
-            {
-                Assert.Inconclusive("No settings loaded. ClientId and AccessToken not available");
-            }
-        }
 
         [OneTimeSetUp]
         public void TestFixtureSetUp()

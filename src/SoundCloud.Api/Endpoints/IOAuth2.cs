@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using SoundCloud.Api.Entities;
 using SoundCloud.Api.Exceptions;
-using SoundCloud.Api.Web;
 
 namespace SoundCloud.Api.Endpoints
 {
@@ -13,7 +12,7 @@ namespace SoundCloud.Api.Endpoints
         /// <param name="credentials"></param>
         /// <returns></returns>
         /// <exception cref="SoundCloudValidationException">Thrown if validation of <paramref name="credentials" /> failed.</exception>
-        Task<IWebResult<Credentials>> ClientCredentialsAsync(Credentials credentials);
+        Task<Credentials> ClientCredentialsAsync(Credentials credentials);
 
         /// <summary>
         ///     Use this method to obtain an access_token after recieving a code via the authorization workflow.
@@ -21,7 +20,7 @@ namespace SoundCloud.Api.Endpoints
         /// <param name="credentials"></param>
         /// <returns></returns>
         /// <exception cref="SoundCloudValidationException">Thrown if validation of <paramref name="credentials" /> failed.</exception>
-        Task<IWebResult<Credentials>> ExchangeTokenAsync(Credentials credentials);
+        Task<Credentials> ExchangeTokenAsync(Credentials credentials);
 
         /// <summary>
         ///     Use username and password to obtain an access_token
@@ -29,7 +28,7 @@ namespace SoundCloud.Api.Endpoints
         /// <param name="credentials"></param>
         /// <returns></returns>
         /// <exception cref="SoundCloudValidationException">Thrown if validation of <paramref name="credentials" /> failed.</exception>
-        Task<IWebResult<Credentials>> LoginAsync(Credentials credentials);
+        Task<Credentials> LoginAsync(Credentials credentials);
 
         /// <summary>
         ///     Use the refresh_token to obtain a new access_token
@@ -37,6 +36,6 @@ namespace SoundCloud.Api.Endpoints
         /// <param name="credentials"></param>
         /// <returns></returns>
         /// <exception cref="SoundCloudValidationException">Thrown if validation of <paramref name="credentials" /> failed.</exception>
-        Task<IWebResult<Credentials>> RefreshTokenAsync(Credentials credentials);
+        Task<Credentials> RefreshTokenAsync(Credentials credentials);
     }
 }

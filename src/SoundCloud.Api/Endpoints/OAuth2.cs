@@ -6,45 +6,47 @@ using SoundCloud.Api.Web;
 
 namespace SoundCloud.Api.Endpoints
 {
-    internal sealed class OAuth2 : Endpoint, IOAuth2
+    internal sealed class OAuth2 : IOAuth2
     {
         private const string TokenPath = "oauth2/token?";
 
+        private readonly ISoundCloudApiGateway _gateway;
+
         public OAuth2(ISoundCloudApiGateway gateway)
-            : base(gateway)
         {
+            _gateway = gateway;
         }
 
-        public async Task<IWebResult<Credentials>> ClientCredentialsAsync(Credentials credentials)
+        public async Task<Credentials> ClientCredentialsAsync(Credentials credentials)
         {
-            Validate(credentials.ValidateClientCredentials);
+            credentials.ValidateClientCredentials();
 
             var builder = new OAuthQueryBuilder { Path = TokenPath };
-            return await CreateAsync<Credentials>(builder.BuildUri(), credentials.ToParameters(GrantType.ClientCredentials));
+            return await _gateway.SendPostRequestAsync<Credentials>(builder.BuildUri(), credentials.ToParameters(GrantType.ClientCredentials));
         }
 
-        public async Task<IWebResult<Credentials>> ExchangeTokenAsync(Credentials credentials)
+        public async Task<Credentials> ExchangeTokenAsync(Credentials credentials)
         {
-            Validate(credentials.ValidateAuthorizationCode);
+            credentials.ValidateAuthorizationCode();
 
             var builder = new OAuthQueryBuilder { Path = TokenPath };
-            return await CreateAsync<Credentials>(builder.BuildUri(), credentials.ToParameters(GrantType.AuthorizationCode));
+            return await _gateway.SendPostRequestAsync<Credentials>(builder.BuildUri(), credentials.ToParameters(GrantType.AuthorizationCode));
         }
 
-        public async Task<IWebResult<Credentials>> LoginAsync(Credentials credentials)
+        public async Task<Credentials> LoginAsync(Credentials credentials)
         {
-            Validate(credentials.ValidatePassword);
+            credentials.ValidatePassword();
 
             var builder = new OAuthQueryBuilder { Path = TokenPath };
-            return await CreateAsync<Credentials>(builder.BuildUri(), credentials.ToParameters(GrantType.Password));
+            return await _gateway.SendPostRequestAsync<Credentials>(builder.BuildUri(), credentials.ToParameters(GrantType.Password));
         }
 
-        public async Task<IWebResult<Credentials>> RefreshTokenAsync(Credentials credentials)
+        public async Task<Credentials> RefreshTokenAsync(Credentials credentials)
         {
-            Validate(credentials.ValidateRefreshToken);
+            credentials.ValidateRefreshToken();
 
             var builder = new OAuthQueryBuilder { Path = TokenPath };
-            return await CreateAsync<Credentials>(builder.BuildUri(), credentials.ToParameters(GrantType.RefreshToken));
+            return await _gateway.SendPostRequestAsync<Credentials>(builder.BuildUri(), credentials.ToParameters(GrantType.RefreshToken));
         }
     }
 }

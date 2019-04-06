@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using SoundCloud.Api.Entities;
 using SoundCloud.Api.Exceptions;
 using SoundCloud.Api.QueryBuilders;
-using SoundCloud.Api.Web;
 
 namespace SoundCloud.Api.Endpoints
 {
@@ -15,22 +14,19 @@ namespace SoundCloud.Api.Endpoints
         /// </summary>
         /// <param name="track">Track to delete</param>
         /// <exception cref="System.Net.Http.HttpRequestException">Thrown if the WebRequest failed.</exception>
-        /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no OAuth token is set.</exception>
-        Task<IWebResult> DeleteAsync(Track track);
+        Task<StatusResponse> DeleteAsync(Track track);
 
         /// <summary>
         ///     Gets a track
         /// </summary>
         /// <param name="trackId"></param>
         /// <returns></returns>
-        /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no ClientId or OAuth token is set.</exception>
         Task<Track> GetAsync(int trackId);
 
         /// <summary>
         ///     Gets a list of tracks
         /// </summary>
         /// <returns></returns>
-        /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no ClientId or OAuth token is set.</exception>
         Task<IEnumerable<Track>> GetAsync();
 
         /// <summary>
@@ -38,7 +34,6 @@ namespace SoundCloud.Api.Endpoints
         /// </summary>
         /// <param name="builder"></param>
         /// <returns></returns>
-        /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no ClientId or OAuth token is set.</exception>
         Task<IEnumerable<Track>> GetAsync(SoundCloudQueryBuilder builder);
 
         /// <summary>
@@ -46,7 +41,6 @@ namespace SoundCloud.Api.Endpoints
         /// </summary>
         /// <param name="track"></param>
         /// <returns></returns>
-        /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no ClientId or OAuth token is set.</exception>
         Task<IEnumerable<Comment>> GetCommentsAsync(Track track);
 
         /// <summary>
@@ -54,7 +48,6 @@ namespace SoundCloud.Api.Endpoints
         /// </summary>
         /// <param name="track"></param>
         /// <returns></returns>
-        /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no ClientId or OAuth token is set.</exception>
         Task<IEnumerable<User>> GetFavoritersAsync(Track track);
 
         /// <summary>
@@ -62,7 +55,6 @@ namespace SoundCloud.Api.Endpoints
         /// </summary>
         /// <param name="track"></param>
         /// <returns></returns>
-        /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no OAuth token is set.</exception>
         Task<SecretToken> GetSecretTokenAsync(Track track);
 
         /// <summary>
@@ -70,9 +62,8 @@ namespace SoundCloud.Api.Endpoints
         /// </summary>
         /// <param name="track"></param>
         /// <returns></returns>
-        /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no OAuth token is set.</exception>
         /// <exception cref="SoundCloudValidationException">Thrown if validation of <paramref name="track" /> failed.</exception>
-        Task<IWebResult<Track>> UpdateAsync(Track track);
+        Task<Track> UpdateAsync(Track track);
 
         /// <summary>
         ///     Uploads a Artwork
@@ -80,9 +71,8 @@ namespace SoundCloud.Api.Endpoints
         /// <param name="track"></param>
         /// <param name="file"></param>
         /// <returns></returns>
-        /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no OAuth token is set.</exception>
         /// <exception cref="SoundCloudValidationException">Thrown if validation of <paramref name="track" /> failed.</exception>
-        Task<IWebResult<Track>> UploadArtworkAsync(Track track, Stream file);
+        Task<Track> UploadArtworkAsync(Track track, Stream file);
 
         /// <summary>
         ///     Uploads a track
@@ -90,8 +80,7 @@ namespace SoundCloud.Api.Endpoints
         /// <param name="title"></param>
         /// <param name="file"></param>
         /// <returns></returns>
-        /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no OAuth token is set.</exception>
         /// <exception cref="SoundCloudValidationException">Thrown if validation of <paramref name="title" /> failed.</exception>
-        Task<IWebResult<Track>> UploadTrackAsync(string title, Stream file);
+        Task<Track> UploadTrackAsync(string title, Stream file);
     }
 }

@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using SoundCloud.Api.Entities;
 using SoundCloud.Api.Exceptions;
-using SoundCloud.Api.Web;
 
 namespace SoundCloud.Api.Endpoints
 {
@@ -17,14 +16,12 @@ namespace SoundCloud.Api.Endpoints
         /// </summary>
         /// <param name="comment"></param>
         /// <exception cref="System.Net.Http.HttpRequestException">Thrown if the WebRequest failed.</exception>
-        /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no OAuth token is set.</exception>
-        Task<IWebResult> DeleteAsync(Comment comment);
+        Task<StatusResponse> DeleteAsync(Comment comment);
 
         /// <summary>
         ///     Gets a list of comments
         /// </summary>
         /// <returns></returns>
-        /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no ClientId or OAuth token is set.</exception>
         Task<IEnumerable<Comment>> GetAsync();
 
         /// <summary>
@@ -32,7 +29,6 @@ namespace SoundCloud.Api.Endpoints
         /// </summary>
         /// <param name="commentId"></param>
         /// <returns></returns>
-        /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no ClientId or OAuth token is set.</exception>
         Task<Comment> GetAsync(int commentId);
 
         /// <summary>
@@ -40,8 +36,7 @@ namespace SoundCloud.Api.Endpoints
         /// </summary>
         /// <param name="comment"></param>
         /// <exception cref="System.Net.Http.HttpRequestException">Thrown if the WebRequest failed.</exception>
-        /// <exception cref="SoundCloudInsufficientAccessRightsException">Thrown if no OAuth token is set.</exception>
         /// <exception cref="SoundCloudValidationException">Thrown if validation of <paramref name="comment" /> failed.</exception>
-        Task<IWebResult<Comment>> PostAsync(Comment comment);
+        Task<Comment> PostAsync(Comment comment);
     }
 }

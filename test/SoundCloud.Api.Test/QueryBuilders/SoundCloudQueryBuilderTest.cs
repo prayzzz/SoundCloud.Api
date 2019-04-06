@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-
 using SoundCloud.Api.QueryBuilders;
 
 namespace SoundCloud.Api.Test.QueryBuilders
@@ -7,6 +6,16 @@ namespace SoundCloud.Api.Test.QueryBuilders
     [TestFixture]
     public class SoundCloudQueryBuilderTest
     {
+        private class TestQueryBuilder : SoundCloudQueryBuilder
+        {
+            public TestQueryBuilder(int customMaxLimit)
+            {
+                CustomMaxLimit = customMaxLimit;
+            }
+
+            public int CustomLimit => CustomMaxLimit;
+        }
+
         [Test]
         public void Test_CustomMaxValue()
         {
@@ -62,16 +71,6 @@ namespace SoundCloud.Api.Test.QueryBuilders
             builder.Limit = limit;
 
             Assert.That(builder.Limit, Is.EqualTo(limit));
-        }
-
-        private class TestQueryBuilder : SoundCloudQueryBuilder
-        {
-            public TestQueryBuilder(int customMaxLimit)
-            {
-                CustomMaxLimit = customMaxLimit;
-            }
-
-            public int CustomLimit => CustomMaxLimit;
         }
     }
 }

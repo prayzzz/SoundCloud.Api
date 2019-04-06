@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using SoundCloud.Api.Entities.Base;
 using SoundCloud.Api.Entities.Enums;
+using SoundCloud.Api.Exceptions;
 using SoundCloud.Api.Utils;
 
 namespace SoundCloud.Api.Entities
@@ -203,26 +204,34 @@ namespace SoundCloud.Api.Entities
         [JsonProperty("website_title")]
         public string WebsiteTitle { get; set; }
 
-        public bool ValidateFollowUnfollow(ValidationMessages messages)
+        public void ValidateFollowUnfollow()
         {
+            var messages = new ValidationMessages();
+
             if (Id < 1)
             {
                 messages.Add("UserId missing. Use the id property to set the id of this user.");
-                return false;
             }
 
-            return true;
+            if (messages.HasErrors)
+            {
+                throw new SoundCloudValidationException(messages);
+            }
         }
 
-        public bool ValidateGet(ValidationMessages messages)
+        public void ValidateGet()
         {
+            var messages = new ValidationMessages();
+
             if (Id < 1)
             {
                 messages.Add("UserId missing. Use the id property to set the id of this user.");
-                return false;
             }
 
-            return true;
+            if (messages.HasErrors)
+            {
+                throw new SoundCloudValidationException(messages);
+            }
         }
     }
 }

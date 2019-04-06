@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using SoundCloud.Api.Entities.Base;
 using SoundCloud.Api.Entities.Enums;
+using SoundCloud.Api.Exceptions;
 using SoundCloud.Api.Login;
 using SoundCloud.Api.Utils;
 
@@ -77,96 +78,104 @@ namespace SoundCloud.Api.Entities
         [JsonProperty("username")]
         public string Username { get; set; }
 
-        public bool ValidateAuthorizationCode(ValidationMessages messages)
+        public void ValidateAuthorizationCode()
         {
+            var messages = new ValidationMessages();
+
             if (string.IsNullOrEmpty(ClientId))
             {
                 messages.Add("ClientId missing. Use the client_id property to set the ClientId.");
-                return false;
             }
 
             if (string.IsNullOrEmpty(ClientSecret))
             {
                 messages.Add("ClientSecret missing. Use the client_secret property to set the ClientSecret.");
-                return false;
             }
 
             if (string.IsNullOrEmpty(Code))
             {
                 messages.Add("Code missing. Use the code property to set the Code.");
-                return false;
             }
 
-            return true;
+            if (messages.HasErrors)
+            {
+                throw new SoundCloudValidationException(messages);
+            }
         }
 
-        public bool ValidateClientCredentials(ValidationMessages messages)
+        public void ValidateClientCredentials()
         {
+            var messages = new ValidationMessages();
+
             if (string.IsNullOrEmpty(ClientId))
             {
                 messages.Add("ClientId missing. Use the client_id property to set the ClientId.");
-                return false;
             }
 
             if (string.IsNullOrEmpty(ClientSecret))
             {
                 messages.Add("ClientSecret missing. Use the client_secret property to set the ClientSecret.");
-                return false;
             }
 
-            return true;
+            if (messages.HasErrors)
+            {
+                throw new SoundCloudValidationException(messages);
+            }
         }
 
-        public bool ValidatePassword(ValidationMessages messages)
+        public void ValidatePassword()
         {
+            var messages = new ValidationMessages();
+
             if (string.IsNullOrEmpty(ClientId))
             {
                 messages.Add("ClientId missing. Use the client_id property to set the ClientId.");
-                return false;
             }
 
             if (string.IsNullOrEmpty(ClientSecret))
             {
                 messages.Add("ClientSecret missing. Use the client_secret property to set the ClientSecret.");
-                return false;
             }
 
             if (string.IsNullOrEmpty(Username))
             {
                 messages.Add("Username missing. Use the username property to set the Username.");
-                return false;
             }
 
             if (string.IsNullOrEmpty(Password))
             {
                 messages.Add("Password missing. Use the password property to set the Password.");
-                return false;
             }
 
-            return true;
+            if (messages.HasErrors)
+            {
+                throw new SoundCloudValidationException(messages);
+            }
         }
 
-        public bool ValidateRefreshToken(ValidationMessages messages)
+        public void ValidateRefreshToken()
         {
+            var messages = new ValidationMessages();
+
             if (string.IsNullOrEmpty(ClientId))
             {
                 messages.Add("ClientId missing. Use the client_id property to set the ClientId.");
-                return false;
             }
 
             if (string.IsNullOrEmpty(ClientSecret))
             {
                 messages.Add("ClientSecret missing. Use the client_secret property to set the ClientSecret.");
-                return false;
             }
 
             if (string.IsNullOrEmpty(RefreshToken))
             {
                 messages.Add("RefreshToken missing. Use the refresh_token property to set the RefreshToken.");
-                return false;
             }
 
-            return true;
+            if (messages.HasErrors)
+            {
+                throw new SoundCloudValidationException(messages);
+            }
         }
 
         internal IDictionary<string, object> ToParameters(GrantType type)

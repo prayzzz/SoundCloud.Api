@@ -8,7 +8,7 @@ using SoundCloud.Api.Web;
 
 namespace SoundCloud.Api.Endpoints
 {
-    internal sealed class Tracks : Endpoint, ITracks
+    internal sealed class Tracks : ITracks
     {
         private const string TrackArtworkDataKey = "track[artwork_data]";
         private const string TrackByIdPath = "tracks/{0}?";
@@ -17,23 +17,25 @@ namespace SoundCloud.Api.Endpoints
         private const string TrackPath = "tracks?";
         private const string TrackSecretTokenPath = "tracks/{0}/secret-token?";
 
+        private readonly ISoundCloudApiGateway _gateway;
+
         internal Tracks(ISoundCloudApiGateway gateway)
-            : base(gateway)
         {
+            _gateway = gateway;
         }
 
-        public async Task<IWebResult> DeleteAsync(Track track)
+        public async Task<StatusResponse> DeleteAsync(Track track)
         {
-            Validate(track.ValidateDelete);
+            track.ValidateDelete();
 
             var builder = new TrackQueryBuilder { Path = string.Format(TrackByIdPath, track.Id) };
-            return await DeleteAsync(builder.BuildUri());
+            return await _gateway.SendDeleteRequestAsync<StatusResponse>(builder.BuildUri());
         }
 
         public async Task<Track> GetAsync(int trackId)
         {
             var builder = new TrackQueryBuilder { Path = string.Format(TrackByIdPath, trackId) };
-            return await GetByIdAsync<Track>(builder.BuildUri());
+            return await _gateway.SendGetRequestAsync<Track>(builder.BuildUri());
         }
 
         public async Task<IEnumerable<Track>> GetAsync()
@@ -46,51 +48,51 @@ namespace SoundCloud.Api.Endpoints
             builder.Path = TrackPath;
             builder.Paged = true;
 
-            return await GetListAsync<Track>(builder.BuildUri());
+            return (await _gateway.SendGetRequestAsync<PagedResult<Track>>(builder.BuildUri())).Collection;
         }
 
         public async Task<IEnumerable<Comment>> GetCommentsAsync(Track track)
         {
-            Validate(track.ValidateGet);
+            track.ValidateGet();
 
             var builder = new TrackQueryBuilder { Path = string.Format(TrackCommentsPath, track.Id), Paged = true };
-            return await GetListAsync<Comment>(builder.BuildUri());
+            return (await _gateway.SendGetRequestAsync<PagedResult<Comment>>(builder.BuildUri())).Collection;
         }
 
-        public Task<IEnumerable<User>> GetFavoritersAsync(Track track)
+        public async Task<IEnumerable<User>> GetFavoritersAsync(Track track)
         {
-            Validate(track.ValidateGet);
+            track.ValidateGet();
 
             var builder = new TrackQueryBuilder { Path = string.Format(TrackFavoritersPath, track.Id), Paged = true };
-            return GetListAsync<User>(builder.BuildUri());
+            return (await _gateway.SendGetRequestAsync<PagedResult<User>>(builder.BuildUri())).Collection;
         }
 
         public async Task<SecretToken> GetSecretTokenAsync(Track track)
         {
-            Validate(track.ValidateGet);
+            track.ValidateGet();
 
             var builder = new TrackQueryBuilder { Path = string.Format(TrackSecretTokenPath, track.Id) };
-            return await GetByIdAsync<SecretToken>(builder.BuildUri());
+            return await _gateway.SendGetRequestAsync<SecretToken>(builder.BuildUri());
         }
 
-        public async Task<IWebResult<Track>> UpdateAsync(Track track)
+        public async Task<Track> UpdateAsync(Track track)
         {
-            Validate(track.ValidateUpdate);
+            track.ValidateUpdate();
 
             var builder = new TrackQueryBuilder { Path = string.Format(TrackByIdPath, track.Id) };
-            return await UpdateAsync<Track>(builder.BuildUri(), track);
+            return await _gateway.SendPutRequestAsync<Track>(builder.BuildUri(), track);
         }
 
-        public async Task<IWebResult<Track>> UploadArtworkAsync(Track track, Stream file)
+        public async Task<Track> UploadArtworkAsync(Track track, Stream file)
         {
-            Validate(track.ValidateUploadArtwork);
+            track.ValidateUploadArtwork();
 
             var parameters = new Dictionary<string, object> { { TrackArtworkDataKey, file } };
             var builder = new TrackQueryBuilder { Path = string.Format(TrackByIdPath, track.Id) };
-            return await UpdateAsync<Track>(builder.BuildUri(), parameters);
+            return await _gateway.SendPutRequestAsync<Track>(builder.BuildUri(), parameters);
         }
 
-        public async Task<IWebResult<Track>> UploadTrackAsync(string title, Stream file)
+        public async Task<Track> UploadTrackAsync(string title, Stream file)
         {
             if (string.IsNullOrEmpty(title))
             {
@@ -102,7 +104,7 @@ namespace SoundCloud.Api.Endpoints
             parameters.Add("track[asset_data]", file);
 
             var builder = new TrackQueryBuilder { Path = TrackPath };
-            return await CreateAsync<Track>(builder.BuildUri(), parameters);
+            return await _gateway.SendPostRequestAsync<Track>(builder.BuildUri(), parameters);
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-
 using SoundCloud.Api.QueryBuilders;
 
 namespace SoundCloud.Api.Test.QueryBuilders
