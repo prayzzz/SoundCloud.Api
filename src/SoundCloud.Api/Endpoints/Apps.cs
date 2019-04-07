@@ -18,9 +18,9 @@ namespace SoundCloud.Api.Endpoints
             _gateway = gateway;
         }
 
-        public async Task<AppClient> GetAsync(int appId)
+        public async Task<AppClient> GetAsync(int id)
         {
-            var builder = new AppsQueryBuilder { Path = string.Format(AppPath, appId) };
+            var builder = new AppsQueryBuilder { Path = string.Format(AppPath, id) };
             return await _gateway.SendGetRequestAsync<AppClient>(builder.BuildUri());
         }
 

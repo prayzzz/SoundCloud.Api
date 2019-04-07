@@ -24,7 +24,7 @@ namespace SoundCloud.Api.IntegrationTest
         {
             var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
 
-            var result = await client.Comments.GetAsync();
+            var result = await client.Comments.GetAllAsync();
 
             var someComments = result.Take(100).ToList();
             Assert.That(someComments.Count, Is.EqualTo(100));

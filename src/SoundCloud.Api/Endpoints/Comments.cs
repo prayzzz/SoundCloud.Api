@@ -26,15 +26,15 @@ namespace SoundCloud.Api.Endpoints
             return await _gateway.SendDeleteRequestAsync<StatusResponse>(builder.BuildUri());
         }
 
-        public async Task<Comment> GetAsync(int commentId)
+        public async Task<Comment> GetAsync(int id)
         {
-            var builder = new CommentsQueryBuilder { Path = string.Format(CommentPath, commentId) };
+            var builder = new CommentsQueryBuilder { Path = string.Format(CommentPath, id) };
             return await _gateway.SendGetRequestAsync<Comment>(builder.BuildUri());
         }
 
-        public async Task<IEnumerable<Comment>> GetAsync()
+        public async Task<IEnumerable<Comment>> GetAllAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0)
         {
-            var builder = new CommentsQueryBuilder { Path = CommentsPath, Paged = true };
+            var builder = new CommentsQueryBuilder { Path = CommentsPath, Paged = true, Limit = limit, Offset = offset };
             return (await _gateway.SendGetRequestAsync<PagedResult<Comment>>(builder.BuildUri())).Collection;
         }
 

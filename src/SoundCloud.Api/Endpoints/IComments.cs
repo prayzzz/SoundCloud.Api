@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using SoundCloud.Api.Entities;
 using SoundCloud.Api.Exceptions;
+using SoundCloud.Api.QueryBuilders;
 
 namespace SoundCloud.Api.Endpoints
 {
@@ -14,28 +15,21 @@ namespace SoundCloud.Api.Endpoints
         /// <summary>
         ///     Deletes the given comment
         /// </summary>
-        /// <param name="comment"></param>
-        /// <exception cref="System.Net.Http.HttpRequestException">Thrown if the WebRequest failed.</exception>
         Task<StatusResponse> DeleteAsync(Comment comment);
 
         /// <summary>
         ///     Gets a list of comments
         /// </summary>
-        /// <returns></returns>
-        Task<IEnumerable<Comment>> GetAsync();
+        Task<IEnumerable<Comment>> GetAllAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
 
         /// <summary>
         ///     Gets a comment
         /// </summary>
-        /// <param name="commentId"></param>
-        /// <returns></returns>
-        Task<Comment> GetAsync(int commentId);
+        Task<Comment> GetAsync(int id);
 
         /// <summary>
         ///     Posts the given comment
         /// </summary>
-        /// <param name="comment"></param>
-        /// <exception cref="System.Net.Http.HttpRequestException">Thrown if the WebRequest failed.</exception>
         /// <exception cref="SoundCloudValidationException">Thrown if validation of <paramref name="comment" /> failed.</exception>
         Task<Comment> PostAsync(Comment comment);
     }

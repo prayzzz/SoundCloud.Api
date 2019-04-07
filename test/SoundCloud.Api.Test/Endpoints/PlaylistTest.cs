@@ -66,7 +66,7 @@ namespace SoundCloud.Api.Test.Endpoints
 
             // Act
             var builder = new PlaylistQueryBuilder("search") { Representation = RepresentationMode.Compact };
-            var result = (await new Playlists(requestMock.Object).GetAsync(builder)).ToList();
+            var result = (await new Playlists(requestMock.Object).GetAllAsync(builder)).ToList();
 
             // Assert
             Assert.That(result, Is.EquivalentTo(playlists.Collection));

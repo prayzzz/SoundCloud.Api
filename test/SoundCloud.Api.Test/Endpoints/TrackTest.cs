@@ -67,7 +67,7 @@ namespace SoundCloud.Api.Test.Endpoints
 
             // Act
             var query = new TrackQueryBuilder { BpmFrom = 100, Tags = { "house" } };
-            var result = (await new Tracks(gatewayMock.Object).GetAsync(query)).ToList();
+            var result = (await new Tracks(gatewayMock.Object).GetAllAsync(query)).ToList();
 
             // Assert
             Assert.That(result, Is.EquivalentTo(trackList.Collection));
@@ -85,7 +85,7 @@ namespace SoundCloud.Api.Test.Endpoints
 
             // Act
             var query = new TrackQueryBuilder { Ids = { 101, 202, 303 } };
-            var result = (await new Tracks(gatewayMock.Object).GetAsync(query)).ToList();
+            var result = (await new Tracks(gatewayMock.Object).GetAllAsync(query)).ToList();
 
             // Assert
             Assert.That(result, Is.EquivalentTo(trackList.Collection));
@@ -103,7 +103,7 @@ namespace SoundCloud.Api.Test.Endpoints
 
             // Act
             var query = new TrackQueryBuilder { License = License.CcBy };
-            var result = (await new Tracks(gatewayMock.Object).GetAsync(query)).ToList();
+            var result = (await new Tracks(gatewayMock.Object).GetAllAsync(query)).ToList();
 
             // Assert
             Assert.That(result, Is.EquivalentTo(trackList.Collection));
@@ -121,7 +121,7 @@ namespace SoundCloud.Api.Test.Endpoints
 
             // Act
             var query = new TrackQueryBuilder { TrackTypes = { TrackType.Original }, Genres = { "Rap" } };
-            var result = (await new Tracks(gatewayMock.Object).GetAsync(query)).ToList();
+            var result = (await new Tracks(gatewayMock.Object).GetAllAsync(query)).ToList();
 
             // Assert
             Assert.That(result, Is.EquivalentTo(trackList.Collection));
@@ -174,7 +174,7 @@ namespace SoundCloud.Api.Test.Endpoints
             gatewayMock.Setup(x => x.SendGetRequestAsync<PagedResult<Track>>(expectedUri)).ReturnsAsync(trackList);
 
             // Act
-            var result = (await new Tracks(gatewayMock.Object).GetAsync()).ToList();
+            var result = (await new Tracks(gatewayMock.Object).GetAllAsync()).ToList();
 
             // Assert
             Assert.That(result, Is.EquivalentTo(trackList.Collection));

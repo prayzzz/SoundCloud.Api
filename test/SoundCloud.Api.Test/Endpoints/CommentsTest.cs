@@ -69,7 +69,7 @@ namespace SoundCloud.Api.Test.Endpoints
 
             // Act
             var commentEndpoint = new Comments(gatewayMock.Object);
-            var result = (await commentEndpoint.GetAsync()).ToList();
+            var result = (await commentEndpoint.GetAllAsync()).ToList();
 
             // Assert
             Assert.That(result, Is.EquivalentTo(comments.Collection));

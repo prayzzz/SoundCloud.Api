@@ -43,7 +43,7 @@ namespace SoundCloud.Api.IntegrationTest
 
             var builder = new PlaylistQueryBuilder("diplo") { Representation = RepresentationMode.Compact };
 
-            var playlist = (await client.Playlists.GetAsync(builder)).Take(10).ToList();
+            var playlist = (await client.Playlists.GetAllAsync(builder)).Take(10).ToList();
             Assert.That(playlist, Has.Exactly(10).Items);
         }
 

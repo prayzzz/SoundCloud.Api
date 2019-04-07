@@ -51,57 +51,57 @@ namespace SoundCloud.Api.Endpoints
             return await _gateway.SendGetRequestAsync<User>(builder.BuildUri());
         }
 
-        public async Task<IEnumerable<Activity>> GetActivitiesAsync()
+        public async Task<IEnumerable<Activity>> GetActivitiesAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0)
         {
-            var builder = new MeQueryBuilder { Path = MeActivitiesPath, Paged = true };
+            var builder = new MeQueryBuilder { Path = MeActivitiesPath, Paged = true, Limit = limit, Offset = offset };
             return (await _gateway.SendGetRequestAsync<PagedResult<Activity>>(builder.BuildUri())).Collection;
         }
 
-        public async Task<IEnumerable<Comment>> GetCommentsAsync()
+        public async Task<IEnumerable<Comment>> GetCommentsAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0)
         {
-            var builder = new MeQueryBuilder { Path = MeCommentsPath, Paged = true };
+            var builder = new MeQueryBuilder { Path = MeCommentsPath, Paged = true, Limit = limit, Offset = offset };
             return (await _gateway.SendGetRequestAsync<PagedResult<Comment>>(builder.BuildUri())).Collection;
         }
 
-        public async Task<IEnumerable<Connection>> GetConnectionsAsync()
+        public async Task<IEnumerable<Connection>> GetConnectionsAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0)
         {
-            var builder = new MeQueryBuilder { Path = MeConnectionsPath, Paged = true };
+            var builder = new MeQueryBuilder { Path = MeConnectionsPath, Paged = true, Limit = limit, Offset = offset };
             return (await _gateway.SendGetRequestAsync<PagedResult<Connection>>(builder.BuildUri())).Collection;
         }
 
-        public async Task<IEnumerable<Track>> GetFavoritesAsync()
+        public async Task<IEnumerable<Track>> GetFavoritesAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0)
         {
-            var builder = new MeQueryBuilder { Path = MeFavoritesPath, Paged = true };
+            var builder = new MeQueryBuilder { Path = MeFavoritesPath, Paged = true, Limit = limit, Offset = offset };
             return (await _gateway.SendGetRequestAsync<PagedResult<Track>>(builder.BuildUri())).Collection;
         }
 
-        public async Task<IEnumerable<User>> GetFollowersAsync()
+        public async Task<IEnumerable<User>> GetFollowersAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0)
         {
-            var builder = new MeQueryBuilder { Path = MeFollowersPath, Paged = true };
+            var builder = new MeQueryBuilder { Path = MeFollowersPath, Paged = true, Limit = limit, Offset = offset };
             return (await _gateway.SendGetRequestAsync<PagedResult<User>>(builder.BuildUri())).Collection;
         }
 
-        public async Task<IEnumerable<User>> GetFollowingsAsync()
+        public async Task<IEnumerable<User>> GetFollowingsAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0)
         {
-            var builder = new MeQueryBuilder { Path = MeFollowingsPath, Paged = true };
+            var builder = new MeQueryBuilder { Path = MeFollowingsPath, Paged = true, Limit = limit, Offset = offset };
             return (await _gateway.SendGetRequestAsync<PagedResult<User>>(builder.BuildUri())).Collection;
         }
 
-        public async Task<IEnumerable<Playlist>> GetPlaylistsAsync()
+        public async Task<IEnumerable<Playlist>> GetPlaylistsAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0)
         {
-            var builder = new MeQueryBuilder { Path = MePlaylistsPath, Paged = true };
+            var builder = new MeQueryBuilder { Path = MePlaylistsPath, Paged = true, Limit = limit, Offset = offset };
             return (await _gateway.SendGetRequestAsync<PagedResult<Playlist>>(builder.BuildUri())).Collection;
         }
 
-        public async Task<IEnumerable<Track>> GetTracksAsync()
+        public async Task<IEnumerable<Track>> GetTracksAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0)
         {
-            var builder = new MeQueryBuilder { Path = MeTracksPath, Paged = true };
+            var builder = new MeQueryBuilder { Path = MeTracksPath, Paged = true, Limit = limit, Offset = offset };
             return (await _gateway.SendGetRequestAsync<PagedResult<Track>>(builder.BuildUri())).Collection;
         }
 
-        public async Task<IEnumerable<WebProfile>> GetWebProfilesAsync()
+        public async Task<IEnumerable<WebProfile>> GetWebProfilesAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0)
         {
-            var builder = new MeQueryBuilder { Path = MeWebProfilesPath, Paged = true };
+            var builder = new MeQueryBuilder { Path = MeWebProfilesPath, Paged = true, Limit = limit, Offset = offset };
             return (await _gateway.SendGetRequestAsync<PagedResult<WebProfile>>(builder.BuildUri())).Collection;
         }
 

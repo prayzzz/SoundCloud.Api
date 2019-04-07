@@ -13,6 +13,9 @@ I'm not actively looking if this has changed. Please notify me it it did.
 * removed `ISoundCloudClient.IsAuthorized`
 * removed all synchronous methods
 * removed Groups Endpoints
+* renamed methods returning Lists to `GetAll`
+* removed own infinity list implementation
+  * you have to use `offset` now
 
 **Changes**
 * moved to IHttpClientFactory for requests 

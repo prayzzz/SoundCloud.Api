@@ -25,9 +25,9 @@ namespace SoundCloud.Api.Endpoints
             _gateway = gateway;
         }
 
-        public async Task<IEnumerable<User>> GetAsync()
+        public async Task<IEnumerable<User>> GetAllAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0)
         {
-            return await GetAsync(new UserQueryBuilder());
+            return await GetAsync(new UserQueryBuilder { Limit = limit, Offset = offset });
         }
 
         public async Task<IEnumerable<User>> GetAsync(UserQueryBuilder queryBuilder)
@@ -44,59 +44,59 @@ namespace SoundCloud.Api.Endpoints
             return await _gateway.SendGetRequestAsync<User>(builder.BuildUri());
         }
 
-        public async Task<IEnumerable<Comment>> GetCommentsAsync(User user)
+        public async Task<IEnumerable<Comment>> GetCommentsAsync(User user, int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0)
         {
             user.ValidateGet();
 
-            var builder = new UserQueryBuilder { Path = string.Format(UserCommentsPath, user.Id), Paged = true };
+            var builder = new UserQueryBuilder { Path = string.Format(UserCommentsPath, user.Id), Paged = true, Limit = limit, Offset = offset };
             return (await _gateway.SendGetRequestAsync<PagedResult<Comment>>(builder.BuildUri())).Collection;
         }
 
-        public async Task<IEnumerable<Track>> GetFavoritesAsync(User user)
+        public async Task<IEnumerable<Track>> GetFavoritesAsync(User user, int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0)
         {
             user.ValidateGet();
 
-            var builder = new UserQueryBuilder { Path = string.Format(UserFavoritesPath, user.Id), Paged = true };
+            var builder = new UserQueryBuilder { Path = string.Format(UserFavoritesPath, user.Id), Paged = true, Limit = limit, Offset = offset };
             return (await _gateway.SendGetRequestAsync<PagedResult<Track>>(builder.BuildUri())).Collection;
         }
 
-        public async Task<IEnumerable<User>> GetFollowersAsync(User user)
+        public async Task<IEnumerable<User>> GetFollowersAsync(User user, int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0)
         {
             user.ValidateGet();
 
-            var builder = new UserQueryBuilder { Path = string.Format(UserFollowersPath, user.Id), Paged = true };
+            var builder = new UserQueryBuilder { Path = string.Format(UserFollowersPath, user.Id), Paged = true, Limit = limit, Offset = offset };
             return (await _gateway.SendGetRequestAsync<PagedResult<User>>(builder.BuildUri())).Collection;
         }
 
-        public async Task<IEnumerable<User>> GetFollowingsAsync(User user)
+        public async Task<IEnumerable<User>> GetFollowingsAsync(User user, int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0)
         {
             user.ValidateGet();
 
-            var builder = new UserQueryBuilder { Path = string.Format(UserFollowingsPath, user.Id), Paged = true };
+            var builder = new UserQueryBuilder { Path = string.Format(UserFollowingsPath, user.Id), Paged = true, Limit = limit, Offset = offset };
             return (await _gateway.SendGetRequestAsync<PagedResult<User>>(builder.BuildUri())).Collection;
         }
 
-        public async Task<IEnumerable<Playlist>> GetPlaylistsAsync(User user)
+        public async Task<IEnumerable<Playlist>> GetPlaylistsAsync(User user, int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0)
         {
             user.ValidateGet();
 
-            var builder = new UserQueryBuilder { Path = string.Format(UserPlaylistsPath, user.Id), Paged = true };
+            var builder = new UserQueryBuilder { Path = string.Format(UserPlaylistsPath, user.Id), Paged = true, Limit = limit, Offset = offset };
             return (await _gateway.SendGetRequestAsync<PagedResult<Playlist>>(builder.BuildUri())).Collection;
         }
 
-        public async Task<IEnumerable<Track>> GetTracksAsync(User user)
+        public async Task<IEnumerable<Track>> GetTracksAsync(User user, int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0)
         {
             user.ValidateGet();
 
-            var builder = new UserQueryBuilder { Path = string.Format(UserTracksPath, user.Id), Paged = true };
+            var builder = new UserQueryBuilder { Path = string.Format(UserTracksPath, user.Id), Paged = true, Limit = limit, Offset = offset };
             return (await _gateway.SendGetRequestAsync<PagedResult<Track>>(builder.BuildUri())).Collection;
         }
 
-        public async Task<IEnumerable<WebProfile>> GetWebProfilesAsync(User user)
+        public async Task<IEnumerable<WebProfile>> GetWebProfilesAsync(User user, int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0)
         {
             user.ValidateGet();
 
-            var builder = new UserQueryBuilder { Path = string.Format(UserWebProfilesPath, user.Id), Paged = true };
+            var builder = new UserQueryBuilder { Path = string.Format(UserWebProfilesPath, user.Id), Paged = true, Limit = limit, Offset = offset };
             return (await _gateway.SendGetRequestAsync<PagedResult<WebProfile>>(builder.BuildUri())).Collection;
         }
     }

@@ -116,7 +116,7 @@ namespace SoundCloud.Api.Test.Endpoints
             gatewayMock.Setup(x => x.SendGetRequestAsync<PagedResult<User>>(expectedUri)).ReturnsAsync(userList);
 
             // Act
-            var result = (await new Users(gatewayMock.Object).GetAsync()).ToList();
+            var result = (await new Users(gatewayMock.Object).GetAllAsync()).ToList();
 
             // Assert
             Assert.That(result, Is.EquivalentTo(userList.Collection));

@@ -11,8 +11,6 @@ namespace SoundCloud.Api.Endpoints
         /// <summary>
         ///     Gets an entity
         /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
         Task<Entity> GetEntityAsync(string url);
     }
 }

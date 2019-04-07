@@ -13,73 +13,53 @@ namespace SoundCloud.Api.Endpoints
         ///     Deletes the given track
         /// </summary>
         /// <param name="track">Track to delete</param>
-        /// <exception cref="System.Net.Http.HttpRequestException">Thrown if the WebRequest failed.</exception>
         Task<StatusResponse> DeleteAsync(Track track);
 
         /// <summary>
         ///     Gets a track
         /// </summary>
-        /// <param name="trackId"></param>
-        /// <returns></returns>
         Task<Track> GetAsync(int trackId);
 
         /// <summary>
         ///     Gets a list of tracks
         /// </summary>
-        /// <returns></returns>
-        Task<IEnumerable<Track>> GetAsync();
+        Task<IEnumerable<Track>> GetAllAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
 
         /// <summary>
         ///     Gets a list of tracks
         /// </summary>
-        /// <param name="builder"></param>
-        /// <returns></returns>
-        Task<IEnumerable<Track>> GetAsync(SoundCloudQueryBuilder builder);
+        Task<IEnumerable<Track>> GetAllAsync(SoundCloudQueryBuilder builder);
 
         /// <summary>
         ///     Gets comments for the track
         /// </summary>
-        /// <param name="track"></param>
-        /// <returns></returns>
-        Task<IEnumerable<Comment>> GetCommentsAsync(Track track);
+        Task<IEnumerable<Comment>> GetCommentsAsync(Track track, int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
 
         /// <summary>
         ///     Gets users who favorited the track
         /// </summary>
-        /// <param name="track"></param>
-        /// <returns></returns>
-        Task<IEnumerable<User>> GetFavoritersAsync(Track track);
+        Task<IEnumerable<User>> GetFavoritersAsync(Track track, int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
 
         /// <summary>
         ///     Gets the secret token of the track
         /// </summary>
-        /// <param name="track"></param>
-        /// <returns></returns>
         Task<SecretToken> GetSecretTokenAsync(Track track);
 
         /// <summary>
         ///     Updates a track
         /// </summary>
-        /// <param name="track"></param>
-        /// <returns></returns>
         /// <exception cref="SoundCloudValidationException">Thrown if validation of <paramref name="track" /> failed.</exception>
         Task<Track> UpdateAsync(Track track);
 
         /// <summary>
         ///     Uploads a Artwork
         /// </summary>
-        /// <param name="track"></param>
-        /// <param name="file"></param>
-        /// <returns></returns>
         /// <exception cref="SoundCloudValidationException">Thrown if validation of <paramref name="track" /> failed.</exception>
         Task<Track> UploadArtworkAsync(Track track, Stream file);
 
         /// <summary>
         ///     Uploads a track
         /// </summary>
-        /// <param name="title"></param>
-        /// <param name="file"></param>
-        /// <returns></returns>
         /// <exception cref="SoundCloudValidationException">Thrown if validation of <paramref name="title" /> failed.</exception>
         Task<Track> UploadTrackAsync(string title, Stream file);
     }

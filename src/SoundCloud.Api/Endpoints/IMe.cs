@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using SoundCloud.Api.Entities;
+using SoundCloud.Api.QueryBuilders;
 
 namespace SoundCloud.Api.Endpoints
 {
@@ -16,103 +17,84 @@ namespace SoundCloud.Api.Endpoints
         /// <summary>
         ///     Deletes a web profile
         /// </summary>
-        /// <param name="profile"></param>
-        /// <returns></returns>
         Task<StatusResponse> DeleteWebProfileAsync(WebProfile profile);
 
         /// <summary>
         ///     Follows the given user
         /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
         Task<StatusResponse> FollowAsync(User user);
 
         /// <summary>
         ///     Gets the current user
         /// </summary>
-        /// <returns></returns>
         Task<User> GetAsync();
 
         /// <summary>
         ///     Gets a list of activities
         /// </summary>
-        /// <returns></returns>
-        Task<IEnumerable<Activity>> GetActivitiesAsync();
+        Task<IEnumerable<Activity>> GetActivitiesAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
 
         /// <summary>
         ///     Gets a list of comments
         /// </summary>
-        /// <returns></returns>
-        Task<IEnumerable<Comment>> GetCommentsAsync();
+        Task<IEnumerable<Comment>> GetCommentsAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
 
         /// <summary>
         ///     Gets a list of connected external profiles
         /// </summary>
-        /// <returns></returns>
-        Task<IEnumerable<Connection>> GetConnectionsAsync();
+        Task<IEnumerable<Connection>> GetConnectionsAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
 
         /// <summary>
         ///     Gets a list of favorites
         /// </summary>
         /// <returns></returns>
-        Task<IEnumerable<Track>> GetFavoritesAsync();
+        Task<IEnumerable<Track>> GetFavoritesAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
 
         /// <summary>
         ///     Gets a list of followers
         /// </summary>
-        /// <returns></returns>
-        Task<IEnumerable<User>> GetFollowersAsync();
+        Task<IEnumerable<User>> GetFollowersAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
 
         /// <summary>
         ///     Gets a list of followed users
         /// </summary>
-        /// <returns></returns>
-        Task<IEnumerable<User>> GetFollowingsAsync();
+        Task<IEnumerable<User>> GetFollowingsAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
 
         /// <summary>
         ///     Gets a list of playlists
         /// </summary>
         /// <returns></returns>
-        Task<IEnumerable<Playlist>> GetPlaylistsAsync();
+        Task<IEnumerable<Playlist>> GetPlaylistsAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
 
         /// <summary>
         ///     Gets a list of tracks
         /// </summary>
-        /// <returns></returns>
-        Task<IEnumerable<Track>> GetTracksAsync();
+        Task<IEnumerable<Track>> GetTracksAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
 
         /// <summary>
         ///     Gets a list of web profiles
         /// </summary>
-        /// <returns></returns>
-        Task<IEnumerable<WebProfile>> GetWebProfilesAsync();
+        Task<IEnumerable<WebProfile>> GetWebProfilesAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
 
         /// <summary>
         ///     Likes a track
         /// </summary>
         /// <param name="track"></param>
-        /// <returns></returns>
         Task<StatusResponse> LikeAsync(Track track);
 
         /// <summary>
         ///     Creates a web profile
         /// </summary>
-        /// <param name="profile"></param>
-        /// <returns></returns>
         Task<WebProfile> PostWebProfileAsync(WebProfile profile);
 
         /// <summary>
         ///     Unfollows a user
         /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
         Task<StatusResponse> UnfollowAsync(User user);
 
         /// <summary>
         ///     Unlikes a track
         /// </summary>
-        /// <param name="track"></param>
-        /// <returns></returns>
         Task<StatusResponse> UnlikeAsync(Track track);
     }
 }

@@ -12,53 +12,43 @@ namespace SoundCloud.Api.Endpoints
         /// <summary>
         ///     Deletes the playlist
         /// </summary>
-        /// <param name="playlist"></param>
-        /// <exception cref="System.Net.Http.HttpRequestException">Thrown if the WebRequest failed.</exception>
         Task<StatusResponse> DeleteAsync(Playlist playlist);
 
         /// <summary>
         ///     Gets a playlist
         /// </summary>
-        /// <param name="playlistId"></param>
-        /// <returns></returns>
         Task<Playlist> GetAsync(int playlistId);
 
         /// <summary>
         ///     Gets a list of playlists
         /// </summary>
-        /// <param name="queryBuilder"></param>
-        /// <returns></returns>
-        Task<IEnumerable<Playlist>> GetAsync(PlaylistQueryBuilder queryBuilder);
+        Task<IEnumerable<Playlist>> GetAllAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
+
+        /// <summary>
+        ///     Gets a list of playlists
+        /// </summary>
+        Task<IEnumerable<Playlist>> GetAllAsync(PlaylistQueryBuilder queryBuilder);
 
         /// <summary>
         ///     Gets the secret token of the playlist
         /// </summary>
-        /// <param name="playlist"></param>
-        /// <returns></returns>
         Task<SecretToken> GetSecretTokenAsync(Playlist playlist);
 
         /// <summary>
         ///     Posts the playlist
         /// </summary>
-        /// <param name="playlist"></param>
-        /// <returns></returns>
         /// <exception cref="SoundCloudValidationException">Thrown if validation of <paramref name="playlist" /> failed.</exception>
         Task<Playlist> PostAsync(Playlist playlist);
 
         /// <summary>
         ///     Updates the playlist
         /// </summary>
-        /// <param name="playlist"></param>
-        /// <returns></returns>
         /// <exception cref="SoundCloudValidationException">Thrown if validation of <paramref name="playlist" /> failed.</exception>
         Task<Playlist> UpdateAsync(Playlist playlist);
 
         /// <summary>
         ///     Uploads the given file as artwork to the given playlist
         /// </summary>
-        /// <param name="playlist"></param>
-        /// <param name="file"></param>
-        /// <returns></returns>
         /// <exception cref="SoundCloudValidationException">Thrown if validation of <paramref name="playlist" /> failed.</exception>
         Task<Playlist> UploadArtworkAsync(Playlist playlist, Stream file);
     }

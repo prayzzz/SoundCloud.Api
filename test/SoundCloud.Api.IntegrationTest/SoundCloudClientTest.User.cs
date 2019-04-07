@@ -72,7 +72,7 @@ namespace SoundCloud.Api.IntegrationTest
         {
             var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
 
-            var users = (await client.Users.GetAsync()).Take(150).ToList();
+            var users = (await client.Users.GetAllAsync()).Take(150).ToList();
 
             Assert.That(users.Count, Is.EqualTo(150));
         }

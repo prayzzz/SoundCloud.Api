@@ -13,8 +13,7 @@ namespace SoundCloud.Api.Endpoints
         /// <summary>
         ///     Gets a app
         /// </summary>
-        /// <param name="appId"></param>
-        Task<AppClient> GetAsync(int appId);
+        Task<AppClient> GetAsync(int id);
 
         /// <summary>
         ///     Gets a list of apps

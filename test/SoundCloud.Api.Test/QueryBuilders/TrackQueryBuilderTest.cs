@@ -30,7 +30,7 @@ namespace SoundCloud.Api.Test.QueryBuilders
             var query = builder.BuildUri();
 
             Assert.That(query.ToString(),
-                Is.EqualTo("https://api.soundcloud.com/?created_at[from]=2015-01-02 03:04:05&created_at[to]=2015-06-07 08:09:10"));
+                Is.EqualTo("https://api.soundcloud.com/?created_at[from]=2015-01-02 03%3A04%3A05&created_at[to]=2015-06-07 08%3A09%3A10"));
         }
 
         [Test]

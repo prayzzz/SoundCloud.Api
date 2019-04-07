@@ -38,12 +38,12 @@ namespace SoundCloud.Api.Endpoints
             return await _gateway.SendGetRequestAsync<Track>(builder.BuildUri());
         }
 
-        public async Task<IEnumerable<Track>> GetAsync()
+        public async Task<IEnumerable<Track>> GetAllAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0)
         {
-            return await GetAsync(new TrackQueryBuilder());
+            return await GetAllAsync(new TrackQueryBuilder { Limit = limit, Offset = offset });
         }
 
-        public async Task<IEnumerable<Track>> GetAsync(SoundCloudQueryBuilder builder)
+        public async Task<IEnumerable<Track>> GetAllAsync(SoundCloudQueryBuilder builder)
         {
             builder.Path = TrackPath;
             builder.Paged = true;
@@ -51,19 +51,19 @@ namespace SoundCloud.Api.Endpoints
             return (await _gateway.SendGetRequestAsync<PagedResult<Track>>(builder.BuildUri())).Collection;
         }
 
-        public async Task<IEnumerable<Comment>> GetCommentsAsync(Track track)
+        public async Task<IEnumerable<Comment>> GetCommentsAsync(Track track, int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0)
         {
             track.ValidateGet();
 
-            var builder = new TrackQueryBuilder { Path = string.Format(TrackCommentsPath, track.Id), Paged = true };
+            var builder = new TrackQueryBuilder { Path = string.Format(TrackCommentsPath, track.Id), Paged = true, Limit = limit, Offset = offset };
             return (await _gateway.SendGetRequestAsync<PagedResult<Comment>>(builder.BuildUri())).Collection;
         }
 
-        public async Task<IEnumerable<User>> GetFavoritersAsync(Track track)
+        public async Task<IEnumerable<User>> GetFavoritersAsync(Track track, int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0)
         {
             track.ValidateGet();
 
-            var builder = new TrackQueryBuilder { Path = string.Format(TrackFavoritersPath, track.Id), Paged = true };
+            var builder = new TrackQueryBuilder { Path = string.Format(TrackFavoritersPath, track.Id), Paged = true, Limit = limit, Offset = offset };
             return (await _gateway.SendGetRequestAsync<PagedResult<User>>(builder.BuildUri())).Collection;
         }
 

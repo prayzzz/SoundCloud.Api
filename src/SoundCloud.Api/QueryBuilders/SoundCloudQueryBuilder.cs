@@ -14,7 +14,6 @@ namespace SoundCloud.Api.QueryBuilders
         private int _limit;
         private int _offset;
 
-
         protected SoundCloudQueryBuilder()
         {
             CustomMaxLimit = MaxLimit;
