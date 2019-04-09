@@ -9,7 +9,7 @@ namespace SoundCloud.Api.Web
     {
         Task<TResult> SendPostRequestAsync<TResult>(Uri uri, Entity data);
 
-        Task<TResult> SendPostRequestAsync<TResult>(Uri uri, IDictionary<string, object> parameters);
+        Task<TResult> SendPostRequestAsync<TResult>(Uri uri, IDictionary<string, object> formData);
 
         Task<TResult> SendDeleteRequestAsync<TResult>(Uri uri);
 
@@ -17,7 +17,7 @@ namespace SoundCloud.Api.Web
 
         Task<TResult> SendPutRequestAsync<TResult>(Uri uri, Entity data);
 
-        Task<TResult> SendPutRequestAsync<TResult>(Uri uri, IDictionary<string, object> parameters);
+        Task<TResult> SendPutRequestAsync<TResult>(Uri uri, IDictionary<string, object> formData);
 
         Task<TResult> SendPutRequestAsync<TResult>(Uri uri);
     }

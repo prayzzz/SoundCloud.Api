@@ -17,60 +17,70 @@ namespace SoundCloud.Api.Test.QueryBuilders
         }
 
         [Test]
-        public void Test_CustomMaxValue()
+        public void Test_Limit_CustomMaxValue()
         {
-            var builder = new TestQueryBuilder(78);
-            builder.Limit = 100;
+            var builder = new TestQueryBuilder(78) { Limit = 100 };
 
             Assert.That(builder.Limit, Is.EqualTo(78));
             Assert.That(builder.CustomLimit, Is.EqualTo(78));
         }
 
         [Test]
-        public void Test_CustomMaxValue_To_Large([Values(201, 205)] int customMaxLimit)
+        public void Test_Limit_CustomMaxValue_To_Large([Values(201, 205)] int customMaxLimit)
         {
-            var builder = new TestQueryBuilder(customMaxLimit);
-            builder.Limit = 300;
+            var builder = new TestQueryBuilder(customMaxLimit) { Limit = 300 };
 
             Assert.That(builder.Limit, Is.EqualTo(200));
             Assert.That(builder.CustomLimit, Is.EqualTo(200));
         }
 
         [Test]
-        public void Test_CustomMaxValue_To_Small([Values(0, -5)] int customMaxLimit)
+        public void Test_Limit_CustomMaxValue_To_Small([Values(0, -5)] int customMaxLimit)
         {
-            var builder = new TestQueryBuilder(customMaxLimit);
-            builder.Limit = 10;
+            var builder = new TestQueryBuilder(customMaxLimit) { Limit = 10 };
 
             Assert.That(builder.Limit, Is.EqualTo(1));
             Assert.That(builder.CustomLimit, Is.EqualTo(1));
         }
 
         [Test]
-        public void Test_MaxValue([Values(201, 202, 300, 400)] int limit)
+        public void Test_Limit_MaxValue([Values(201, 202, 300, 400)] int limit)
         {
-            var builder = new TrackQueryBuilder();
-            builder.Limit = limit;
+            var builder = new TrackQueryBuilder { Limit = limit };
 
             Assert.That(builder.Limit, Is.EqualTo(200));
         }
 
         [Test]
-        public void Test_MinValue([Values(0, -1, -200, -300)] int limit)
+        public void Test_Limit_MinValue([Values(0, -1, -200, -300)] int limit)
         {
-            var builder = new TrackQueryBuilder();
-            builder.Limit = limit;
+            var builder = new TrackQueryBuilder { Limit = limit };
 
             Assert.That(builder.Limit, Is.EqualTo(1));
         }
 
         [Test]
-        public void Test_Value([Values(1, 2, 100, 199, 200)] int limit)
+        public void Test_Limit([Values(1, 2, 100, 199, 200)] int limit)
         {
-            var builder = new TrackQueryBuilder();
-            builder.Limit = limit;
+            var builder = new TrackQueryBuilder { Limit = limit };
 
             Assert.That(builder.Limit, Is.EqualTo(limit));
+        }
+
+        [Test]
+        public void Test_Offset_MinValue([Values(0, -1, -200, -300)] int offset)
+        {
+            var builder = new TrackQueryBuilder { Offset = offset };
+
+            Assert.That(builder.Offset, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void Test_Offset([Values(1, 2, 100, 199, 200)] int offset)
+        {
+            var builder = new TrackQueryBuilder { Offset = offset };
+
+            Assert.That(builder.Offset, Is.EqualTo(offset));
         }
     }
 }

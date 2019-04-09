@@ -5,6 +5,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="coverlet.msbuild" Version="2.6.0" />
+        <PackageReference Include="ReportGenerator" Version="4.1.1" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
         <PackageReference Include="Moq" Version="4.10.1" />
         <PackageReference Include="NUnit" Version="3.11.0" />
@@ -18,5 +20,12 @@
     <ItemGroup>
         <EmbeddedResource Include="Data\*.*" />
     </ItemGroup>
+
+    <Target Name="Coverage">
+        <ItemGroup>
+            <CoverageFiles Include="coverage.opencover.xml" />
+        </ItemGroup>
+        <ReportGenerator ReportFiles="@(CoverageFiles)" TargetDirectory="coverage" ReportTypes="Html" VerbosityLevel="Verbose" />
+    </Target>
 
 </Project>

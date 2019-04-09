@@ -46,9 +46,9 @@ namespace SoundCloud.Api.Web
             return SendRequestAsync<TResult>(httpRequestMessage);
         }
 
-        public async Task<TResult> SendPostRequestAsync<TResult>(Uri uri, IDictionary<string, object> parameters)
+        public async Task<TResult> SendPostRequestAsync<TResult>(Uri uri, IDictionary<string, object> formData)
         {
-            var multipartFormDataContent = CreateMultipartFormDataContent(parameters);
+            var multipartFormDataContent = CreateMultipartFormDataContent(formData);
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, uri)
             {
                 Content = multipartFormDataContent
@@ -83,9 +83,9 @@ namespace SoundCloud.Api.Web
             return SendRequestAsync<TResult>(httpRequestMessage);
         }
 
-        public Task<TResult> SendPutRequestAsync<TResult>(Uri uri, IDictionary<string, object> parameters)
+        public Task<TResult> SendPutRequestAsync<TResult>(Uri uri, IDictionary<string, object> formData)
         {
-            var multipartFormDataContent = CreateMultipartFormDataContent(parameters);
+            var multipartFormDataContent = CreateMultipartFormDataContent(formData);
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, uri)
             {
                 Content = multipartFormDataContent
@@ -100,38 +100,38 @@ namespace SoundCloud.Api.Web
             return SendRequestAsync<TResult>(httpRequestMessage);
         }
 
-        private static MultipartFormDataContent CreateMultipartFormDataContent(IDictionary<string, object> parameters)
+        private static MultipartFormDataContent CreateMultipartFormDataContent(IDictionary<string, object> formData)
         {
             var multipartFormDataContent = new MultipartFormDataContent();
-            foreach (var parameter in parameters)
+            foreach (var entry in formData)
             {
-                if (parameter.Value is string stringParameter)
+                if (entry.Value is string stringParameter)
                 {
                     var stringContent = new StringContent(stringParameter);
                     stringContent.Headers.Remove("Content-Type");
-                    multipartFormDataContent.Add(stringContent, parameter.Key);
+                    multipartFormDataContent.Add(stringContent, entry.Key);
                 }
 
-                var intParameter = parameter.Value as int?;
+                var intParameter = entry.Value as int?;
                 if (intParameter != null)
                 {
                     var stringContent = new StringContent(intParameter.ToString());
                     stringContent.Headers.Remove("Content-Type");
-                    multipartFormDataContent.Add(stringContent, parameter.Key);
+                    multipartFormDataContent.Add(stringContent, entry.Key);
                 }
 
-                if (parameter.Value is Stream streamParameter)
+                if (entry.Value is Stream streamParameter)
                 {
                     var streamContent = new StreamContent(streamParameter);
                     streamContent.Headers.Add("Content-Type", "application/octet-stream");
-                    multipartFormDataContent.Add(streamContent, parameter.Key);
+                    multipartFormDataContent.Add(streamContent, entry.Key);
                 }
 
-                if (parameter.Value is Enum enumParameter)
+                if (entry.Value is Enum enumParameter)
                 {
                     var stringContent = new StringContent(enumParameter.ToString());
                     stringContent.Headers.Remove("Content-Type");
-                    multipartFormDataContent.Add(stringContent, parameter.Key);
+                    multipartFormDataContent.Add(stringContent, entry.Key);
                 }
             }
 
