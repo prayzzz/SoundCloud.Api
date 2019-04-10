@@ -35,9 +35,9 @@ namespace SoundCloud.Api.Endpoints
             return await _gateway.SendGetRequestAsync<Playlist>(builder.BuildUri());
         }
 
-        public async Task<IEnumerable<Playlist>> GetAllAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0)
+        public async Task<IEnumerable<Playlist>> GetAllAsync(string searchString, int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0)
         {
-            return await GetAllAsync(new PlaylistQueryBuilder { Limit = limit, Offset = offset });
+            return await GetAllAsync(new PlaylistQueryBuilder { SearchString = searchString, Limit = limit, Offset = offset });
         }
 
         public async Task<IEnumerable<Playlist>> GetAllAsync(PlaylistQueryBuilder queryBuilder)

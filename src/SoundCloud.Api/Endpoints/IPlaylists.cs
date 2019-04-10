@@ -22,7 +22,7 @@ namespace SoundCloud.Api.Endpoints
         /// <summary>
         ///     Gets a list of playlists
         /// </summary>
-        Task<IEnumerable<Playlist>> GetAllAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
+        Task<IEnumerable<Playlist>> GetAllAsync(string searchString, int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
 
         /// <summary>
         ///     Gets a list of playlists
