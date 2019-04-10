@@ -7,7 +7,7 @@ This includes:
 
 You can only access public content!
 
-I'm not actively looking if this has changed. Please notify me it it did.
+I'm not actively looking if this has changed. Please notify me if it did.
 
 **Breaking Changes**
 * removed `ISoundCloudClient.IsAuthorized`

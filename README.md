@@ -12,6 +12,23 @@ or download the latest archive from the [release page](https://github.com/prayzz
 
 ## Usage
 
+### With Dependency Injection
+
+```csharp
+serviceCollection.AddSoundCloudClient(string.Empty, "clientId");
+```
+
+If you want to customize the used HttpClient use:
+
+```csharp
+serviceCollection.AddSingleton<SoundCloudClient>();
+var httpClientBuilder = serviceCollection.AddSoundCloudHttpClient(string.Empty, "clientId");
+// httpClientBuilder.AddHttpMessageHandler()
+// ...
+```
+
+### Without Dependency Injection
+
 Use the SoundCloudClient to access the resources provided by SoundCloud:
 ```csharp
 string accessToken = "your access token here";

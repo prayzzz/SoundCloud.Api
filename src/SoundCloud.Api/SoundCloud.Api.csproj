@@ -25,6 +25,7 @@
         <PackageId>$(Product)</PackageId>
         <Title>$(Product)</Title>
         <Authors>prayzzz &amp; Contributors</Authors>
+        <PackageLicenseUrl>https://github.com/prayzzz/SoundCloud.Api/blob/master/LICENSE</PackageLicenseUrl>
         <PackageDescription>$(Description)</PackageDescription>
         <PackageVersion>$(Version)</PackageVersion>
         <PackageTags>SoundCloud API Sound Music Cloud</PackageTags>
