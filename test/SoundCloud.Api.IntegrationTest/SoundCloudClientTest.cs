@@ -25,10 +25,8 @@ namespace SoundCloud.Api.IntegrationTest
 
         // Taken from https://soundcloud.com/sharpsound-2
         protected const int CommentId = 240653022;
-        protected const int GroupId = 216171;
         protected const int PlaylistId = 131472367;
         protected const string SettingsFile = "settings.json";
-        protected const string SharpSoundGroupName = "SharpSoundGroup";
         protected const int Track2Id = 219360956;
         protected const int Track3Id = 234707391;
         protected const int TrackId = 219359541;

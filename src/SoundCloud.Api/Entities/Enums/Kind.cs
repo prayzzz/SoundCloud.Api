@@ -34,9 +34,6 @@ namespace SoundCloud.Api.Entities.Enums
         [EnumMember(Value = "web-profile")]
         WebProfile,
 
-        [EnumMember(Value = "group")]
-        Group,
-
         [EnumMember(Value = "status")]
         Status
     }

@@ -43,7 +43,7 @@ namespace SoundCloud.Api.Endpoints
             return await GetAllAsync(new TrackQueryBuilder { Limit = limit, Offset = offset });
         }
 
-        public async Task<IEnumerable<Track>> GetAllAsync(SoundCloudQueryBuilder builder)
+        public async Task<IEnumerable<Track>> GetAllAsync(TrackQueryBuilder builder)
         {
             builder.Path = TrackPath;
             builder.Paged = true;

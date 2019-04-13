@@ -28,7 +28,7 @@ namespace SoundCloud.Api.Endpoints
         /// <summary>
         ///     Gets a list of tracks
         /// </summary>
-        Task<IEnumerable<Track>> GetAllAsync(SoundCloudQueryBuilder builder);
+        Task<IEnumerable<Track>> GetAllAsync(TrackQueryBuilder builder);
 
         /// <summary>
         ///     Gets comments for the track
