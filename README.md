@@ -4,11 +4,16 @@ Full featured SoundCloud API wrapper written in C# using .NET Standard 2.0
 
 ## Installation
 
-Install it using NuGet:
+Install it using [NuGet](https://www.nuget.org/packages/SoundCloud.Api/):
 ```
 Install-Package SoundCloud.Api
 ```
 or download the latest archive from the [release page](https://github.com/prayzzz/SoundCloud.Api/releases).
+
+## Information
+
+SoundCloud.Api uses `IHttpClientFactory` to make Http requests under the hood.
+* see https://docs.microsoft.com/en-us/aspnet/core/fundamentals/http-requests
 
 ## Usage
 
@@ -18,12 +23,13 @@ or download the latest archive from the [release page](https://github.com/prayzz
 serviceCollection.AddSoundCloudClient(string.Empty, "clientId");
 ```
 
-If you want to customize the used HttpClient use:
+If you want to customize the used HttpClient:
 
 ```csharp
-serviceCollection.AddSingleton<SoundCloudClient>();
-var httpClientBuilder = serviceCollection.AddSoundCloudHttpClient(string.Empty, "clientId");
-// httpClientBuilder.AddHttpMessageHandler()
+var httpClientBuilder = serviceCollection.AddSingleton<SoundCloudClient>()
+                                         .AddSoundCloudHttpClient(string.Empty, "clientId");
+                                         
+// httpClientBuilder.AddHttpMessageHandler(...)
 // ...
 ```
 
