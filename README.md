@@ -1,5 +1,7 @@
 # SoundCloud.Api
 
+![Nuget](https://img.shields.io/nuget/v/SoundCloud.Api.svg?style=flat-square)
+
 Full featured SoundCloud API wrapper written in C# using .NET Standard 2.0
 
 ## Installation
