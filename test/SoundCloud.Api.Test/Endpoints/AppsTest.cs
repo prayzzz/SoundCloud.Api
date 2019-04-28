@@ -36,7 +36,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task GetApps()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/apps?limit=200&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/apps?limit=200&offset=0&linked_partitioning=1");
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 

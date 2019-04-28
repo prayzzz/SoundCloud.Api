@@ -45,6 +45,15 @@ namespace ConsoleApp
                 {
                     Console.WriteLine(track.Title);
                 }
+
+                var majorLazerResults2 =
+                    await client.Tracks.GetAllAsync(new TrackQueryBuilder { SearchString = "Major Lazer", Limit = 10, Offset = 10 });
+                Console.WriteLine();
+                Console.WriteLine("Found Major Lazer Tracks Page 2:");
+                foreach (var track in majorLazerResults2)
+                {
+                    Console.WriteLine(track.Title);
+                }
             }
         }
     }

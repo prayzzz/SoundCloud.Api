@@ -9,7 +9,7 @@ namespace SoundCloud.Api.QueryBuilders
         private const string Host = "https://api.soundcloud.com/";
         public const int MaxLimit = 200;
         private const int MinLimit = 1;
-        private const int MinOffset = 1;
+        private const int MinOffset = 0;
         private int _customMaxLimit;
         private int _limit;
         private int _offset;
@@ -92,6 +92,7 @@ namespace SoundCloud.Api.QueryBuilders
             if (Paged)
             {
                 ApplyPrimitiveType(queryArguments, "limit", Limit);
+                ApplyPrimitiveType(queryArguments, "offset", Offset);
             }
         }
 

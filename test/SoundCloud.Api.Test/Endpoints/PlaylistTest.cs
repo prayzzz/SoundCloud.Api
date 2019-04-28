@@ -57,7 +57,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task GetList()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/playlists?limit=200&q=search&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/playlists?limit=200&offset=0&q=search&linked_partitioning=1");
 
             var requestMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 
@@ -74,7 +74,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task GetListWithBuilder()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/playlists?limit=10&q=search&representation=compact&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/playlists?limit=10&offset=0&q=search&representation=compact&linked_partitioning=1");
 
             var requestMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 

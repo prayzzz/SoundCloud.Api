@@ -17,6 +17,14 @@ namespace SoundCloud.Api.Test.QueryBuilders
         }
 
         [Test]
+        public void Test_Limit([Values(1, 2, 100, 199, 200)] int limit)
+        {
+            var builder = new TrackQueryBuilder { Limit = limit };
+
+            Assert.That(builder.Limit, Is.EqualTo(limit));
+        }
+
+        [Test]
         public void Test_Limit_CustomMaxValue()
         {
             var builder = new TestQueryBuilder(78) { Limit = 100 };
@@ -60,11 +68,11 @@ namespace SoundCloud.Api.Test.QueryBuilders
         }
 
         [Test]
-        public void Test_Limit([Values(1, 2, 100, 199, 200)] int limit)
+        public void Test_Offset([Values(1, 2, 100, 199, 200)] int offset)
         {
-            var builder = new TrackQueryBuilder { Limit = limit };
+            var builder = new TrackQueryBuilder { Offset = offset };
 
-            Assert.That(builder.Limit, Is.EqualTo(limit));
+            Assert.That(builder.Offset, Is.EqualTo(offset));
         }
 
         [Test]
@@ -72,15 +80,7 @@ namespace SoundCloud.Api.Test.QueryBuilders
         {
             var builder = new TrackQueryBuilder { Offset = offset };
 
-            Assert.That(builder.Offset, Is.EqualTo(1));
-        }
-
-        [Test]
-        public void Test_Offset([Values(1, 2, 100, 199, 200)] int offset)
-        {
-            var builder = new TrackQueryBuilder { Offset = offset };
-
-            Assert.That(builder.Offset, Is.EqualTo(offset));
+            Assert.That(builder.Offset, Is.EqualTo(0));
         }
     }
 }

@@ -23,7 +23,7 @@ namespace SoundCloud.Api.Test.QueryBuilders
 
             var query = builder.BuildUri();
 
-            Assert.That(query.ToString(), Is.EqualTo("https://api.soundcloud.com/?limit=10&q=SearchString&linked_partitioning=1"));
+            Assert.That(query.ToString(), Is.EqualTo("https://api.soundcloud.com/?limit=10&offset=0&q=SearchString&linked_partitioning=1"));
         }
 
         [Test]

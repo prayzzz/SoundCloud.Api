@@ -72,7 +72,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task GetActivities()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/me/activities?limit=200&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/me/activities?limit=200&offset=0&linked_partitioning=1");
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 
@@ -89,7 +89,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task GetComments()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/me/comments?limit=200&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/me/comments?limit=200&offset=0&linked_partitioning=1");
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 
@@ -106,7 +106,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task GetConnections()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/me/connections?limit=200&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/me/connections?limit=200&offset=0&linked_partitioning=1");
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 
@@ -123,7 +123,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task GetFavorites()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/me/favorites?limit=200&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/me/favorites?limit=200&offset=0&linked_partitioning=1");
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 
@@ -140,7 +140,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task GetFollowers()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/me/followers?limit=200&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/me/followers?limit=200&offset=0&linked_partitioning=1");
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 
@@ -157,7 +157,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task GetFollowings()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/me/followings?limit=200&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/me/followings?limit=200&offset=0&linked_partitioning=1");
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 
@@ -174,7 +174,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task GetPlaylists()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/me/playlists?limit=200&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/me/playlists?limit=200&offset=0&linked_partitioning=1");
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 
@@ -191,7 +191,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task GetTracks()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/me/tracks?limit=200&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/me/tracks?limit=200&offset=0&linked_partitioning=1");
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 
@@ -208,7 +208,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task GetWebProfiles()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/me/web-profiles?limit=200&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/me/web-profiles?limit=200&offset=0&linked_partitioning=1");
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 
