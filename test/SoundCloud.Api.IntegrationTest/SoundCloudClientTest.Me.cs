@@ -62,9 +62,16 @@ namespace SoundCloud.Api.IntegrationTest
         {
             var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
-            var activities = (await client.Me.GetActivitiesAsync()).Take(100).ToList();
+            var result = await client.Me.GetActivitiesAsync();
+            Assert.That(result.Any(), Is.True);
 
-            Assert.That(activities.Any(), Is.True);
+            if (result.HasNextPage)
+            {
+                var nextResult = await result.GetNextPageAsync();
+                Assert.That(nextResult.Any(), Is.True);
+
+                Assert.That(result.First().Origin.Id, Is.Not.EqualTo(nextResult.First().Origin.Id));
+            }
         }
 
         [Test]
@@ -72,9 +79,16 @@ namespace SoundCloud.Api.IntegrationTest
         {
             var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
-            var comments = await client.Me.GetCommentsAsync();
+            var result = await client.Me.GetCommentsAsync();
+            Assert.That(result.Any(), Is.True);
 
-            Assert.That(comments.Any(), Is.True);
+            if (result.HasNextPage)
+            {
+                var nextResult = await result.GetNextPageAsync();
+                Assert.That(nextResult.Any(), Is.True);
+
+                Assert.That(result.First().Id, Is.Not.EqualTo(nextResult.First().Id));
+            }
         }
 
         [Test]
@@ -83,9 +97,16 @@ namespace SoundCloud.Api.IntegrationTest
         {
             var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
-            var connections = (await client.Me.GetConnectionsAsync()).ToList();
+            var result = await client.Me.GetConnectionsAsync();
+            Assert.That(result.Any(), Is.True);
 
-            Assert.That(connections.Any(), Is.True);
+            if (result.HasNextPage)
+            {
+                var nextResult = await result.GetNextPageAsync();
+                Assert.That(nextResult.Any(), Is.True);
+
+                Assert.That(result.First().Id, Is.Not.EqualTo(nextResult.First().Id));
+            }
         }
 
         [Test]
@@ -93,9 +114,16 @@ namespace SoundCloud.Api.IntegrationTest
         {
             var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
-            var favorites = await client.Me.GetFavoritesAsync();
+            var result = await client.Me.GetFavoritesAsync();
+            Assert.That(result.Any(), Is.True);
 
-            Assert.That(favorites.Any(), Is.True);
+            if (result.HasNextPage)
+            {
+                var nextResult = await result.GetNextPageAsync();
+                Assert.That(nextResult.Any(), Is.True);
+
+                Assert.That(result.First().Id, Is.Not.EqualTo(nextResult.First().Id));
+            }
         }
 
         [Test]
@@ -103,9 +131,16 @@ namespace SoundCloud.Api.IntegrationTest
         {
             var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
-            var followers = await client.Me.GetFollowersAsync();
+            var result = await client.Me.GetFollowersAsync();
+            Assert.That(result.Any(), Is.True);
 
-            Assert.That(followers.Any(), Is.True);
+            if (result.HasNextPage)
+            {
+                var nextResult = await result.GetNextPageAsync();
+                Assert.That(nextResult.Any(), Is.True);
+
+                Assert.That(result.First().Id, Is.Not.EqualTo(nextResult.First().Id));
+            }
         }
 
         [Test]
@@ -113,9 +148,16 @@ namespace SoundCloud.Api.IntegrationTest
         {
             var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
-            var followings = await client.Me.GetFollowingsAsync();
+            var result = await client.Me.GetFollowingsAsync();
+            Assert.That(result.Any(), Is.True);
 
-            Assert.That(followings.Any(), Is.True);
+            if (result.HasNextPage)
+            {
+                var nextResult = await result.GetNextPageAsync();
+                Assert.That(nextResult.Any(), Is.True);
+
+                Assert.That(result.First().Id, Is.Not.EqualTo(nextResult.First().Id));
+            }
         }
 
         [Test]
@@ -123,9 +165,16 @@ namespace SoundCloud.Api.IntegrationTest
         {
             var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
-            var playlists = (await client.Me.GetPlaylistsAsync()).ToList();
+            var result = await client.Me.GetPlaylistsAsync();
+            Assert.That(result.Any(), Is.True);
 
-            Assert.That(playlists.Any(), Is.True);
+            if (result.HasNextPage)
+            {
+                var nextResult = await result.GetNextPageAsync();
+                Assert.That(nextResult.Any(), Is.True);
+
+                Assert.That(result.First().Id, Is.Not.EqualTo(nextResult.First().Id));
+            }
         }
 
         [Test]
@@ -133,9 +182,16 @@ namespace SoundCloud.Api.IntegrationTest
         {
             var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
-            var tracks = await client.Me.GetTracksAsync();
+            var result = await client.Me.GetTracksAsync();
+            Assert.That(result.Any(), Is.True);
 
-            Assert.That(tracks.Any(), Is.True);
+            if (result.HasNextPage)
+            {
+                var nextResult = await result.GetNextPageAsync();
+                Assert.That(nextResult.Any(), Is.True);
+
+                Assert.That(result.First().Id, Is.Not.EqualTo(nextResult.First().Id));
+            }
         }
 
         [Test]
@@ -143,9 +199,16 @@ namespace SoundCloud.Api.IntegrationTest
         {
             var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
-            var groups = (await client.Me.GetWebProfilesAsync()).ToList();
+            var result = await client.Me.GetWebProfilesAsync();
+            Assert.That(result.Any(), Is.True);
 
-            Assert.That(groups.Any(), Is.True);
+            if (result.HasNextPage)
+            {
+                var nextResult = await result.GetNextPageAsync();
+                Assert.That(nextResult.Any(), Is.True);
+
+                Assert.That(result.First().Id, Is.Not.EqualTo(nextResult.First().Id));
+            }
         }
 
         [Test]

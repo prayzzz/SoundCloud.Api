@@ -26,9 +26,7 @@ namespace SoundCloud.Api.IntegrationTest
         {
             var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
 
-            var exception =
-                Assert.ThrowsAsync<SoundCloudApiException>(async () =>
-                    await client.Resolve.GetEntityAsync("https://soundcloud.com/sharpsound-12345"));
+            var exception = Assert.ThrowsAsync<SoundCloudApiException>(async () => await client.Resolve.GetEntityAsync("https://soundcloud.com/sharpsound-12345"));
             Assert.That(exception.HttpStatusCode, Is.EqualTo(HttpStatusCode.NotFound));
         }
     }

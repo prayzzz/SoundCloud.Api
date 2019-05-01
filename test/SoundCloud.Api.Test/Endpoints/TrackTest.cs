@@ -58,7 +58,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task Get_With_Bpm_And_Tag_Query()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/tracks?limit=200&offset=0&bpm[from]=100&tags=house&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/tracks?limit=200&bpm[from]=100&tags=house&linked_partitioning=1");
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 
@@ -76,7 +76,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task Get_With_Id_Query()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/tracks?limit=200&offset=0&ids=101%2C202%2C303&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/tracks?limit=200&ids=101%2C202%2C303&linked_partitioning=1");
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 
@@ -94,7 +94,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task Get_With_License_Query()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/tracks?limit=200&offset=0&license=cc-by&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/tracks?limit=200&license=cc-by&linked_partitioning=1");
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 
@@ -112,7 +112,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task Get_With_TrackType_And_Genre_Query()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/tracks?limit=200&offset=0&types=original&genres=Rap&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/tracks?limit=200&types=original&genres=Rap&linked_partitioning=1");
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 
@@ -130,7 +130,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task GetComments()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/tracks/215850263/comments?limit=200&offset=0&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/tracks/215850263/comments?limit=200&linked_partitioning=1");
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 
@@ -148,7 +148,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task GetFavoriters()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/tracks/215850263/favoriters?limit=200&offset=0&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/tracks/215850263/favoriters?limit=200&linked_partitioning=1");
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 
@@ -166,7 +166,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task GetList()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/tracks?limit=200&offset=0&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/tracks?limit=200&linked_partitioning=1");
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 

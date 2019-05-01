@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
 using SoundCloud.Api.Entities;
 using SoundCloud.Api.Exceptions;
@@ -17,17 +16,17 @@ namespace SoundCloud.Api.Endpoints
         /// <summary>
         ///     Gets a playlist
         /// </summary>
-        Task<Playlist> GetAsync(int playlistId);
+        Task<Playlist> GetAsync(long playlistId);
 
         /// <summary>
         ///     Gets a list of playlists
         /// </summary>
-        Task<IEnumerable<Playlist>> GetAllAsync(string searchString, int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
+        Task<SoundCloudList<Playlist>> GetAllAsync(string searchString, int limit = SoundCloudQueryBuilder.MaxLimit);
 
         /// <summary>
         ///     Gets a list of playlists
         /// </summary>
-        Task<IEnumerable<Playlist>> GetAllAsync(PlaylistQueryBuilder queryBuilder);
+        Task<SoundCloudList<Playlist>> GetAllAsync(PlaylistQueryBuilder builder);
 
         /// <summary>
         ///     Gets the secret token of the playlist

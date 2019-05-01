@@ -66,21 +66,5 @@ namespace SoundCloud.Api.Test.QueryBuilders
 
             Assert.That(builder.Limit, Is.EqualTo(1));
         }
-
-        [Test]
-        public void Test_Offset([Values(1, 2, 100, 199, 200)] int offset)
-        {
-            var builder = new TrackQueryBuilder { Offset = offset };
-
-            Assert.That(builder.Offset, Is.EqualTo(offset));
-        }
-
-        [Test]
-        public void Test_Offset_MinValue([Values(0, -1, -200, -300)] int offset)
-        {
-            var builder = new TrackQueryBuilder { Offset = offset };
-
-            Assert.That(builder.Offset, Is.EqualTo(0));
-        }
     }
 }

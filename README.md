@@ -59,6 +59,34 @@ Due to that, there's no offical way to obtain a `clientId` or OAuth `token`.
 But you can get the `clientId` of your Browser using the DevTools (F12) and investigate the XHR requests.
 If you're logged in, you can get an OAuth `token` from your cookie. 
 
+
+### Lists
+
+SoundClouds search / list APIs use `linked_partitioning`.
+Every response contains a URI to the next page.
+`SoundCloudList` maps this behavior:
+
+```csharp
+var tracks = await client.Tracks.GetAllAsync();
+
+while(true)
+{
+    foreach (var track in tracks)
+    {
+        Console.WriteLine(track.Title);
+    }
+    
+    if (tracks.HasNextPage)
+    {
+        tracks = await tracks.GetNextPageAsync();
+    }
+    else
+    {
+        break;
+    }
+}
+```
+
 ## Contributing
 
 1. Fork it!

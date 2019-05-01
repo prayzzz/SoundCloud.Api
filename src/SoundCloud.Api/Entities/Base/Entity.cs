@@ -12,7 +12,7 @@ namespace SoundCloud.Api.Entities.Base
         /// </summary>
         [JsonProperty("id")]
         [JsonIgnoreOnSerialize]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         ///     Available for GET requests

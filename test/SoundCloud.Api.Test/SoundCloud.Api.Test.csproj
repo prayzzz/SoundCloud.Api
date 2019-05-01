@@ -6,7 +6,7 @@
 
     <ItemGroup>
         <PackageReference Include="coverlet.msbuild" Version="2.6.0" />
-        <PackageReference Include="ReportGenerator" Version="4.1.2" />
+        <PackageReference Include="ReportGenerator" Version="4.1.4"/>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
         <PackageReference Include="Moq" Version="4.10.1" />
         <PackageReference Include="NUnit" Version="3.11.0" />

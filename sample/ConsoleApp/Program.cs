@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using SoundCloud.Api;
 using SoundCloud.Api.Entities;
-using SoundCloud.Api.Entities.Enums;
+using SoundCloud.Api.Entities.Base;
 using SoundCloud.Api.QueryBuilders;
 
 namespace ConsoleApp
@@ -19,40 +19,83 @@ namespace ConsoleApp
             {
                 var client = provider.GetService<SoundCloudClient>();
 
-                var entity = await client.Resolve.GetEntityAsync("https://soundcloud.com/diplo");
-                if (entity.Kind != Kind.User)
+                Console.WriteLine("Search for:");
+                Console.WriteLine("1: Tracks");
+                Console.WriteLine("2: User");
+                Console.WriteLine("3: Playlists");
+
+                Console.WriteLine();
+                Console.Write("Use: ");
+                var answer = Console.ReadLine();
+
+                Console.WriteLine();
+                if (answer == "1")
                 {
-                    Console.WriteLine("Couldn't resolve account of diplo");
+                    Console.Write("Search string: ");
+                    var term = Console.ReadLine().Trim();
+
+                    // Get first page of Tracks
+                    var tracks = await client.Tracks.GetAllAsync(new TrackQueryBuilder { SearchString = term, Limit = 10 });
+                    await PageThrough(tracks, t => $"{t.Title} by {t.User.Username}");
+                }
+                else if (answer == "2")
+                {
+                    Console.Write("Search string: ");
+                    var term = Console.ReadLine().Trim();
+
+                    // Get first page of Playlists
+                    var users = await client.Users.GetAllAsync(new UserQueryBuilder { SearchString = term, Limit = 10 });
+                    await PageThrough(users, u => u.Username);
+                }
+                else if (answer == "3")
+                {
+                    Console.Write("Search string: ");
+                    var term = Console.ReadLine().Trim();
+
+                    // Get first page of Users
+                    var playlists = await client.Playlists.GetAllAsync(new PlaylistQueryBuilder { SearchString = term, Limit = 10 });
+                    await PageThrough(playlists, p => $"{p.Title} by {p.User.Username}");
+                }
+                else
+                {
+                    Console.WriteLine($"Invalid answer: {answer}. Use the displayed number.");
+                    Environment.Exit(1);
+                }
+            }
+        }
+
+        private static async Task PageThrough<T>(SoundCloudList<T> list, Func<T, string> selector) where T : Entity
+        {
+            Console.WriteLine();
+            Console.WriteLine("Results:");
+
+            while (true)
+            {
+                Console.WriteLine();
+
+                foreach (var item in list)
+                {
+                    Console.WriteLine(selector(item));
+                }
+
+                if (!list.HasNextPage)
+                {
+                    Console.WriteLine();
+                    Console.Write("No more items.");
                     return;
                 }
 
-                var diplo = entity as User;
-                Console.WriteLine($"Found: {diplo.Username} @ {diplo.PermalinkUrl}");
-
-                var tracks = await client.Users.GetTracksAsync(diplo, 10);
-
                 Console.WriteLine();
-                Console.WriteLine("Latest 10 Tracks:");
-                foreach (var track in tracks)
+                Console.Write("Next page? [Y|n]: ");
+                var answer = Console.ReadLine().Trim();
+                if (string.IsNullOrEmpty(answer) || answer == "y")
                 {
-                    Console.WriteLine(track.Title);
+                    // Get next page of current list
+                    list = await list.GetNextPageAsync();
                 }
-
-                var majorLazerResults = await client.Tracks.GetAllAsync(new TrackQueryBuilder { SearchString = "Major Lazer", Limit = 10 });
-                Console.WriteLine();
-                Console.WriteLine("Found Major Lazer Tracks:");
-                foreach (var track in majorLazerResults)
+                else
                 {
-                    Console.WriteLine(track.Title);
-                }
-
-                var majorLazerResults2 =
-                    await client.Tracks.GetAllAsync(new TrackQueryBuilder { SearchString = "Major Lazer", Limit = 10, Offset = 10 });
-                Console.WriteLine();
-                Console.WriteLine("Found Major Lazer Tracks Page 2:");
-                foreach (var track in majorLazerResults2)
-                {
-                    Console.WriteLine(track.Title);
+                    return;
                 }
             }
         }

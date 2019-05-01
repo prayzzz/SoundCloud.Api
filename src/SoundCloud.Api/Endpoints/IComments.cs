@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using SoundCloud.Api.Entities;
 using SoundCloud.Api.Exceptions;
 using SoundCloud.Api.QueryBuilders;
@@ -20,12 +19,12 @@ namespace SoundCloud.Api.Endpoints
         /// <summary>
         ///     Gets a list of comments
         /// </summary>
-        Task<IEnumerable<Comment>> GetAllAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
+        Task<SoundCloudList<Comment>> GetAllAsync(int limit = SoundCloudQueryBuilder.MaxLimit);
 
         /// <summary>
         ///     Gets a comment
         /// </summary>
-        Task<Comment> GetAsync(int id);
+        Task<Comment> GetAsync(long id);
 
         /// <summary>
         ///     Posts the given comment

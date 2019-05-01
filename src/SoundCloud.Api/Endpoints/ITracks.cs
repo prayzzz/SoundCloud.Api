@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using SoundCloud.Api.Entities;
@@ -18,27 +17,27 @@ namespace SoundCloud.Api.Endpoints
         /// <summary>
         ///     Gets a track
         /// </summary>
-        Task<Track> GetAsync(int trackId);
+        Task<Track> GetAsync(long trackId);
 
         /// <summary>
         ///     Gets a list of tracks
         /// </summary>
-        Task<IEnumerable<Track>> GetAllAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
+        Task<SoundCloudList<Track>> GetAllAsync(int limit = SoundCloudQueryBuilder.MaxLimit);
 
         /// <summary>
         ///     Gets a list of tracks
         /// </summary>
-        Task<IEnumerable<Track>> GetAllAsync(TrackQueryBuilder builder);
+        Task<SoundCloudList<Track>> GetAllAsync(TrackQueryBuilder builder);
 
         /// <summary>
         ///     Gets comments for the track
         /// </summary>
-        Task<IEnumerable<Comment>> GetCommentsAsync(Track track, int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
+        Task<SoundCloudList<Comment>> GetCommentsAsync(Track track, int limit = SoundCloudQueryBuilder.MaxLimit);
 
         /// <summary>
         ///     Gets users who favorited the track
         /// </summary>
-        Task<IEnumerable<User>> GetFavoritersAsync(Track track, int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
+        Task<SoundCloudList<User>> GetFavoritersAsync(Track track, int limit = SoundCloudQueryBuilder.MaxLimit);
 
         /// <summary>
         ///     Gets the secret token of the track

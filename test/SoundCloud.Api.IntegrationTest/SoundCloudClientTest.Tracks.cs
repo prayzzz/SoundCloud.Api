@@ -29,12 +29,18 @@ namespace SoundCloud.Api.IntegrationTest
         {
             var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
 
-            var track = new Track();
-            track.Id = Track2Id;
+            var track = new Track { Id = Track2Id };
 
-            var comments = await client.Tracks.GetCommentsAsync(track);
+            var result = await client.Tracks.GetCommentsAsync(track);
+            Assert.That(result.Any(), Is.True);
 
-            Assert.That(comments.Any(), Is.True);
+            if (result.HasNextPage)
+            {
+                var nextResult = await result.GetNextPageAsync();
+                Assert.That(nextResult.Any(), Is.True);
+
+                Assert.That(result.First().Id, Is.Not.EqualTo(nextResult.First().Id));
+            }
         }
 
         [Test]
@@ -42,12 +48,18 @@ namespace SoundCloud.Api.IntegrationTest
         {
             var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
 
-            var track = new Track();
-            track.Id = Track2Id;
+            var track = new Track { Id = Track2Id };
 
-            var users = await client.Tracks.GetFavoritersAsync(track);
+            var result = await client.Tracks.GetFavoritersAsync(track);
+            Assert.That(result.Any(), Is.True);
 
-            Assert.That(users.Any(), Is.True);
+            if (result.HasNextPage)
+            {
+                var nextResult = await result.GetNextPageAsync();
+                Assert.That(nextResult.Any(), Is.True);
+
+                Assert.That(result.First().Id, Is.Not.EqualTo(nextResult.First().Id));
+            }
         }
 
         [Test]
@@ -55,9 +67,16 @@ namespace SoundCloud.Api.IntegrationTest
         {
             var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
 
-            var tracks = (await client.Tracks.GetAllAsync()).Take(150).ToList();
+            var result = await client.Tracks.GetAllAsync();
+            Assert.That(result.Any(), Is.True);
 
-            Assert.That(tracks.Count, Is.EqualTo(150));
+            if (result.HasNextPage)
+            {
+                var nextResult = await result.GetNextPageAsync();
+                Assert.That(nextResult.Any(), Is.True);
+
+                Assert.That(result.First().Id, Is.Not.EqualTo(nextResult.First().Id));
+            }
         }
 
         [Test]

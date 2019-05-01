@@ -11,11 +11,11 @@ namespace SoundCloud.Api.IntegrationTest
         public async Task Test_Apps_Get()
         {
             var client = SoundCloudClient.CreateAuthorized(Settings.Token);
+            var apps = await client.Apps.GetAllAsync();
 
-            var appId = (await client.Apps.GetAllAsync()).First().Id;
-            var app = await client.Apps.GetAsync(appId);
-
-            Assert.That(app, Is.Not.Null);
+            var result = await client.Apps.GetAsync(apps.First().Id);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Id, Is.EqualTo(apps.First().Id));
         }
 
         [Test]
@@ -23,9 +23,16 @@ namespace SoundCloud.Api.IntegrationTest
         {
             var client = SoundCloudClient.CreateAuthorized(Settings.Token);
 
-            var appClients = await client.Apps.GetAllAsync();
+            var result = await client.Apps.GetAllAsync();
+            Assert.That(result.Any(), Is.True);
 
-            Assert.That(appClients.Count, Is.EqualTo(200));
+            if (result.HasNextPage)
+            {
+                var nextResult = await result.GetNextPageAsync();
+                Assert.That(nextResult.Any(), Is.True);
+
+                Assert.That(result.First().Id, Is.Not.EqualTo(nextResult.First().Id));
+            }
         }
     }
 }

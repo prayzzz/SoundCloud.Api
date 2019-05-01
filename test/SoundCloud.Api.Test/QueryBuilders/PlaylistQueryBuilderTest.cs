@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using SoundCloud.Api.Entities.Enums;
 using SoundCloud.Api.QueryBuilders;
 
@@ -9,48 +8,29 @@ namespace SoundCloud.Api.Test.QueryBuilders
     public class PlaylistQueryBuilderTest
     {
         [Test]
-        // ReSharper disable ObjectCreationAsStatement
-        public void Test_Empty_SearchString_In_Constructor()
-        {
-            Assert.Throws<ArgumentException>(() => new PlaylistQueryBuilder(""));
-        }
-
-        [Test]
         public void Test_Paged()
         {
-            var builder = new PlaylistQueryBuilder("SearchString");
-            builder.Paged = true;
+            var builder = new PlaylistQueryBuilder { SearchString = "SearchString", Paged = true };
 
             var query = builder.BuildUri();
 
-            Assert.That(query.ToString(), Is.EqualTo("https://api.soundcloud.com/?limit=10&offset=0&q=SearchString&linked_partitioning=1"));
-        }
-
-        [Test]
-        public void Test_Paged_Empty_SearchString()
-        {
-            var builder = new PlaylistQueryBuilder("SearchString");
-            builder.Paged = true;
-            builder.SearchString = string.Empty;
-
-            Assert.Throws<ArgumentException>(() => builder.BuildUri());
+            Assert.That(query.ToString(), Is.EqualTo("https://api.soundcloud.com/?limit=50&q=SearchString&linked_partitioning=1"));
         }
 
         [Test]
         public void Test_RepresentationMode()
         {
-            var builder = new PlaylistQueryBuilder("SearchString");
-            builder.Representation = RepresentationMode.Compact;
+            var builder = new PlaylistQueryBuilder { Representation = RepresentationMode.Compact };
 
             var query = builder.BuildUri();
 
-            Assert.That(query.ToString(), Is.EqualTo("https://api.soundcloud.com/?q=SearchString&representation=compact"));
+            Assert.That(query.ToString(), Is.EqualTo("https://api.soundcloud.com/?representation=compact"));
         }
 
         [Test]
         public void Test_SearchString()
         {
-            var builder = new PlaylistQueryBuilder("SearchString");
+            var builder = new PlaylistQueryBuilder { SearchString = "SearchString" };
 
             var query = builder.BuildUri();
 

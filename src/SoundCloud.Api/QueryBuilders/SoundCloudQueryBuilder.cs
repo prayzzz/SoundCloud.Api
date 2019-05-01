@@ -9,10 +9,8 @@ namespace SoundCloud.Api.QueryBuilders
         private const string Host = "https://api.soundcloud.com/";
         public const int MaxLimit = 200;
         private const int MinLimit = 1;
-        private const int MinOffset = 0;
         private int _customMaxLimit;
         private int _limit;
-        private int _offset;
 
         protected SoundCloudQueryBuilder()
         {
@@ -67,22 +65,6 @@ namespace SoundCloud.Api.QueryBuilders
             }
         }
 
-        public int Offset
-        {
-            get => _offset;
-            set
-            {
-                if (value < MinOffset)
-                {
-                    _offset = MinOffset;
-                }
-                else
-                {
-                    _offset = value;
-                }
-            }
-        }
-
         internal bool Paged { get; set; }
 
         internal string Path { get; set; }
@@ -92,7 +74,6 @@ namespace SoundCloud.Api.QueryBuilders
             if (Paged)
             {
                 ApplyPrimitiveType(queryArguments, "limit", Limit);
-                ApplyPrimitiveType(queryArguments, "offset", Offset);
             }
         }
 
@@ -111,8 +92,7 @@ namespace SoundCloud.Api.QueryBuilders
             AddEscapedValue(query, key, string.Join(",", filters.Select(selector)));
         }
 
-        protected static void ApplyNullableDateTimeType(IDictionary<string, string> query, string key, DateTime? filter,
-                                                        Func<DateTime, string> selector)
+        protected static void ApplyNullableDateTimeType(IDictionary<string, string> query, string key, DateTime? filter, Func<DateTime, string> selector)
         {
             if (!filter.HasValue)
             {
@@ -122,8 +102,7 @@ namespace SoundCloud.Api.QueryBuilders
             AddEscapedValue(query, key, selector(filter.Value));
         }
 
-        protected static void ApplyNullableEnumType(IDictionary<string, string> query, string key, Enum filter, Enum defaulValue,
-                                                    Func<Enum, string> selector)
+        protected static void ApplyNullableEnumType(IDictionary<string, string> query, string key, Enum filter, Enum defaulValue, Func<Enum, string> selector)
         {
             if (filter.Equals(defaulValue))
             {
@@ -133,8 +112,7 @@ namespace SoundCloud.Api.QueryBuilders
             AddEscapedValue(query, key, selector(filter));
         }
 
-        protected static void ApplyNullablePrimitiveType<T>(IDictionary<string, string> query, string key, T? filter, Func<T, string> selector)
-            where T : struct
+        protected static void ApplyNullablePrimitiveType<T>(IDictionary<string, string> query, string key, T? filter, Func<T, string> selector) where T : struct
         {
             if (filter.HasValue)
             {
@@ -152,12 +130,12 @@ namespace SoundCloud.Api.QueryBuilders
             AddEscapedValue(query, key, filter);
         }
 
-        protected string BuildQuery()
+        private string BuildQuery()
         {
             var queryArguments = new Dictionary<string, string>();
             AddArguments(queryArguments);
 
-            return string.Join("&", queryArguments.Select(x => string.Format("{0}={1}", x.Key, x.Value)));
+            return string.Join("&", queryArguments.Select(x => $"{x.Key}={x.Value}"));
         }
 
         internal Uri BuildUri()

@@ -41,10 +41,18 @@ namespace SoundCloud.Api.IntegrationTest
         {
             var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
 
-            var builder = new PlaylistQueryBuilder("diplo") { Representation = RepresentationMode.Compact };
+            var builder = new PlaylistQueryBuilder { SearchString = "diplo", Representation = RepresentationMode.Compact, Limit = 10 };
 
-            var playlist = (await client.Playlists.GetAllAsync(builder)).Take(10).ToList();
-            Assert.That(playlist, Has.Exactly(10).Items);
+            var result = await client.Playlists.GetAllAsync(builder);
+            Assert.That(result.Any(), Is.True);
+
+            if (result.HasNextPage)
+            {
+                var nextResult = await result.GetNextPageAsync();
+                Assert.That(nextResult.Any(), Is.True);
+
+                Assert.That(result.First().Id, Is.Not.EqualTo(nextResult.First().Id));
+            }
         }
 
         [Test]

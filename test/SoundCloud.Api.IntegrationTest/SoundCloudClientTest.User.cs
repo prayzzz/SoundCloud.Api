@@ -26,9 +26,16 @@ namespace SoundCloud.Api.IntegrationTest
 
             var user = new User { Id = UserId };
 
-            var comments = await client.Users.GetCommentsAsync(user);
+            var result = await client.Users.GetCommentsAsync(user);
+            Assert.That(result.Any(), Is.True);
 
-            Assert.That(comments.Any(), Is.True);
+            if (result.HasNextPage)
+            {
+                var nextResult = await result.GetNextPageAsync();
+                Assert.That(nextResult.Any(), Is.True);
+
+                Assert.That(result.First().Id, Is.Not.EqualTo(nextResult.First().Id));
+            }
         }
 
         [Test]
@@ -38,9 +45,16 @@ namespace SoundCloud.Api.IntegrationTest
 
             var user = new User { Id = UserId };
 
-            var favorites = await client.Users.GetFavoritesAsync(user);
+            var result = await client.Users.GetFavoritesAsync(user);
+            Assert.That(result.Any(), Is.True);
 
-            Assert.That(favorites.Any(), Is.True);
+            if (result.HasNextPage)
+            {
+                var nextResult = await result.GetNextPageAsync();
+                Assert.That(nextResult.Any(), Is.True);
+
+                Assert.That(result.First().Id, Is.Not.EqualTo(nextResult.First().Id));
+            }
         }
 
         [Test]
@@ -50,9 +64,16 @@ namespace SoundCloud.Api.IntegrationTest
 
             var user = new User { Id = UserId };
 
-            var followers = await client.Users.GetFollowersAsync(user);
+            var result = await client.Users.GetFollowersAsync(user);
+            Assert.That(result.Any(), Is.True);
 
-            Assert.That(followers.Any(), Is.True);
+            if (result.HasNextPage)
+            {
+                var nextResult = await result.GetNextPageAsync();
+                Assert.That(nextResult.Any(), Is.True);
+
+                Assert.That(result.First().Id, Is.Not.EqualTo(nextResult.First().Id));
+            }
         }
 
         [Test]
@@ -62,9 +83,16 @@ namespace SoundCloud.Api.IntegrationTest
 
             var user = new User { Id = UserId };
 
-            var followings = await client.Users.GetFollowingsAsync(user);
+            var result = await client.Users.GetFollowingsAsync(user);
+            Assert.That(result.Any(), Is.True);
 
-            Assert.That(followings.Any(), Is.True);
+            if (result.HasNextPage)
+            {
+                var nextResult = await result.GetNextPageAsync();
+                Assert.That(nextResult.Any(), Is.True);
+
+                Assert.That(result.First().Id, Is.Not.EqualTo(nextResult.First().Id));
+            }
         }
 
         [Test]
@@ -72,9 +100,16 @@ namespace SoundCloud.Api.IntegrationTest
         {
             var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
 
-            var users = (await client.Users.GetAllAsync()).Take(150).ToList();
+            var result = await client.Users.GetAllAsync();
+            Assert.That(result.Any(), Is.True);
 
-            Assert.That(users.Count, Is.EqualTo(150));
+            if (result.HasNextPage)
+            {
+                var nextResult = await result.GetNextPageAsync();
+                Assert.That(nextResult.Any(), Is.True);
+
+                Assert.That(result.First().Id, Is.Not.EqualTo(nextResult.First().Id));
+            }
         }
 
         [Test]
@@ -84,9 +119,16 @@ namespace SoundCloud.Api.IntegrationTest
 
             var user = new User { Id = UserId };
 
-            var playlists = (await client.Users.GetPlaylistsAsync(user)).ToList();
+            var result = await client.Users.GetPlaylistsAsync(user);
+            Assert.That(result.Any(), Is.True);
 
-            Assert.That(playlists.Any(), Is.True);
+            if (result.HasNextPage)
+            {
+                var nextResult = await result.GetNextPageAsync();
+                Assert.That(nextResult.Any(), Is.True);
+
+                Assert.That(result.First().Id, Is.Not.EqualTo(nextResult.First().Id));
+            }
         }
 
         [Test]
@@ -96,9 +138,16 @@ namespace SoundCloud.Api.IntegrationTest
 
             var user = new User { Id = UserId };
 
-            var tracks = await client.Users.GetTracksAsync(user);
+            var result = await client.Users.GetTracksAsync(user);
+            Assert.That(result.Any(), Is.True);
 
-            Assert.That(tracks.Any(), Is.True);
+            if (result.HasNextPage)
+            {
+                var nextResult = await result.GetNextPageAsync();
+                Assert.That(nextResult.Any(), Is.True);
+
+                Assert.That(result.First().Id, Is.Not.EqualTo(nextResult.First().Id));
+            }
         }
 
         [Test]
@@ -108,9 +157,16 @@ namespace SoundCloud.Api.IntegrationTest
 
             var user = new User { Id = UserId };
 
-            var groups = (await client.Users.GetWebProfilesAsync(user)).ToList();
+            var result = await client.Users.GetWebProfilesAsync(user);
+            Assert.That(result.Any(), Is.True);
 
-            Assert.That(groups.Any(), Is.True);
+            if (result.HasNextPage)
+            {
+                var nextResult = await result.GetNextPageAsync();
+                Assert.That(nextResult.Any(), Is.True);
+
+                Assert.That(result.First().Id, Is.Not.EqualTo(nextResult.First().Id));
+            }
         }
     }
 }

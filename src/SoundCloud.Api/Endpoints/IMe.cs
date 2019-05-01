@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using SoundCloud.Api.Entities;
 using SoundCloud.Api.QueryBuilders;
 
@@ -32,49 +31,50 @@ namespace SoundCloud.Api.Endpoints
         /// <summary>
         ///     Gets a list of activities
         /// </summary>
-        Task<IEnumerable<Activity>> GetActivitiesAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
+        Task<SoundCloudList<Activity>> GetActivitiesAsync(int limit = SoundCloudQueryBuilder.MaxLimit);
 
         /// <summary>
         ///     Gets a list of comments
+        ///     Note: This API seems to be broken. It returns all comments, instead of comments owned by the current user
         /// </summary>
-        Task<IEnumerable<Comment>> GetCommentsAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
+        Task<SoundCloudList<Comment>> GetCommentsAsync(int limit = SoundCloudQueryBuilder.MaxLimit);
 
         /// <summary>
         ///     Gets a list of connected external profiles
         /// </summary>
-        Task<IEnumerable<Connection>> GetConnectionsAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
+        Task<SoundCloudList<Connection>> GetConnectionsAsync(int limit = SoundCloudQueryBuilder.MaxLimit);
 
         /// <summary>
         ///     Gets a list of favorites
         /// </summary>
         /// <returns></returns>
-        Task<IEnumerable<Track>> GetFavoritesAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
+        Task<SoundCloudList<Track>> GetFavoritesAsync(int limit = SoundCloudQueryBuilder.MaxLimit);
 
         /// <summary>
         ///     Gets a list of followers
         /// </summary>
-        Task<IEnumerable<User>> GetFollowersAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
+        Task<SoundCloudList<User>> GetFollowersAsync(int limit = SoundCloudQueryBuilder.MaxLimit);
 
         /// <summary>
         ///     Gets a list of followed users
         /// </summary>
-        Task<IEnumerable<User>> GetFollowingsAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
+        Task<SoundCloudList<User>> GetFollowingsAsync(int limit = SoundCloudQueryBuilder.MaxLimit);
 
         /// <summary>
         ///     Gets a list of playlists
         /// </summary>
         /// <returns></returns>
-        Task<IEnumerable<Playlist>> GetPlaylistsAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
+        Task<SoundCloudList<Playlist>> GetPlaylistsAsync(int limit = SoundCloudQueryBuilder.MaxLimit);
 
         /// <summary>
         ///     Gets a list of tracks
         /// </summary>
-        Task<IEnumerable<Track>> GetTracksAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
+        Task<SoundCloudList<Track>> GetTracksAsync(int limit = SoundCloudQueryBuilder.MaxLimit);
 
         /// <summary>
         ///     Gets a list of web profiles
         /// </summary>
-        Task<IEnumerable<WebProfile>> GetWebProfilesAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
+        Task<SoundCloudList<WebProfile>> GetWebProfilesAsync(int limit = SoundCloudQueryBuilder.MaxLimit);
 
         /// <summary>
         ///     Likes a track

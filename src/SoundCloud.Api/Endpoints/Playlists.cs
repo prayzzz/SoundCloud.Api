@@ -7,18 +7,15 @@ using SoundCloud.Api.Web;
 
 namespace SoundCloud.Api.Endpoints
 {
-    internal class Playlists : IPlaylists
+    internal class Playlists : Endpoint, IPlaylists
     {
         private const string PlaylistArtworkDataKey = "playlist[artwork_data]";
         private const string PlaylistPath = "playlists/{0}?";
         private const string PlaylistSecretTokenPath = "playlists/{0}/secret-token?";
         private const string PlaylistsPath = "playlists?";
 
-        private readonly ISoundCloudApiGateway _gateway;
-
-        public Playlists(ISoundCloudApiGateway gateway)
+        public Playlists(ISoundCloudApiGateway gateway) : base(gateway)
         {
-            _gateway = gateway;
         }
 
         public async Task<StatusResponse> DeleteAsync(Playlist playlist)
@@ -26,26 +23,26 @@ namespace SoundCloud.Api.Endpoints
             playlist.ValidateDelete();
 
             var builder = new PlaylistQueryBuilder { Path = string.Format(PlaylistPath, playlist.Id) };
-            return await _gateway.SendDeleteRequestAsync<StatusResponse>(builder.BuildUri());
+            return await Gateway.SendDeleteRequestAsync<StatusResponse>(builder.BuildUri());
         }
 
-        public async Task<Playlist> GetAsync(int playlistId)
+        public async Task<Playlist> GetAsync(long playlistId)
         {
             var builder = new PlaylistQueryBuilder { Path = string.Format(PlaylistPath, playlistId) };
-            return await _gateway.SendGetRequestAsync<Playlist>(builder.BuildUri());
+            return await Gateway.SendGetRequestAsync<Playlist>(builder.BuildUri());
         }
 
-        public async Task<IEnumerable<Playlist>> GetAllAsync(string searchString, int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0)
+        public Task<SoundCloudList<Playlist>> GetAllAsync(string searchString, int limit = SoundCloudQueryBuilder.MaxLimit)
         {
-            return await GetAllAsync(new PlaylistQueryBuilder { SearchString = searchString, Limit = limit, Offset = offset });
+            return GetAllAsync(new PlaylistQueryBuilder { SearchString = searchString, Limit = limit });
         }
 
-        public async Task<IEnumerable<Playlist>> GetAllAsync(PlaylistQueryBuilder queryBuilder)
+        public Task<SoundCloudList<Playlist>> GetAllAsync(PlaylistQueryBuilder builder)
         {
-            queryBuilder.Path = PlaylistsPath;
-            queryBuilder.Paged = true;
+            builder.Path = PlaylistsPath;
+            builder.Paged = true;
 
-            return (await _gateway.SendGetRequestAsync<PagedResult<Playlist>>(queryBuilder.BuildUri())).Collection;
+            return GetPage<Playlist>(builder.BuildUri());
         }
 
         public async Task<SecretToken> GetSecretTokenAsync(Playlist playlist)
@@ -53,7 +50,7 @@ namespace SoundCloud.Api.Endpoints
             playlist.ValidateGet();
 
             var builder = new PlaylistQueryBuilder { Path = string.Format(PlaylistSecretTokenPath, playlist.Id) };
-            return await _gateway.SendGetRequestAsync<SecretToken>(builder.BuildUri());
+            return await Gateway.SendGetRequestAsync<SecretToken>(builder.BuildUri());
         }
 
         public async Task<Playlist> PostAsync(Playlist playlist)
@@ -61,7 +58,7 @@ namespace SoundCloud.Api.Endpoints
             playlist.ValidatePost();
 
             var builder = new PlaylistQueryBuilder { Path = PlaylistsPath };
-            return await _gateway.SendPostRequestAsync<Playlist>(builder.BuildUri(), playlist);
+            return await Gateway.SendPostRequestAsync<Playlist>(builder.BuildUri(), playlist);
         }
 
         public async Task<Playlist> UpdateAsync(Playlist playlist)
@@ -69,7 +66,7 @@ namespace SoundCloud.Api.Endpoints
             playlist.ValidateGet();
 
             var builder = new PlaylistQueryBuilder { Path = string.Format(PlaylistPath, playlist.Id) };
-            return await _gateway.SendPutRequestAsync<Playlist>(builder.BuildUri(), playlist);
+            return await Gateway.SendPutRequestAsync<Playlist>(builder.BuildUri(), playlist);
         }
 
         public async Task<Playlist> UploadArtworkAsync(Playlist playlist, Stream file)
@@ -78,7 +75,7 @@ namespace SoundCloud.Api.Endpoints
 
             var parameters = new Dictionary<string, object> { { PlaylistArtworkDataKey, file } };
             var builder = new PlaylistQueryBuilder { Path = string.Format(PlaylistPath, playlist.Id) };
-            return await _gateway.SendPutRequestAsync<Playlist>(builder.BuildUri(), parameters);
+            return await Gateway.SendPutRequestAsync<Playlist>(builder.BuildUri(), parameters);
         }
     }
 }

@@ -25,9 +25,15 @@ namespace SoundCloud.Api.IntegrationTest
             var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
 
             var result = await client.Comments.GetAllAsync();
+            Assert.That(result.Any(), Is.True);
 
-            var someComments = result.Take(100).ToList();
-            Assert.That(someComments.Count, Is.EqualTo(100));
+            if (result.HasNextPage)
+            {
+                var nextResult = await result.GetNextPageAsync();
+                Assert.That(nextResult.Any(), Is.True);
+
+                Assert.That(result.First().Id, Is.Not.EqualTo(nextResult.First().Id));
+            }
         }
 
         [Test]

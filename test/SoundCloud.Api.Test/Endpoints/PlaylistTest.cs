@@ -57,7 +57,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task GetList()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/playlists?limit=200&offset=0&q=search&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/playlists?limit=50&q=search&linked_partitioning=1");
 
             var requestMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 
@@ -74,7 +74,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task GetListWithBuilder()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/playlists?limit=10&offset=0&q=search&representation=compact&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/playlists?limit=50&q=search&representation=compact&linked_partitioning=1");
 
             var requestMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 
@@ -82,7 +82,7 @@ namespace SoundCloud.Api.Test.Endpoints
             requestMock.Setup(x => x.SendGetRequestAsync<PagedResult<Playlist>>(expectedUri)).ReturnsAsync(playlists);
 
             // Act
-            var builder = new PlaylistQueryBuilder("search") { Representation = RepresentationMode.Compact };
+            var builder = new PlaylistQueryBuilder { SearchString = "search", Representation = RepresentationMode.Compact };
             var result = (await new Playlists(requestMock.Object).GetAllAsync(builder)).ToList();
 
             // Assert

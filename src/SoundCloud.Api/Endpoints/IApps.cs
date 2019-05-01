@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using SoundCloud.Api.Entities;
 using SoundCloud.Api.QueryBuilders;
 
@@ -13,11 +12,11 @@ namespace SoundCloud.Api.Endpoints
         /// <summary>
         ///     Gets a app
         /// </summary>
-        Task<AppClient> GetAsync(int id);
+        Task<AppClient> GetAsync(long id);
 
         /// <summary>
         ///     Gets a list of apps
         /// </summary>
-        Task<IEnumerable<AppClient>> GetAllAsync(int limit = SoundCloudQueryBuilder.MaxLimit, int offset = 0);
+        Task<SoundCloudList<AppClient>> GetAllAsync(int limit = SoundCloudQueryBuilder.MaxLimit);
     }
 }

@@ -36,7 +36,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task GetComments()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/users/164386753/comments?limit=200&offset=0&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/users/164386753/comments?limit=200&linked_partitioning=1");
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 
@@ -54,7 +54,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task GetFavorites()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/users/164386753/favorites?limit=200&offset=0&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/users/164386753/favorites?limit=200&linked_partitioning=1");
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 
@@ -72,7 +72,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task GetFollowers()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/users/164386753/followers?limit=200&offset=0&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/users/164386753/followers?limit=200&linked_partitioning=1");
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 
@@ -90,7 +90,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task GetFollowings()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/users/164386753/followings?limit=200&offset=0&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/users/164386753/followings?limit=200&linked_partitioning=1");
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 
@@ -108,7 +108,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task GetList()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/users?limit=200&offset=0&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/users?limit=200&linked_partitioning=1");
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 
@@ -125,7 +125,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task GetList_With_Query()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/users?limit=100&offset=0&q=SharpSound&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/users?limit=100&q=SharpSound&linked_partitioning=1");
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 
@@ -134,7 +134,7 @@ namespace SoundCloud.Api.Test.Endpoints
 
             // Act
             var builder = new UserQueryBuilder { Limit = 100, SearchString = "SharpSound" };
-            var result = (await new Users(gatewayMock.Object).GetAsync(builder)).ToList();
+            var result = (await new Users(gatewayMock.Object).GetAllAsync(builder)).ToList();
 
             // Assert
             Assert.That(result, Is.EquivalentTo(userList.Collection));
@@ -143,7 +143,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task GetPlaylists()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/users/164386753/playlists?limit=200&offset=0&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/users/164386753/playlists?limit=200&linked_partitioning=1");
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 
@@ -161,7 +161,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task GetTracks()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/users/164386753/tracks?limit=200&offset=0&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/users/164386753/tracks?limit=200&linked_partitioning=1");
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 
@@ -179,7 +179,7 @@ namespace SoundCloud.Api.Test.Endpoints
         [Test]
         public async Task GetWebProfiles()
         {
-            var expectedUri = new Uri("https://api.soundcloud.com/users/164386753/web-profiles?limit=200&offset=0&linked_partitioning=1");
+            var expectedUri = new Uri("https://api.soundcloud.com/users/164386753/web-profiles?limit=200&linked_partitioning=1");
 
             var gatewayMock = new Mock<ISoundCloudApiGateway>(MockBehavior.Strict);
 
