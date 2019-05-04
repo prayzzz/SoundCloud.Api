@@ -109,7 +109,7 @@ namespace SoundCloud.Api.Web
                 {
                     var stringContent = new StringContent(stringParameter);
                     stringContent.Headers.Remove("Content-Type");
-                    multipartFormDataContent.Add(stringContent, entry.Key);
+                    multipartFormDataContent.Add(stringContent, "\"" + entry.Key + "\"");
                 }
 
                 var intParameter = entry.Value as int?;

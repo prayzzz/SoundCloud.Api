@@ -8,3 +8,4 @@
 test/SoundCloud.Api.Test/coverage.opencover.xml
 test/SoundCloud.Api.Test/coverage/
 test/SoundCloud.Api.IntegrationTest/settings.json
+test/SoundCloud.Api.IntegrationTest/settings2.json

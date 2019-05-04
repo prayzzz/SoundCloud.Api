@@ -5,7 +5,6 @@ using SoundCloud.Api.Entities;
 namespace SoundCloud.Api.IntegrationTest
 {
     [TestFixture]
-    [Ignore("App registration is closed. Client")]
     public class OAuth2Test : SoundCloudClientTest
     {
         [Test]
@@ -15,11 +14,11 @@ namespace SoundCloud.Api.IntegrationTest
             credentials.ClientId = Settings.ClientId;
             credentials.ClientSecret = Settings.ClientSecret;
 
-            var client = SoundCloudClient.CreateUnauthorized("ClientId");
+            var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
             var postedCredentials = await client.OAuth2.ClientCredentialsAsync(credentials);
 
-            Assert.That(postedCredentials.AccessToken, Is.False);
-            Assert.That(postedCredentials.RefreshToken, Is.False);
+            Assert.That(postedCredentials.AccessToken, Is.Not.Empty);
+            Assert.That(postedCredentials.RefreshToken, Is.Not.Empty);
             Assert.That(postedCredentials.ExpiresIn, Is.Not.Null);
         }
 
@@ -32,7 +31,7 @@ namespace SoundCloud.Api.IntegrationTest
             credentials.Username = Settings.Username;
             credentials.Password = Settings.Password;
 
-            var client = SoundCloudClient.CreateUnauthorized("ClientId");
+            var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
             var postedCredentials = await client.OAuth2.LoginAsync(credentials);
 
             Assert.That(postedCredentials.AccessToken, Is.Not.Empty);
@@ -43,7 +42,7 @@ namespace SoundCloud.Api.IntegrationTest
         [Test]
         public async Task OAuth2_RefreshToken()
         {
-            var client = SoundCloudClient.CreateUnauthorized("ClientId");
+            var client = SoundCloudClient.CreateUnauthorized(Settings.ClientId);
 
             var loginCredentials = new Credentials();
             loginCredentials.ClientId = Settings.ClientId;

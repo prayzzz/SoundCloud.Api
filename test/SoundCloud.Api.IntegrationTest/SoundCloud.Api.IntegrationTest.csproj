@@ -18,6 +18,7 @@
 
     <ItemGroup>
         <None Update="settings.json" CopyToOutputDirectory="PreserveNewest"/>
+        <None Update="settings2.json" CopyToOutputDirectory="PreserveNewest"/>
     </ItemGroup>
 
 </Project>

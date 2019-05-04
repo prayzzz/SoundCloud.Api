@@ -24,7 +24,7 @@ namespace SoundCloud.Api.IntegrationTest
         }
 
         // Taken from https://soundcloud.com/sharpsound-2
-        protected const string SettingsFile = "settings.json";
+        protected const string SettingsFile = "settings2.json";
         protected const int Track2Id = 219360956;
         protected const int TrackId = 219359541;
         protected const int UserId = 164386753;
@@ -59,5 +59,7 @@ namespace SoundCloud.Api.IntegrationTest
         public string Token { get; set; }
 
         public string Username { get; set; }
+
+        public string RedirectUri { get; set; }
     }
 }
