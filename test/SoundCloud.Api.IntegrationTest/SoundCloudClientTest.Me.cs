@@ -9,7 +9,7 @@ using SoundCloud.Api.Exceptions;
 namespace SoundCloud.Api.IntegrationTest
 {
     [TestFixture]
-    public class MeTest : SoundCloudClientTest
+    public class MeTest : IntegrationTestBase
     {
         [Test]
         public async Task Me_Follow_Unfollow()

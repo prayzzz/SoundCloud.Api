@@ -5,15 +5,20 @@ using SoundCloud.Api;
 using SoundCloud.Api.Entities;
 using SoundCloud.Api.Entities.Base;
 using SoundCloud.Api.QueryBuilders;
+using SoundCloud.Api.Utils;
 
+// ReSharper disable PossibleNullReferenceException
 namespace ConsoleApp
 {
     internal static class Program
     {
-        private static async Task Main(string[] args)
+        private static async Task Main()
         {
+            Console.Write("ClientId: ");
+            var clientId = Console.ReadLine().Trim();
+
             var serviceCollection = new ServiceCollection();
-            serviceCollection.AddSoundCloudClient(string.Empty, args[0]);
+            serviceCollection.AddSoundCloudClient(new SoundCloudAuthInfo(string.Empty, clientId));
 
             using (var provider = serviceCollection.BuildServiceProvider())
             {

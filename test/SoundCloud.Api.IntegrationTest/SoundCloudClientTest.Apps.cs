@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace SoundCloud.Api.IntegrationTest
 {
     [TestFixture]
-    public class AppsTest : SoundCloudClientTest
+    public class AppsTest : IntegrationTestBase
     {
         [Test]
         public async Task Test_Apps_Get()

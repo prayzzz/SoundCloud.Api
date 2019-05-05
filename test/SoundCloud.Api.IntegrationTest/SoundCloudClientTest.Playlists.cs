@@ -10,7 +10,7 @@ using SoundCloud.Api.Test.Data;
 namespace SoundCloud.Api.IntegrationTest
 {
     [TestFixture]
-    public class PlaylistTest : SoundCloudClientTest
+    public class PlaylistTest : IntegrationTestBase
     {
         [Test]
         public async Task Playlists_Get()

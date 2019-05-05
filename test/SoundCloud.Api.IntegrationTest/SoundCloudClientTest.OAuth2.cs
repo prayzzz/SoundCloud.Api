@@ -5,7 +5,7 @@ using SoundCloud.Api.Entities;
 namespace SoundCloud.Api.IntegrationTest
 {
     [TestFixture]
-    public class OAuth2Test : SoundCloudClientTest
+    public class OAuth2Test : IntegrationTestBase
     {
         [Test]
         public async Task OAuth2_ClientCredentials()

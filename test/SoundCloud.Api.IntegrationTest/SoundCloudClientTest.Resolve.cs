@@ -8,7 +8,7 @@ using SoundCloud.Api.Exceptions;
 namespace SoundCloud.Api.IntegrationTest
 {
     [TestFixture]
-    public class ResolveTest : SoundCloudClientTest
+    public class ResolveTest : IntegrationTestBase
     {
         [Test]
         public async Task Resolve_GetUrl()

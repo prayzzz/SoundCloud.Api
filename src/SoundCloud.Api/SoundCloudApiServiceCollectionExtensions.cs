@@ -9,21 +9,21 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class SoundCloudApiServiceCollectionExtensions
     {
-        public static IServiceCollection AddSoundCloudClient(this IServiceCollection serviceCollection, string accessToken, string clientId)
+        public static IServiceCollection AddSoundCloudClient(this IServiceCollection serviceCollection, SoundCloudAuthInfo credentials)
         {
             serviceCollection.AddSingleton<SoundCloudClient>();
 
-            serviceCollection.AddSoundCloudHttpClient(accessToken, clientId);
+            serviceCollection.AddSoundCloudHttpClient(credentials);
 
             return serviceCollection;
         }
 
-        public static IHttpClientBuilder AddSoundCloudHttpClient(this IServiceCollection serviceCollection, string accessToken, string clientId)
+        public static IHttpClientBuilder AddSoundCloudHttpClient(this IServiceCollection serviceCollection, SoundCloudAuthInfo credentials)
         {
             var version = typeof(SoundCloudClient).Assembly.GetName().Version.ToString();
             var userAgent = new ProductInfoHeaderValue("SoundCloud.Api", version);
 
-            serviceCollection.TryAddSingleton(new SoundCloudCredentials(accessToken, clientId));
+            serviceCollection.TryAddSingleton(credentials);
             serviceCollection.TryAddTransient<SoundCloudAuthenticationHandler>();
 
             var builder = serviceCollection.AddHttpClient(SoundCloudClient.HttpClientName);

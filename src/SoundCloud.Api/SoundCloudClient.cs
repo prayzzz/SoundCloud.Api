@@ -2,6 +2,7 @@
 using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
 using SoundCloud.Api.Endpoints;
+using SoundCloud.Api.Utils;
 using SoundCloud.Api.Web;
 
 namespace SoundCloud.Api
@@ -11,43 +12,39 @@ namespace SoundCloud.Api
         private const string ArgumentMustNotBeNullOrEmpty = "Argument must not be null or empty";
         public const string HttpClientName = "SoundCloud.Api";
 
-        private readonly Apps _apps;
-        private readonly Comments _comments;
-        private readonly Me _me;
-        private readonly OAuth2 _oAuth2;
-        private readonly Playlists _playlists;
-        private readonly Resolve _resolve;
-        private readonly Tracks _tracks;
-        private readonly Users _users;
-
-        public SoundCloudClient(IHttpClientFactory httpClientFactory)
+        public SoundCloudClient(IHttpClientFactory httpClientFactory, SoundCloudAuthInfo authInfo)
         {
+            AuthInfo = authInfo;
+
             var gateway = new SoundCloudApiGateway(httpClientFactory);
-            _comments = new Comments(gateway);
-            _oAuth2 = new OAuth2(gateway);
-            _playlists = new Playlists(gateway);
-            _tracks = new Tracks(gateway);
-            _users = new Users(gateway);
-            _me = new Me(gateway);
-            _apps = new Apps(gateway);
-            _resolve = new Resolve(gateway);
+            Apps = new Apps(gateway);
+            Comments = new Comments(gateway);
+            OAuth2 = new OAuth2(gateway);
+            Playlists = new Playlists(gateway);
+            Tracks = new Tracks(gateway);
+            Users = new Users(gateway);
+            Me = new Me(gateway);
+            Resolve = new Resolve(gateway);
         }
 
-        public IApps Apps => _apps;
+        public SoundCloudAuthInfo AuthInfo { get; }
 
-        public IComments Comments => _comments;
+        public IApps Apps { get; }
 
-        public IMe Me => _me;
+        public IComments Comments { get; }
 
-        public IOAuth2 OAuth2 => _oAuth2;
+        public IMe Me { get; }
 
-        public IPlaylists Playlists => _playlists;
+        public IOAuth2 OAuth2 { get; }
 
-        public IResolve Resolve => _resolve;
+        public IPlaylists Playlists { get; }
 
-        public ITracks Tracks => _tracks;
+        public IResolve Resolve { get; }
 
-        public IUsers Users => _users;
+        public ITracks Tracks { get; }
+
+        public IUsers Users { get; }
+
 
         public static ISoundCloudClient CreateAuthorized(string accessToken)
         {
@@ -56,8 +53,7 @@ namespace SoundCloud.Api
                 throw new ArgumentException(ArgumentMustNotBeNullOrEmpty, nameof(accessToken));
             }
 
-            var httpClientFactory = GetDefaultHttpClientFactory(accessToken, null);
-            return new SoundCloudClient(httpClientFactory);
+            return GetClient(new SoundCloudAuthInfo(accessToken, null));
         }
 
         public static ISoundCloudClient CreateUnauthorized(string clientId)
@@ -67,18 +63,16 @@ namespace SoundCloud.Api
                 throw new ArgumentException(ArgumentMustNotBeNullOrEmpty, nameof(clientId));
             }
 
-            var httpClientFactory = GetDefaultHttpClientFactory(null, clientId);
-            return new SoundCloudClient(httpClientFactory);
+            return GetClient(new SoundCloudAuthInfo(null, clientId));
         }
 
-        private static IHttpClientFactory GetDefaultHttpClientFactory(string accessToken, string clientId)
+        private static SoundCloudClient GetClient(SoundCloudAuthInfo credentials)
         {
             var serviceCollection = new ServiceCollection();
-            serviceCollection.AddSoundCloudHttpClient(accessToken, clientId);
+            serviceCollection.AddSoundCloudClient(credentials);
 
             var provider = serviceCollection.BuildServiceProvider();
-            var httpClientFactory = provider.GetService<IHttpClientFactory>();
-            return httpClientFactory;
+            return provider.GetService<SoundCloudClient>();
         }
     }
 }

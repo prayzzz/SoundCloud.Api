@@ -57,7 +57,10 @@ As of March 2019 it's not possible to register new apps on soundcloud.com.
 Due to that, there's no offical way to obtain a `clientId` or OAuth `token`.
 
 But you can get the `clientId` of your Browser using the DevTools (F12) and investigate the XHR requests.
-If you're logged in, you can get an OAuth `token` from your cookie. 
+If you're logged in, you can get an OAuth `token` from your cookie.
+
+If you're in possession of a `ClientId` and `ClientSecret`, you can use `SoundCloudOAuth` to obtain a `AccessToken` before creating the `SoundCloudClient`.
+Refreshing the `AccessToken` has to be done by you. Use the OAuth Endpoint and replace the `AccessToken` in `yourClientInstance.AuthInfo.AccessToken`.
 
 
 ### Lists

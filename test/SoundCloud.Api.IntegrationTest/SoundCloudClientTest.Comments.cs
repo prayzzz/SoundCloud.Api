@@ -7,7 +7,7 @@ using SoundCloud.Api.Entities;
 namespace SoundCloud.Api.IntegrationTest
 {
     [TestFixture]
-    public class CommentsTest : SoundCloudClientTest
+    public class CommentsTest : IntegrationTestBase
     {
         [Test]
         public async Task Test_Comment_Get()

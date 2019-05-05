@@ -9,9 +9,9 @@ namespace SoundCloud.Api.Web
 {
     public class SoundCloudAuthenticationHandler : DelegatingHandler
     {
-        private readonly SoundCloudCredentials _credentials;
+        private readonly SoundCloudAuthInfo _credentials;
 
-        public SoundCloudAuthenticationHandler(SoundCloudCredentials credentials)
+        public SoundCloudAuthenticationHandler(SoundCloudAuthInfo credentials)
         {
             _credentials = credentials;
         }
@@ -22,7 +22,7 @@ namespace SoundCloud.Api.Web
             return await base.SendAsync(request, cancellationToken);
         }
 
-        private static Uri AppendCredentials(Uri uri, SoundCloudCredentials credentials)
+        private static Uri AppendCredentials(Uri uri, SoundCloudAuthInfo credentials)
         {
             if (uri == null)
             {

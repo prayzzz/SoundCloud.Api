@@ -12,7 +12,7 @@ namespace SoundCloud.Api.IntegrationTest
     ///     All tests are marked as inconclusive, if the file is not available.
     /// </summary>
     [TestFixture]
-    public abstract class SoundCloudClientTest
+    public abstract class IntegrationTestBase
     {
         [SetUp]
         public void Setup()
@@ -24,7 +24,7 @@ namespace SoundCloud.Api.IntegrationTest
         }
 
         // Taken from https://soundcloud.com/sharpsound-2
-        protected const string SettingsFile = "settings2.json";
+        protected const string SettingsFile = "settings.json";
         protected const int Track2Id = 219360956;
         protected const int TrackId = 219359541;
         protected const int UserId = 164386753;
@@ -61,5 +61,7 @@ namespace SoundCloud.Api.IntegrationTest
         public string Username { get; set; }
 
         public string RedirectUri { get; set; }
+
+        public string RefreshToken { get; set; }
     }
 }

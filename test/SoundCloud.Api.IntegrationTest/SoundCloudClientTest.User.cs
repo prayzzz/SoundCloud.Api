@@ -6,7 +6,7 @@ using SoundCloud.Api.Entities;
 namespace SoundCloud.Api.IntegrationTest
 {
     [TestFixture]
-    public class UserTest : SoundCloudClientTest
+    public class UserTest : IntegrationTestBase
     {
         [Test]
         public async Task Users_Get()
