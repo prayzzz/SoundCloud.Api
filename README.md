@@ -10,7 +10,6 @@ Install it using [NuGet](https://www.nuget.org/packages/SoundCloud.Api/):
 ```
 Install-Package SoundCloud.Api
 ```
-or download the latest archive from the [release page](https://github.com/prayzzz/SoundCloud.Api/releases).
 
 ## Information
 
