@@ -1,6 +1,6 @@
 # SoundCloud.Api
 
-![Nuget](https://img.shields.io/nuget/v/SoundCloud.Api.svg?style=flat-square)
+[![Nuget](https://img.shields.io/nuget/v/SoundCloud.Api.svg?style=flat-square)](https://www.nuget.org/packages/SoundCloud.Api/)
 
 Full featured SoundCloud API wrapper written in C# using .NET Standard 2.0
 
